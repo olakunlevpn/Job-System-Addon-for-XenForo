@@ -3,6 +3,7 @@
 namespace Olakunlevpn\JobSystem\Admin\Controller;
 
 use XF\Admin\Controller\AbstractController;
+use XF\ControllerPlugin\DeletePlugin;
 use XF\Mvc\ParameterBag;
 
 class Submission extends  AbstractController
@@ -122,6 +123,22 @@ class Submission extends  AbstractController
 
     }
 
+
+
+    public function actionDelete(ParameterBag $params)
+    {
+        /** @var \Olakunlevpn\JobSystem\Entity\Submission $submission */
+        $submission = $this->assertSubmissionExists($params->submission_id);
+
+            $plugin = $this->plugin(DeletePlugin::class);
+            return $plugin->actionDelete(
+                $submission,
+                $this->buildLink('submissions/delete', $submission),
+                $this->buildLink('submissions/view', $submission),
+                $this->buildLink('submissions'),
+                'Submission ID '.$submission->submission_id.' and job title '.$submission->Job->title,
+            );
+    }
 
 
     protected function notifyUserJobRejected($submission, $adminComment = '')

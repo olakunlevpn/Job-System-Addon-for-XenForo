@@ -154,6 +154,19 @@
 ]]></template>
   <template type="admin" title="olakunlevpn_job_system_delete" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Delete]]></template>
   <template type="admin" title="olakunlevpn_job_system_options" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Job System Settings</xf:title>]]></template>
+  <template type="admin" title="olakunlevpn_job_system_submission_delete" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Delete Submission</xf:title>
+<form action="{{ link('submissions/delete', $submission) }}" method="post" class="block">
+    <div class="block-container">
+        <div class="block-body">
+            <p>Are you sure you want to delete the submission for job <strong>{{ $submission.Job.title }}</strong> by user <strong>{{ $submission.User.username }}</strong>?</p>
+        </div>
+        <div class="block-footer">
+            <xf:submitrow submit="Delete" icon="delete" />
+        </div>
+    </div>
+
+    <input type="hidden" name="_xfToken" value="{{ $xf.csrf_token }}" />
+</form>]]></template>
   <template type="admin" title="olakunlevpn_job_system_submission_view" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Submission Details</xf:title>
 <xf:css src="styles.css"  />
 <div class="block">
@@ -763,7 +776,30 @@
                 </xf:formrow>
             </xf:if>
 
-            <xf:submitrow sticky="true" icon="payment" submit="Submit Job" />
+
+            <xf:if is="$xf.visitor.user_id">
+                <xf:submitrow sticky="true" icon="payment" submit="Submit Job" />
+                <xf:else />
+                <a href="/login/" class="button button--icon  button--icon--write" data-xf-click="overlay" data-follow-redirects="on">
+                    <i class="fa--xf far fa-user-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                            <use href="/data/local/icons/regular.svg?v=1728210329#user-circle"></use>
+                        </svg>
+                    </i>
+                    <span class="button-text">Log in</span>
+                </a>
+                <a href="/register/" class="button--cta button button--icon button--icon--write" data-xf-click="overlay" data-follow-redirects="on">
+                    <i class="fa--xf far fa-user-plus">
+                        <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                            <use href="/data/local/icons/regular.svg?v=1728210329#user-plus"></use>
+                        </svg>
+                    </i>
+                    <span class="button-text">Register</span>
+                </a>
+            </xf:if>
+
+
+
 
             </xf:form>
 

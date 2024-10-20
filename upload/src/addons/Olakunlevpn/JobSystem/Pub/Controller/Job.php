@@ -17,16 +17,40 @@ use Olakunlevpn\JobSystem\Entity\WithdrawRequest;
 
 class Job extends AbstractController
 {
-
-    protected function preDispatchController($action, ParameterBag $params)
+    /**
+     * @return User
+     * @throws XF\Mvc\Reply\Exception
+     */
+    public function ensureUserIsLoggedInAndHaveTheRightPermission(): User
     {
         /** @var User $visitor */
         $visitor = XF::visitor();
 
-        if (!$visitor)
-        {
+        if ( ! $visitor || ! $visitor->canViewDbtechCredits()) {
             throw $this->exception($this->noPermission());
         }
+
+        return $visitor;
+    }
+
+    /**
+     * @return void
+     * @throws XF\Mvc\Reply\Exception
+     */
+    public function ensureUserIsLoggedIn(): void
+    {
+        /** @var User $visitor */
+        $visitor = XF::visitor();
+
+        if ( ! $visitor) {
+            throw $this->exception($this->noPermission());
+        }
+    }
+
+    protected function preDispatchController($action, ParameterBag $params)
+    {
+        /** @var User $visitor */
+        $this->ensureUserIsLoggedIn();
     }
 
 
@@ -121,6 +145,9 @@ class Job extends AbstractController
 
     public function actionSubmit(ParameterBag $params)
     {
+        /** @var User $visitor */
+        $this->ensureUserIsLoggedIn();
+
         $app = \XF::app();
 
         $jobId = $params->job_id;
@@ -220,6 +247,10 @@ class Job extends AbstractController
     public function actionCompleted()
     {
 
+        /** @var User $visitor */
+        $this->ensureUserIsLoggedIn();
+
+
         $page = $this->filterPage();
         $perPage = 10;
 
@@ -245,6 +276,9 @@ class Job extends AbstractController
 
     public function actionPending()
     {
+        /** @var User $visitor */
+        $this->ensureUserIsLoggedIn();
+
 
         $page = $this->filterPage();
         $perPage = 10;
@@ -271,11 +305,15 @@ class Job extends AbstractController
     }
 
 
+
     /**
      * @return XF\Mvc\Reply\AbstractReply|XF\Mvc\Reply\Error|XF\Mvc\Reply\View
      */
     public function actionWithdraw()
     {
+        $this->ensureUserIsLoggedIn();
+
+
         $currenciesList = $this->getCurrencyRepo()->getCurrencyTitlePairs();
 
         $withdrawProfiles = preg_split('/\s/', $this->options()->olakunlevpn_job_system_paymentProfiles, -1, PREG_SPLIT_NO_EMPTY);
@@ -302,14 +340,7 @@ class Job extends AbstractController
      */
     public function actionWithdrawCreate()
     {
-
-        /** @var User $visitor */
-        $visitor = XF::visitor();
-
-        if (!$visitor || !$visitor->canViewDbtechCredits())
-        {
-            throw $this->exception($this->noPermission());
-        }
+        $visitor = $this->ensureUserIsLoggedInAndHaveTheRightPermission();
 
         $withdrawProfiles = preg_split('/\s/', $this->options()->olakunlevpn_job_system_paymentProfiles, -1, PREG_SPLIT_NO_EMPTY);
 
@@ -372,6 +403,11 @@ class Job extends AbstractController
      */
     public function actionWithdrawList(): \XF\Mvc\Reply\View
     {
+
+        /** @var User $visitor */
+        $this->ensureUserIsLoggedIn();
+
+
 
         $withdrawRequests = $this->finder('Olakunlevpn\JobSystem:WithdrawRequest')->where('user_id', XF::visitor()->user_id)
             ->order('withdraw_request_id', 'desc')

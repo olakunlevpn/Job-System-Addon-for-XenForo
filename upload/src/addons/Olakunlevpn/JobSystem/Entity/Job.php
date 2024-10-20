@@ -64,7 +64,8 @@ class Job extends Entity
                 'entity' => 'Olakunlevpn\JobSystem:Submission',
                 'type' => self::TO_MANY,
                 'conditions' => 'job_id',
-                'key' => 'job_id'
+                'key' => 'job_id',
+                'cascadeDelete' => true,
             ],
             'RewardCurrency' => [
                 'entity' => 'DBTech\Credits:Currency',
