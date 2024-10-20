@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<routes>
+  <route route_type="admin" route_prefix="jobs" format=":int&lt;job_id&gt;/" controller="Olakunlevpn\JobSystem:Job" context="Jobs"/>
+  <route route_type="admin" route_prefix="submissions" format=":int&lt;submission_id&gt;/" controller="Olakunlevpn\JobSystem:Submission" context="Jobs"/>
+  <route route_type="public" route_prefix="jobs" format=":int&lt;job_id&gt;/" controller="Olakunlevpn\JobSystem:Job" context="OlakunlevpnJobSystem"/>
+</routes>

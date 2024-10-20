@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="admin_navigation.SubmissionList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Submissions]]></phrase>
+  <phrase title="admin_navigation.jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Jobs]]></phrase>
+  <phrase title="admin_navigation.jobsAdd" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Add]]></phrase>
+  <phrase title="admin_navigation.jobsList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job List]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystem" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Jobs]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemCompleted" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Completed Job]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Available Jobs]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemPending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Pending Jobs]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemWithdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemWithdrawalList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw request list]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_minimumWalletlenght" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Wallet Address lenght]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_minimumWithdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Minimum Withdrawal]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_paymentProfiles" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Payment Profiles List]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_content" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Welcome page content]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_cta_button" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[CTA button]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_cta_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Page CTA Title]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_faq" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Welcome page Faqs]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Welcome page title]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_minimumWalletlenght" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The wallet address must be at least above characters long.]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_minimumWithdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Minimum user can withdraw from their balance]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_paymentProfiles" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please list withdrawal gateways separated with tab]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_content" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Welcome page content you can use HTML to design this page]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_cta_button" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The action button text]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_cta_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The text call to action (CTA) title above the action button]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_faq" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The page content faqs list]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Welcome page header title]]></phrase>
+  <phrase title="option_group.olakunlevpn_jobsystem" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job System Settings]]></phrase>
+  <phrase title="option_group_description.olakunlevpn_jobsystem" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Manage various settings for the Job System.]]></phrase>
+</phrases>

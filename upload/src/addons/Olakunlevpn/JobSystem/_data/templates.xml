@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="admin" title="olakunlevpn_admin_job_system_add" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Create or Edit Job</xf:title>
+
+<xf:form action="{{ link('jobs/save', $job) }}" class="block" ajax="true">
+    <div class="block-container">
+        <div class="block-body">
+            <xf:textboxrow name="title" value="{$job.title}" label="Title" />
+
+            <xf:textarearow name="description" label="Description" value="{{ $job.description }}" />
+
+            <xf:editorrow name="details" label="Details" value="{{ $job.details }}" data-min-height="200" />
+
+            <xf:numberboxrow name="reward_amount" value="{$job.reward_amount}" min="1" step="1" label="Reward Amount" />
+
+            <xf:selectrow name="reward_currency" value="{$job.reward_currency}" label="Reward Currency">
+                <xf:foreach loop="$currencies" value="$currency">
+                    <xf:option value="{{ $currency.value }}">{{ $currency.label }}</xf:option>
+                </xf:foreach>
+            </xf:selectrow>
+
+            <xf:radiorow name="type" value="{{ $job.type }}" label="Job submission Type">
+                <xf:option value="text">Text</xf:option>
+                <xf:option value="url">URL</xf:option>
+            </xf:radiorow>
+
+
+            <xf:checkboxrow>
+                <xf:option name="has_attachment" value="1" selected="{{ $job.has_attachment }}">Has Attachment</xf:option>
+            </xf:checkboxrow>
+
+
+            <xf:numberboxrow name="max_completions" value="{$job.max_completions}" min="1" step="1" label="Max Completions" />
+
+            <xf:checkboxrow>
+                <xf:option name="active" value="1" selected="$job.active">Is Active</xf:option>
+            </xf:checkboxrow>
+        </div>
+
+        <xf:submitrow sticky="true" icon="save" />
+    </div>
+</xf:form>
+]]></template>
+  <template type="admin" title="olakunlevpn_admin_job_system_list" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Manage Jobs</xf:title>
+
+
+<xf:pageaction>
+    <xf:button href="{{ link('jobs/add') }}" icon="add">
+        Add New Job
+    </xf:button>
+</xf:pageaction>
+
+<xf:if is="$jobs is not empty">
+    <div class="block">
+        <div class="block-container">
+            <div class="block-body">
+                <xf:datalist>
+                    <xf:foreach loop="$jobs" value="$job">
+                        <xf:datarow rowclass="{{ $job.active ? '' : 'dataList-row--disabled' }}">
+                            <xf:cell>
+                                <a href="{{ link('admin:jobs/edit', $job) }}">{{ $job.title }}</a>
+                            </xf:cell>
+                            <xf:cell>
+                                {{ $job.reward_amount }} credits
+                            </xf:cell>
+                            <xf:cell>
+                                <xf:if is="$job.active">
+                                    <span class="label label--green">Active</span>
+                                    <xf:else />
+                                    <span class="label label--error">Inactive</span>
+                                </xf:if>
+                            </xf:cell>
+                            <xf:cell>
+                                <xf:button  href="{{ link('admin:jobs/edit', $job) }}" icon="edit" overlay="true">Edit</xf:button>
+                                <xf:button class="b" href="{{ link('admin:jobs/delete', $job) }}" icon="delete" overlay="true">Delete</xf:button>
+                            </xf:cell>
+                        </xf:datarow>
+                    </xf:foreach>
+                </xf:datalist>
+            </div>
+            <div class="block-footer">
+                <span class="block-footer-counter">{{ display_totals($jobs, $total) }}</span>
+            </div>
+        </div>
+        <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+                    link="admin:jobs" params="{{ {'criteria': $criteria} }}"
+                    wrapperclass="block-outer block-outer--after" />
+    </div>
+    <xf:else />
+    <div class="blockMessage">No jobs have been added yet.</div>
+</xf:if>
+]]></template>
+  <template type="admin" title="olakunlevpn_admin_job_system_submission" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Manage Submissions</xf:title>
+
+
+
+<xf:if is="$submissions is not empty">
+    <div class="block">
+        <div class="block-container">
+            <h3 class="block-header">Job Submissions</h3>
+
+            <div class="block-body">
+
+                <xf:datalist>
+                    <xf:datarow rowtype="header">
+                        <xf:cell>User</xf:cell>
+                        <xf:cell>Reward</xf:cell>
+                        <xf:cell>Status</xf:cell>
+                        <xf:cell>Submited At</xf:cell>
+                        <xf:cell> </xf:cell>
+                    </xf:datarow>
+
+                    <xf:foreach loop="$submissions" value="$submission">
+                        <xf:datarow>
+                            <xf:cell>
+                                {{ $submission.User.username }}
+                            </xf:cell>
+                            <xf:cell>
+                                {{ $submission.Job.reward_amount }} credits
+                            </xf:cell>
+                            <xf:cell>
+                                <xf:if is="$submission.status === 'approved'">
+                                    <span class="label label--green">Completed</span>
+                                    <xf:elseif is="$submission.status === 'pending'" />
+                                    <span class="label label--yellow">Pending</span>
+                                    <xf:else />
+                                        <span class="label label--error">Rejected</span>
+                                </xf:if>
+                            </xf:cell>
+                            <xf:cell>
+                                <xf:date time="$submission.submitted_date" />
+                            </xf:cell>
+                            <xf:cell>
+                                <xf:button href="{{ link('admin:submissions/view', $submission) }}"
+                                           icon="edit"
+                                           >View</xf:button>
+                                <xf:button class="b" href="{{ link('admin:submissions/delete', $submission) }}" icon="delete" overlay="true">Delete</xf:button>
+                            </xf:cell>
+                        </xf:datarow>
+                    </xf:foreach>
+                </xf:datalist>
+            </div>
+            <div class="block-footer">
+                <span class="block-footer-counter">{{ display_totals($jobs, $total) }}</span>
+            </div>
+        </div>
+        <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+                    link="admin:jobs" params="{{ {'criteria': $criteria} }}"
+                    wrapperclass="block-outer block-outer--after" />
+    </div>
+    <xf:else />
+    <div class="blockMessage">No jobs have been added yet.</div>
+</xf:if>
+]]></template>
+  <template type="admin" title="olakunlevpn_job_system_delete" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Delete]]></template>
+  <template type="admin" title="olakunlevpn_job_system_options" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Job System Settings</xf:title>]]></template>
+  <template type="admin" title="olakunlevpn_job_system_submission_view" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Submission Details</xf:title>
+<xf:css src="styles.css"  />
+<div class="block">
+    <xf:if is="!empty($submission) &&  $submission->status === 'rejected'">
+        <div class="blockMessage blockMessage--error text-2xl">
+            <div style="display: flex; align-items: center;">
+                <i class="fa--xf far-times-circle" style="margin-right: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                        <use href="/data/local/icons/solid.svg?v=1728944343#times-circle"></use>
+                    </svg>
+                </i>
+                <div>
+                    This job was rejected.
+                    <xf:if is="!empty($job.admin_comment)">
+                        <div class="margin-top-20">
+                            <h4>
+                                Comments:
+                            </h4>
+                            <p>
+                                {{$job.admin_comment}}
+                            </p>
+                        </div>
+                    </xf:if>
+
+                </div>
+            </div>
+        </div>
+
+        <xf:elseif  is="!empty($submission) &&  $submission->status === 'pending'" />
+        <!-- If a submission exists, show a pending message -->
+        <div class="blockMessage blockMessage--important text-2xl">
+            <div style="display: flex; align-items: center;">
+                <i class="fa--xf far-spinner may-spinner" style="margin-right: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                        <use href="/data/local/icons/regular.svg?v=1728944343#spinner"></use></svg></i>
+                This job is currently under review and pending approval. Please check back and update the status.
+            </div>
+        </div>
+
+        <xf:else />
+        <div class="blockMessage blockMessage--success text-2xl">
+            <div style="display: flex; align-items: center;">
+                <i class="fa--xf far-check-circle" style="margin-right: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                        <use href="/data/local/icons/solid.svg?v=1728944343#check-circle"></use>
+                    </svg>
+                </i>
+                This job submission has been approved!
+            </div>
+        </div>
+
+    </xf:if>
+
+<div class="block-container">
+        <h2 class="block-header">
+            Submission Details
+          <div class="block-desc">Submitted date: {{ date($submission.submitted_date, 'absolute') }}</div>
+        </h2>
+        <div class="block-body">
+            <!-- Submission ID -->
+            <dl class="formRow formRow--input">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label">Submission ID</label>
+                    </div>
+                </dt>
+                <dd>
+                    <div class="inputGroup inputGroup--auto margin-top-5">
+                        <span class="text-2xl">{{ $submission.submission_id }}</span>
+                    </div>
+                </dd>
+            </dl>
+
+            <!-- User -->
+            <dl class="formRow formRow--input">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label">User</label>
+                    </div>
+                </dt>
+                <dd>
+                    <div class="inputGroup inputGroup--auto margin-top-5">
+                        <span class="text-2xl">{{ $submission.User ? $submission.User.username : 'N/A' }}</span>
+                    </div>
+                </dd>
+            </dl>
+
+            <!-- Job Title -->
+            <dl class="formRow formRow--input">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label">Job Title</label>
+                    </div>
+                </dt>
+                <dd>
+                    <div class="inputGroup inputGroup--auto margin-top-5">
+                        <span class="text-2xl">{{ $submission.Job.title }}</span>
+                    </div>
+                </dd>
+            </dl>
+
+            <!-- Status -->
+            <dl class="formRow formRow--input">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label">Status</label>
+                    </div>
+                </dt>
+                <dd>
+                    <div class="inputGroup inputGroup--auto margin-top-5">
+                        <span class="text-2xl">{{ $submission.status }}</span>
+                    </div>
+                </dd>
+            </dl>
+
+            <!-- Submission Date -->
+            <dl class="formRow formRow--input">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label">Submission Date</label>
+                    </div>
+                </dt>
+                <dd>
+                    <div class="inputGroup inputGroup--auto margin-top-5">
+                        <span class="text-2xl"><xf:date time="{$submission.submitted_date}" /></span>
+                    </div>
+                </dd>
+            </dl>
+
+            <!-- Submission Data -->
+            <dl class="formRow formRow--input">
+                <dt>
+                    <div class="formRow-labelWrapper">
+                        <label class="formRow-label">Submission Data</label>
+                    </div>
+                </dt>
+                <dd>
+                    <div class="inputGroup inputGroup--auto margin-top-5">
+                        <span class="text-2xl">{{ $submission.submission_data }}</span>
+                    </div>
+                </dd>
+            </dl>
+
+            <!-- Attachments -->
+            <xf:if is="$submission.Attachments">
+                <dl class="formRow formRow--input">
+                    <dt>
+                        <div class="formRow-labelWrapper">
+                            <label class="formRow-label">Attachments</label>
+                        </div>
+                    </dt>
+                    <dd>
+                        <div class="inputGroup inputGroup--auto margin-top-5">
+                            <ul class="flex listInline">
+                                <xf:foreach loop="$submission.Attachments" value="$attachment">
+                                    <li>
+                                        <a href="{{ $attachment.direct_url }}" target="_blank">
+                                            <img src="{{ $attachment.direct_url }}" alt="{{ $attachment.filename }}" width="100" />
+                                        </a>
+                                    </li>
+                                </xf:foreach>
+                            </ul>
+                        </div>
+                    </dd>
+                </dl>
+                <xf:else />
+                <p>No attachments found for this submission.</p>
+            </xf:if>
+
+    </div>
+</div>
+</div>
+
+
+    <div class="block">
+        <div class="block-container">
+            <h2 class="block-header">
+                Job decision
+            </h2>
+            <div class="block-body">
+
+                <xf:form action="{{ link('admin:submissions/decision', $submission) }}" ajax="true">
+
+
+                    <xf:textarearow label="Admin Comment (Optional)"
+                                    name="admin_comment"
+                                    placeholder="Your comment on the rejection"
+                                    autosize="true" />
+
+
+
+                    <!-- Decision Buttons -->
+                    <div class="formSubmitRow">
+                        <div class="inputGroup inputGroup--auto">
+                            <xf:submitrow icon="markRead" submit="Approve Submission" name="approve" />
+                            <xf:submitrow icon="cancel" submit="Reject Submission" name="reject" />
+                        </div>
+                    </div>
+
+                    <xf:csrf />
+
+                </xf:form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+]]></template>
+  <template type="admin" title="styles.css" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[.text-2xl {
+     font-size: 17px;
+}
+
+
+.margin-top-20{
+     margin-top: 20px !important;
+}
+
+.margin-top-5{
+     margin-top: 5px !important;
+}]]></template>
+  <template type="public" title="alert_job_submission_tasks_approved" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{{ link('jobs/list') }}">job</a> submission for <strong>{$extra.jobTitle}</strong> has been <a href="{{ link('jobs/completed') }}">approved</a>! You earned <strong>{$extra.amount} {$extra.amount_currency}</strong>.
+]]></template>
+  <template type="public" title="alert_job_submission_tasks_pending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{{ link('jobs/list') }}">job</a> submission for <strong>{$extra.jobTitle}</strong> is currently pending review. Please wait for updates.]]></template>
+  <template type="public" title="alert_job_submission_tasks_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{{ link('jobs/list') }}">job</a> submission for <strong>{$extra.jobTitle}</strong> has been rejected. Reason: <strong>{$extra.adminComment}</strong>.]]></template>
+  <template type="public" title="alert_job_submission_withdraw_completed" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your withdraw request of ${{ $content.amount }} to your wallet (<strong>{{ $content.payment_profile_data }}</strong>) was completed.]]></template>
+  <template type="public" title="alert_job_submission_withdraw_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your withdraw request of ${{ $content.amount }} was rejected.]]></template>
+  <template type="public" title="approval_item_job_submission_withdraw" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:set var="$messageHtml">
+	<h4 class="message-title">
+		<strong>{$content.Currency.prefix}{{ $content.amount }}{$request.Currency.suffix} {{ $content.Currency.title }}</strong>
+	</h4>
+	<h4 class="message-title">
+		Payment Profile
+		<strong>{{ $content.payment_profile }}</strong>
+	</h4>
+	<h4 class="message-title">
+		Payment profile data
+		<strong>{{ $content.payment_profile_data }}</strong>
+	</h4>
+</xf:set>
+
+<xf:macro template="approval_queue_macros" name="item_message_type"
+	arg-content="{$content}"
+	arg-contentDate="{$content.creation_date}"
+	arg-user="{$content.User}"
+	arg-messageHtml="{$messageHtml}"
+	arg-typePhraseHtml="Withdrawal Request"
+	arg-spamDetails="{$spamDetails}"
+	arg-unapprovedItem="{$unapprovedItem}"
+	arg-handler="{$handler}"
+	arg-headerPhraseHtml="" />]]></template>
+  <template type="public" title="job_system_sidebar_macros" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:macro
+        name="JobSystemNav"
+        arg-current="current">
+    <xf:sidenav>
+
+    <div class="block">
+        <div class="block-container">
+            <h2 class="block-header">Menu</h2>
+            <div class="block-body">
+                <a href="{{ link('jobs/list') }}" class="blockLink {{ $current == link('jobs/list') ? 'is-selected' : '' }}">
+                    Available Jobs
+                </a>
+                <a href="{{ link('jobs/completed') }}" class="blockLink {{ $current == link('jobs/completed') ? 'is-selected' : '' }}">
+                    Completed Jobs
+                </a>
+
+                <a href="{{ link('jobs/pending') }}" class="blockLink {{ $current == link('jobs/pending') ? 'is-selected' : '' }}">
+                    Pending Jobs
+                </a>
+
+
+                 <a href="{{ link('jobs/withdraw') }}" class="blockLink {{ $current == link('dbtech-credits/withdraw') ? 'is-selected' : '' }}">
+                     Withdraw
+                </a>
+
+                <a href="{{ link('jobs/withdraw-list') }}" class="blockLink {{ $current == link('dbtech-credits/withdraw/list') ? 'is-selected' : '' }}">
+                    Withdraw request list
+                </a>
+
+            </div>
+        </div>
+    </div>
+    </xf:sidenav>
+</xf:macro>]]></template>
+  <template type="public" title="olakunlevpn_job_system_completed" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Available Jobs</xf:title>
+<xf:css src="styles.css"  />
+<xf:set var="$currentUrl" value="{$xf.uri}" />
+<xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
+
+
+
+<xf:if is="$total > 0">
+    <xf:foreach loop="$jobs" key="$job_id" value="$job">
+        <div class="block">
+            <div class="block-container">
+                <div class="block-header">
+                    {{ $job.Job.title }}
+                </div>
+                <div class="block-body">
+                    <div class="block-row">
+                        {{ $job.Job.description|raw }}
+                    </div>
+                </div>
+                <div class="block-footer">
+                    <div class="text-2xl">
+                        Status:
+                        <xf:if is="$job.Job.active">
+                            <span class="label label--lightGreen">Active</span>
+                            <xf:else />
+                            <span class="label label--error">Inactive</span>
+                        </xf:if>
+                    </div>
+
+                    <div class="text-2xl">
+                        Reward: ${{ $job.Job.reward_amount }} {{ $job.Job.RewardCurrency.title }}
+                    </div>
+
+                    <div class="text-2xl">
+                        Submission Status:
+                        <xf:if is="$job.status == 'approved'">
+                            <span class="label label--lightGreen">Completed</span>
+                            <xf:elseif is="$job.status == 'pending'" />
+                            <span class="label label--yellow">Pending Approval</span>
+                            <xf:elseif is="$job.status == 'rejected'" />
+                            <span class="label label--error">Rejected</span>
+                        </xf:if>
+                    </div>
+
+                    <hr>
+
+                    <div class="blockMessage blockMessage--success text-2xl">
+                        <div style="display: flex; align-items: center;">
+                            <i class="fa--xf far-check-circle" style="margin-right: 10px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                                    <use href="/data/local/icons/solid.svg?v=1728944343#check-circle"></use>
+                                </svg>
+                            </i>
+                            Your submission has been approved! Thank you for completing the job successfully.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </xf:foreach>
+    <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}" link="jobs" wrapperclass="block-outer block-outer--after" />
+    <xf:else />
+    <div class="blockMessage">You have no completed jobs available at the moment.</div>
+</xf:if>
+
+]]></template>
+  <template type="public" title="olakunlevpn_job_system_index" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Available Jobs</xf:title>
+<xf:css src="styles.css"  />
+<xf:set var="$currentUrl" value="{$xf.uri}" />
+<xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
+
+
+<xf:if is="$total > 0">
+    <xf:foreach loop="$jobs" key="$job_id" value="$job">
+        <div class="block">
+            <div class="block-container">
+                <div class="block-header">
+                    {{ $job.title }}
+                </div>
+                <div class="block-body">
+                    <div class="block-row">
+                        {{ $job.description|raw }}
+                    </div>
+                </div>
+                <div class="block-footer">
+                  <div class="text-2xl">
+                      Status:  <xf:if is="$job.active">
+                      <span class="label label--lightGreen">Active</span>
+                      <xf:else />
+                      <span class="label label--error">Inactive</span>
+                  </xf:if>
+                  </div>
+
+                    <div class="text-2xl">
+                        Reward:  ${{ $job.reward_amount }} {{ $job.RewardCurrency.title  }}
+                    </div>
+
+                    <hr>
+                    <a href="{{ link('jobs/view', $job) }}" class="button">Take This Job</a>
+
+                </div>
+            </div>
+        </div>
+    </xf:foreach>
+    <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}" link="jobs" wrapperclass="block-outer block-outer--after" />
+    <xf:else />
+    <div class="blockMessage">No jobs available at the moment.</div>
+</xf:if>
+
+]]></template>
+  <template type="public" title="olakunlevpn_job_system_pending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Available Jobs</xf:title>
+<xf:css src="styles.css"  />
+<xf:set var="$currentUrl" value="{$xf.uri}" />
+<xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
+
+<xf:if is="$total > 0">
+    <xf:foreach loop="$jobs" key="$job_id" value="$job">
+        <div class="block">
+            <div class="block-container">
+                <div class="block-header">
+                    {{ $job.Job.title }}
+                </div>
+                <div class="block-body">
+                    <div class="block-row">
+                        {{ $job.Job.description|raw }}
+                    </div>
+                </div>
+                <div class="block-footer">
+                    <div class="text-2xl">
+                        Status:
+                        <xf:if is="$job.Job.active">
+                            <span class="label label--lightGreen">Active</span>
+                            <xf:else />
+                            <span class="label label--error">Inactive</span>
+                        </xf:if>
+                    </div>
+
+                    <div class="text-2xl">
+                        Reward: ${{ $job.Job.reward_amount }} {{ $job.Job.RewardCurrency.title }}
+                    </div>
+
+                    <div class="text-2xl">
+                        Submission Status:
+                        <xf:if is="$job.status == 'approved'">
+                            <span class="label label--lightGreen">Completed</span>
+                            <xf:elseif is="$job.status == 'pending'" />
+                            <span class="label label--yellow">Pending Approval</span>
+                            <xf:elseif is="$job.status == 'rejected'" />
+                            <span class="label label--error">Rejected</span>
+                        </xf:if>
+                    </div>
+
+                    <hr>
+
+                    <xf:if is="!empty($job) &&  $job->status === 'rejected'">
+                        <div class="blockMessage blockMessage--error text-2xl">
+                            <div style="display: flex; align-items: center;">
+                                <i class="fa--xf far-times-circle" style="margin-right: 10px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                                        <use href="/data/local/icons/solid.svg?v=1728944343#times-circle"></use>
+                                    </svg>
+                                </i>
+                                <div>
+                                    Your submission was rejected. Please review your response and resubmit the job.
+                                    <xf:if is="!empty($job.admin_comment)">
+                                        <div class="margin-top-20">
+                                            <h4>
+                                                Comments:
+                                            </h4>
+                                            <p>
+                                                {{$job.admin_comment}}
+                                            </p>
+                                        </div>
+                                    </xf:if>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <xf:else />
+                        <!-- If a submission exists, show a pending message -->
+                        <div class="blockMessage blockMessage--important text-2xl">
+                            <div style="display: flex; align-items: center;">
+                                <i class="fa--xf far-spinner may-spinner" style="margin-right: 10px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                                        <use href="/data/local/icons/regular.svg?v=1728944343#spinner"></use></svg></i>
+                                You have already submitted this job. Your submission is currently under review and pending approval. Please check back later for updates.
+                            </div>
+                        </div>
+                    </xf:if>
+
+                </div>
+            </div>
+        </div>
+    </xf:foreach>
+    <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}" link="jobs" wrapperclass="block-outer block-outer--after" />
+    <xf:else />
+    <div class="blockMessage">You have no pending jobs available at the moment.</div>
+</xf:if>
+
+]]></template>
+  <template type="public" title="olakunlevpn_job_system_test" version_id="100010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>The second test page</xf:title>
+
+<div class="block">
+    <div class="block-container">
+        <div class="block-row">
+            <p>{{$string }}  is some more contents</p>
+            <p>Then we have number  {{$number }}</p>
+            <p>Then we have money  {{$money }}</p>
+            <p><a href="{{ link('jobs') }}">open the index page</a> </p>
+
+            <ol>
+                <xf:foreach loop="$array" key="$key" value="$value">
+                    <li>{$value}</li>
+                </xf:foreach>
+            </ol>
+
+            <p>The current time is {{ date_time($xf.time) }}</p>
+            <xf:if is="$xf.visitor.user_id">
+                your are logged in {{ $xf.visitor.username}}
+                <xf:else />
+                   You are a guest
+            </xf:if>
+        </div>
+    </div>
+</div>]]></template>
+  <template type="public" title="olakunlevpn_job_system_view" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Available Jobs</xf:title>
+<xf:css src="styles.css"  />
+<xf:js src="xf/attachment_manager-compiled.js" />
+<xf:set var="$currentUrl" value="{$xf.uri}" />
+<xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
+
+
+<div class="block">
+    <div class="block-container">
+        <div class="block-header">
+            {{ $job.title }}
+        </div>
+        <div class="block-body">
+            <div class="block-row">
+                {{ $job.description }}
+            </div>
+
+            <div class="block-row">
+                {{ $job.details|raw }}
+            </div>
+
+
+        <div class="text-2xl block-row">
+            Status:  <xf:if is="$job.active">
+            <span class="label label--lightGreen">Active</span>
+            <xf:else />
+            <span class="label label--error">Inactive</span>
+        </xf:if>
+        </div>
+
+
+        <div class="text-2xl block-row">
+            Reward:  ${{ $job.reward_amount }} {{ $job.RewardCurrency.title  }}
+        </div>
+
+        <hr>
+
+            <div class="block-row">
+                <xf:if is="!$submissionProcess || !empty($submissionProcess) && $submissionProcess->status === 'rejected'">
+
+                    <xf:if is="!empty($submissionProcess) &&  $submissionProcess->status === 'rejected'">
+                        <div class="blockMessage blockMessage--error text-2xl">
+                            <div style="display: flex; align-items: center;">
+                                <i class="fa--xf far-times-circle" style="margin-right: 10px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                                        <use href="/data/local/icons/solid.svg?v=1728944343#times-circle"></use>
+                                    </svg>
+                                </i>
+                                <div>
+                                    Your submission was rejected. Please review your response and resubmit the job.
+                                 <xf:if is="!empty($submissionProcess.admin_comment)">
+                                     <div class="margin-top-20">
+                                     <h4>
+                                     Comments:
+                                     </h4>
+                                         <p>
+                                         {{$submissionProcess.admin_comment}}
+                                     </p>
+                                     </div>
+                                 </xf:if>
+
+                                </div>
+                            </div>
+                        </div>
+                    </xf:if>
+
+
+
+        <xf:form action="{{ link('jobs/submit', $job) }}" enctype="multipart/form-data" class="block"
+                 data-xf-init="attachment-manager"
+                 data-xf-click="overlay"
+                 ajax="true"
+        >
+
+
+            <!-- Conditionally display form for text or URL -->
+            <xf:if is="$job.type == 'text'">
+                <xf:textboxrow name="submission_text" label="Your Response" />
+                <xf:else />
+                <xf:textboxrow name="submission_url" label="Submission URL" />
+            </xf:if>
+
+            <!-- Conditionally display attachment upload if has_attachment is true -->
+            <xf:if is="$job.has_attachment">
+                <xf:formrow label="Upload Attachments" explain="Please attach any necessary files for this job.">
+
+                <xf:macro template="helper_attach_upload" name="upload_block"
+                          arg-attachmentData="{$attachmentData}"
+                          arg-forceHash="{$attachmentData.hash}"
+                          arg-hiddenName="attachment_hash" />
+
+                <xf:hiddenval name="attachment_hash" value="{$attachmentData.hash}" />
+                </xf:formrow>
+            </xf:if>
+
+            <xf:submitrow sticky="true" icon="payment" submit="Submit Job" />
+
+            </xf:form>
+
+                    <xf:elseif is="!empty($submissionProcess) && $submissionProcess.status == 'pending'" />
+
+                    <!-- If a submission exists, show a pending message -->
+                    <div class="blockMessage blockMessage--important text-2xl">
+                        <div style="display: flex; align-items: center;">
+                            <i class="fa--xf far-spinner may-spinner" style="margin-right: 10px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                                    <use href="/data/local/icons/regular.svg?v=1728944343#spinner"></use></svg></i>
+                            You have already submitted this job. Your submission is currently under review and pending approval. Please check back later for updates.
+                        </div>
+                    </div>
+
+                    <xf:elseif is="!empty($submissionProcess) && $submissionProcess.status == 'approved'" />
+                    <div class="blockMessage blockMessage--success text-2xl">
+                        <div style="display: flex; align-items: center;">
+                            <i class="fa--xf far-check-circle" style="margin-right: 10px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                                    <use href="/data/local/icons/solid.svg?v=1728944343#check-circle"></use>
+                                </svg>
+                            </i>
+                            Your submission has been approved! Thank you for completing the job successfully.
+                        </div>
+                    </div>
+
+
+                </xf:if>
+            </div>
+        </div>
+
+</div>
+</div>
+
+]]></template>
+  <template type="public" title="olakunlevpn_job_system_welcome" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Welcome to the Job System</xf:title>
+<xf:set var="$currentUrl" value="{$xf.uri}" />
+<xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
+
+
+<div class="block">
+    <div class="block-container">
+        <h2 class="block-header"> {{ $page_title   }}</h2>
+        <div class="block-body">
+            <div class="block-row">
+
+                   {{ $page_content|raw   }}
+
+                <div class=" blockMessage blockMessage--highlight" style="padding-bottom: 30px;"
+                >
+                     <div style="text-align: center;">
+                         <h4 style="font-size: 30px;font-weight: initial;">
+                             {{ $page_cta_title }}
+                         </h4>
+                         <p>
+                             <a class="button button" href="{{ link('jobs/list') }}"
+                                style="font-size: 20px;"
+                             > {{ $page_cta_button_text }}</a>
+                         </p>
+                     </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="block-container">
+        <h3 class="block-header">Frequently Asked Questions</h3>
+        <div class="block-body">
+            <div class="block-row">
+                {{ $page_content_faqs|raw}}
+            </div>
+        </div>
+    </div>
+</div>
+]]></template>
+  <template type="public" title="olakunlevpn_job_system_withdrawal_index" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Withdraw</xf:title>
+
+<xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
+
+    <div class="block">
+        <div class="block-container">
+            <div class="block-header">
+                Balance Withdrawal
+            </div>
+
+            <xf:if contentcheck="true">
+                <xf:contentcheck>
+                    <xf:if is="$currencies is not empty">
+                        <ul class="block-body listPlain">
+                            <xf:form action="{{ link('jobs/withdraw-create') }}" ajax="true">
+                                <xf:selectrow name="currency_id" label="{{ phrase('dbtech_credits_currency') }}">
+                                    <xf:options source="{$currencies}" />
+                                </xf:selectrow>
+
+                                <xf:selectrow name="payment_profile" label="Payment profile">
+                                    <xf:foreach loop="$withdrawProfiles" value="$profile">
+                                        <xf:option value="{$profile}">{$profile}</xf:option>
+                                    </xf:foreach>
+                                </xf:selectrow>
+
+                                <xf:textarearow name="payment_profile_data" label="Payment profile data"
+                                                explain="Enter all the data/wallet address required for the payment profile you have chosen."
+                                                required="true" />
+
+                                <xf:numberboxrow name="amount" value="0"
+                                                 step="any" min="0" max="99999999"
+                                                 label="Withdraw amount" />
+
+                                <xf:submitrow fa="fas fa-wallet" submit="Withdraw" />
+                            </xf:form>
+                        </ul>
+                    </xf:if>
+                </xf:contentcheck>
+                <xf:else />
+                <div class="block-row">You do not have permission</div>
+            </xf:if>
+        </div>
+    </div>]]></template>
+  <template type="public" title="olakunlevpn_job_system_withdrawal_list" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Withdrawal request list</xf:title>
+
+<xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
+
+
+<xf:pageaction>
+    <xf:button fa="fas fa-wallet" href="{{ link('jobs/withdraw') }}" data-xf-click="overlay">Withdraw</xf:button>
+</xf:pageaction>
+
+<div class="block">
+    <div class="block-container">
+        <div class="block-header">
+            Withdrawal history
+        </div>
+
+        <xf:datalist data-xf-init="responsive-data-list">
+            <xf:datarow rowtype="header">
+                <xf:cell class="dataList-cell--min">&nbsp;</xf:cell>
+                <xf:cell class="dataList-cell--min">Amount</xf:cell>
+                <xf:cell>Payment profile</xf:cell>
+                <xf:cell>Payment profile data</xf:cell>
+                <xf:cell>Creation date</xf:cell>
+                <xf:cell>Change date</xf:cell>
+                <xf:cell>Status</xf:cell>
+            </xf:datarow>
+            <xf:foreach loop="$withdrawRequests" value="$request">
+                <xf:macro name="request_item"
+                          arg-request="{$request}" />
+            </xf:foreach>
+        </xf:datalist>
+    </div>
+</div>
+
+<xf:macro name="request_item" arg-request="!">
+    <xf:datarow rowclass="dataList-row--noHover">
+        <xf:cell class="dataList-cell--min">#{$request.withdraw_request_id}</xf:cell>
+        <xf:cell>
+            {$request.Currency.prefix}{{ $request.amount }}{$request.Currency.suffix}
+            <span class="dataList-secondRow">{{ $request.Currency.title }}</span>
+        </xf:cell>
+        <xf:cell>{{ $request.payment_profile }}</xf:cell>
+        <xf:cell>{{ $request.payment_profile_data }}</xf:cell>
+        <xf:cell>{{ date_time($request.creation_date) }}</xf:cell>
+        <xf:cell>{{ $request.change_date ? date_time($request.change_date) : 'None' }}</xf:cell>
+        <xf:cell data-xf-init="tooltip" title="{{ $request.change_date ? date_time($request.change_date) : 'None' }}">
+            <xf:if is="$request.status == 'created'">
+                <xf:fa icon="far fa-clock" />
+                <xf:elseif is="$request.status == 'completed'" />
+                <xf:fa icon="far fa-check" />
+                <xf:else />
+                <xf:fa icon="far fa-undo" />
+            </xf:if>
+            {{ $request.status }}
+        </xf:cell>
+    </xf:datarow>
+</xf:macro>
+]]></template>
+  <template type="public" title="push_job_submission_tasks_approved" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission for {$extra.jobTitle} has been approved. Congratulations!]]></template>
+  <template type="public" title="push_job_submission_tasks_pending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission for <strong>{$extra.jobTitle}</strong> is currently pending review. Please wait for updates.]]></template>
+  <template type="public" title="push_job_submission_tasks_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission for {$extra.jobTitle} has been rejected. Reason: {$extra.adminComment}.]]></template>
+  <template type="public" title="styles.css" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[.text-2xl {
+     font-size: 17px;
+}
+
+@keyframes spin {
+     0% { transform: rotate(0deg); }
+     100% { transform: rotate(360deg); }
+}
+
+.may-spinner {
+     display: inline-block;
+     animation: spin 1s linear infinite;
+}
+
+.noDeleteOrInsert .js-attachmentInsert,
+.noDeleteOrInsert .file-delete {
+     display: none;
+}
+
+.margin-top-20{
+     margin-top: 20px !important;
+}]]></template>
+</templates>
