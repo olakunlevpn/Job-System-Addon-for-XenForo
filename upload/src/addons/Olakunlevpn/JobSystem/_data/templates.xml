@@ -540,7 +540,7 @@
                     </div>
                 </div>
                 <div class="block-footer">
-                  <div class="text-2xl">
+                  <div class="text-2xl margin-top-10">
                       Status:  <xf:if is="$job.active">
                       <span class="label label--lightGreen">Active</span>
                       <xf:else />
@@ -548,12 +548,12 @@
                   </xf:if>
                   </div>
 
-                    <div class="text-2xl">
+                    <div class="text-2xl margin-top-10 margin-bottom-10">
                         Reward:  ${{ $job.reward_amount }} {{ $job.RewardCurrency.title  }}
                     </div>
 
                     <hr>
-                    <a href="{{ link('jobs/view', $job) }}" class="button">Take This Job</a>
+                    <a href="{{ link('jobs/view', $job) }}" class="button text-2xl">Take This Job</a>
 
                 </div>
             </div>
@@ -703,7 +703,7 @@
             </div>
 
 
-        <div class="text-2xl block-row">
+        <div class="text-2xl block-row margin-top-10">
             Status:  <xf:if is="$job.active">
             <span class="label label--lightGreen">Active</span>
             <xf:else />
@@ -712,7 +712,7 @@
         </div>
 
 
-        <div class="text-2xl block-row">
+        <div class="text-2xl block-row margin-top-10">
             Reward:  ${{ $job.reward_amount }} {{ $job.RewardCurrency.title  }}
         </div>
 
@@ -756,30 +756,39 @@
         >
 
 
-            <!-- Conditionally display form for text or URL -->
-            <xf:if is="$job.type == 'text'">
-                <xf:textboxrow name="submission_text" label="Your Response" />
-                <xf:else />
-                <xf:textboxrow name="submission_url" label="Submission URL" />
-            </xf:if>
-
-            <!-- Conditionally display attachment upload if has_attachment is true -->
-            <xf:if is="$job.has_attachment">
-                <xf:formrow label="Upload Attachments" explain="Please attach any necessary files for this job.">
-
-                <xf:macro template="helper_attach_upload" name="upload_block"
-                          arg-attachmentData="{$attachmentData}"
-                          arg-forceHash="{$attachmentData.hash}"
-                          arg-hiddenName="attachment_hash" />
-
-                <xf:hiddenval name="attachment_hash" value="{$attachmentData.hash}" />
-                </xf:formrow>
-            </xf:if>
-
 
             <xf:if is="$xf.visitor.user_id">
+
+
+                <!-- Conditionally display form for text or URL -->
+                <xf:if is="$job.type == 'text'">
+                    <xf:textboxrow name="submission_text" label="Your Response" />
+                    <xf:else />
+                    <xf:textboxrow name="submission_url" label="Submission URL" />
+                </xf:if>
+
+                <!-- Conditionally display attachment upload if has_attachment is true -->
+                <xf:if is="$job.has_attachment">
+                    <xf:formrow label="Upload Attachments" explain="Please attach any necessary files for this job.">
+
+                        <xf:macro template="helper_attach_upload" name="upload_block"
+                                  arg-attachmentData="{$attachmentData}"
+                                  arg-forceHash="{$attachmentData.hash}"
+                                  arg-hiddenName="attachment_hash" />
+
+                        <xf:hiddenval name="attachment_hash" value="{$attachmentData.hash}" />
+                    </xf:formrow>
+                </xf:if>
+
+
+
                 <xf:submitrow sticky="true" icon="payment" submit="Submit Job" />
+
                 <xf:else />
+                <div class="margin-bottom-10" style="text-align: center;">
+                <div  class="margin-bottom-10">
+                    Please login or register to participate
+                </div>
                 <a href="/login/" class="button button--icon  button--icon--write" data-xf-click="overlay" data-follow-redirects="on">
                     <i class="fa--xf far fa-user-circle">
                         <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
@@ -796,6 +805,7 @@
                     </i>
                     <span class="button-text">Register</span>
                 </a>
+                </div>
             </xf:if>
 
 
@@ -1007,7 +1017,7 @@
   <template type="public" title="push_job_submission_tasks_pending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission for <strong>{$extra.jobTitle}</strong> is currently pending review. Please wait for updates.]]></template>
   <template type="public" title="push_job_submission_tasks_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission for {$extra.jobTitle} has been rejected. Reason: {$extra.adminComment}.]]></template>
   <template type="public" title="styles.css" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[.text-2xl {
-     font-size: 17px;
+     font-size: 17px !important;
 }
 
 @keyframes spin {
@@ -1027,5 +1037,13 @@
 
 .margin-top-20{
      margin-top: 20px !important;
+}
+
+.margin-top-10{
+     margin-top: 10px !important;
+}
+
+.margin-bottom-10{
+     margin-bottom: 10px !important;
 }]]></template>
 </templates>
