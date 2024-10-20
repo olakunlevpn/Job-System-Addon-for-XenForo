@@ -23,7 +23,7 @@ class Job extends AbstractController
         /** @var User $visitor */
         $visitor = XF::visitor();
 
-        if (!$visitor || !$visitor->canViewDbtechCredits())
+        if (!$visitor)
         {
             throw $this->exception($this->noPermission());
         }
@@ -303,7 +303,14 @@ class Job extends AbstractController
     public function actionWithdrawCreate()
     {
 
+        /** @var User $visitor */
         $visitor = XF::visitor();
+
+        if (!$visitor || !$visitor->canViewDbtechCredits())
+        {
+            throw $this->exception($this->noPermission());
+        }
+
         $withdrawProfiles = preg_split('/\s/', $this->options()->olakunlevpn_job_system_paymentProfiles, -1, PREG_SPLIT_NO_EMPTY);
 
         $input = $this->filter([

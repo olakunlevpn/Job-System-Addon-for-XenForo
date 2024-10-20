@@ -415,24 +415,26 @@
             <h2 class="block-header">Menu</h2>
             <div class="block-body">
                 <a href="{{ link('jobs/list') }}" class="blockLink {{ $current == link('jobs/list') ? 'is-selected' : '' }}">
-                    Available Jobs
+                    <xf:fa icon="fa-list-ol" /> Available Jobs
                 </a>
-                <a href="{{ link('jobs/completed') }}" class="blockLink {{ $current == link('jobs/completed') ? 'is-selected' : '' }}">
-                    Completed Jobs
+                <xf:if is="$xf.visitor.user_id">
+                    <a href="{{ link('jobs/completed') }}" class="blockLink {{ $current == link('jobs/completed') ? 'is-selected' : '' }}">
+                        <xf:fa icon="fa-check-double" /> Completed Jobs
                 </a>
 
                 <a href="{{ link('jobs/pending') }}" class="blockLink {{ $current == link('jobs/pending') ? 'is-selected' : '' }}">
-                    Pending Jobs
+                    <xf:fa icon="fa-history" />  Pending Jobs
                 </a>
 
 
                  <a href="{{ link('jobs/withdraw') }}" class="blockLink {{ $current == link('dbtech-credits/withdraw') ? 'is-selected' : '' }}">
-                     Withdraw
+                     <xf:fa icon="fa-wallet" />  Withdraw
                 </a>
 
                 <a href="{{ link('jobs/withdraw-list') }}" class="blockLink {{ $current == link('dbtech-credits/withdraw/list') ? 'is-selected' : '' }}">
-                    Withdraw request list
+                    <xf:fa icon="fa-list-alt" /> Withdraw request list
                 </a>
+                </xf:if>
 
             </div>
         </div>
@@ -818,9 +820,32 @@
                              {{ $page_cta_title }}
                          </h4>
                          <p>
-                             <a class="button button" href="{{ link('jobs/list') }}"
-                                style="font-size: 20px;"
-                             > {{ $page_cta_button_text }}</a>
+                             <xf:if is="$xf.visitor.user_id">
+                                 <a class="button button" href="{{ link('jobs/list') }}"
+                                    style="font-size: 20px;"
+                                 > {{ $page_cta_button_text }}</a>
+                              <xf:else />
+
+
+                                     <a href="/login/" class="button button--icon  button--icon--write" data-xf-click="overlay" data-follow-redirects="on">
+                                         <i class="fa--xf far fa-user-circle">
+                                             <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                                                 <use href="/data/local/icons/regular.svg?v=1728210329#user-circle"></use>
+                                             </svg>
+                                         </i>
+                                         <span class="button-text">Log in</span>
+                                     </a>
+                                     <a href="/register/" class="button--cta button button--icon button--icon--write" data-xf-click="overlay" data-follow-redirects="on">
+                                         <i class="fa--xf far fa-user-plus">
+                                             <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                                                 <use href="/data/local/icons/regular.svg?v=1728210329#user-plus"></use>
+                                             </svg>
+                                         </i>
+                                         <span class="button-text">Register</span>
+                                     </a>
+                             </xf:if>
+
+
                          </p>
                      </div>
 
