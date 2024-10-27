@@ -59,11 +59,7 @@ class Submission extends Entity
 
     public function canUploadAndManageAttachments(): bool
     {
-        // Add logic to determine whether attachments can be managed for this submission
-        // You might want to check the user's permissions, the job status, etc.
-
-        // For now, let's assume all users can upload and manage attachments for this submission:
-        return true;
+       return true;
     }
 
 

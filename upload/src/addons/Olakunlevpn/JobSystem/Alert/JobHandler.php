@@ -42,23 +42,23 @@ class JobHandler extends AbstractHandler
         {
             case 'approved':
                 $item['jobTitle'] = $content->Job->title;
-                $item['message'] = "Your job submission has been approved.";
+                $item['message'] = \XF::phrase('olakunlevpn_job_system_submission_has_been_approved_message');
                 break;
 
             case 'rejected':
                 $item['jobTitle'] = $content->Job->title;
-                $item['message'] = "Your job submission has been rejected.";
+                $item['message'] = \XF::phrase('olakunlevpn_job_system_submission_has_been_rejected_message');
                 break;
 
             case 'pending':
                 $item['jobTitle'] = $content->Job->title;
-                $item['message'] = "Your job submission is pending and currently under review.";
+                $item['message'] = \XF::phrase('olakunlevpn_job_system_submission_is_pending_message');
                 break;
 
 
 
             default:
-                $item['message'] = "There has been an update on your job submission.";
+                $item['message'] = \XF::phrase('olakunlevpn_job_system_submission_update_message');
                 break;
         }
 

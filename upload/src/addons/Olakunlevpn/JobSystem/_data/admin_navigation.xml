@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <admin_navigation>
+  <admin_navigation_entry navigation_id="OlakunlevpnJobSystemOptions" parent_navigation_id="jobs" display_order="40" link="options/groups/olakunlevpn_jobsystem" icon="fa-award" debug_only="0" development_only="0" hide_no_children="0"/>
   <admin_navigation_entry navigation_id="SubmissionList" parent_navigation_id="jobs" display_order="30" link="submissions" icon="fa-award" debug_only="0" development_only="0" hide_no_children="0"/>
   <admin_navigation_entry navigation_id="jobs" display_order="310" link="jobs" icon="fa-award" debug_only="0" development_only="0" hide_no_children="0"/>
   <admin_navigation_entry navigation_id="jobsAdd" parent_navigation_id="jobs" display_order="20" link="jobs/add" icon="fa-award" debug_only="0" development_only="0" hide_no_children="0"/>

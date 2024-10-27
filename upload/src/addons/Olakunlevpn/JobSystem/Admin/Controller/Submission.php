@@ -5,6 +5,7 @@ namespace Olakunlevpn\JobSystem\Admin\Controller;
 use XF\Admin\Controller\AbstractController;
 use XF\ControllerPlugin\DeletePlugin;
 use XF\Mvc\ParameterBag;
+use XF\Repository\TrophyRepository;
 
 class Submission extends  AbstractController
 {
@@ -30,13 +31,13 @@ class Submission extends  AbstractController
         $page = $this->filterPage();
         $perPage = 20;
 
-        // Finder for the Job entity
+
         $jobFinder = $this->finder('Olakunlevpn\JobSystem:Submission')
             ->with('User')
             ->setDefaultOrder('submitted_date', 'DESC')
             ->limitByPage($page, $perPage);
 
-        // Fetch the jobs and total for pagination
+
         $viewParams = [
             'submissions' => $jobFinder->fetch(),
             'total' => $jobFinder->total(),
@@ -74,17 +75,21 @@ class Submission extends  AbstractController
 
         if ($isApproved) {
 
-            $this->creditUser($submission->user_id, $submission);
+            if ($submission->Job->reward_type === 'db_credits') {
+                $this->creditUser($submission->user_id, $submission);
+            } elseif ($submission->Job->reward_type === 'trophy') {
+                $this->awardTrophyToUser($submission->user_id, $submission->Job->trophy_id);
+            }
+
             $submission->status = 'approved';
             $submission->admin_comment = $adminComment;
             $submission->save();
 
             $this->notifyUserJobApproved($submission);
 
-            return $this->redirect($this->buildLink('submissions/view', $submission), 'Submission has been approved and the user has been credited.');
+            return $this->redirect($this->buildLink('submissions/view', $submission), \XF::phrase('olakunlevpn_job_system_submission_approved_and_credited_message'));
 
         } elseif ($isRejected) {
-            // Reject the submission and save the admin comment
             $submission->status = 'rejected';
             $submission->admin_comment = $adminComment;
             $submission->save();
@@ -92,18 +97,42 @@ class Submission extends  AbstractController
             $this->notifyUserJobRejected($submission, $adminComment);
 
 
-            return $this->redirect($this->buildLink('submissions/view', $submission), 'Submission has been rejected.');
+            return $this->redirect($this->buildLink('submissions/view', $submission), \XF::phrase('olakunlevpn_job_system_submission_rejected_error'));
         }
 
-        return $this->error('Invalid action.');
+        return $this->error(\XF::phrase('olakunlevpn_job_system_invalid_action_message'));
     }
+
+    protected function awardTrophyToUser($userId, $trophyId)
+    {
+        /** @var \XF\Entity\User $user */
+        $user = $this->em()->find('XF:User', $userId);
+        if (!$user) {
+            return;
+        }
+
+        if ($this->app->options()->enableTrophies) {
+
+            /** @var TrophyRepository $trophyRepo */
+            $trophy = $this->em()->find('XF:Trophy', $trophyId);
+            if (!$trophy) {
+                return;
+            }
+            if ($trophy && ! isset($user->Trophies[$trophy->trophy_id])) {
+                $trophyRepo = $this->repository(TrophyRepository::class);
+                $trophyRepo->awardTrophyToUser($trophy, $user);
+            }
+        }
+    }
+
+
 
     protected function creditUser($userId, $submission)
     {
         /** @var \XF\Entity\User $user */
         $user = $this->em()->find('XF:User', $userId);
         if (!$user) {
-            throw new \XF\PrintableException('User not found.');
+            throw new \XF\PrintableException(\XF::phrase('olakunlevpn_job_system_user_not_found_exception'));
         }
 
         /** @var \DBTech\Credits\Repository\EventTrigger $eventTriggerRepo */
@@ -117,7 +146,7 @@ class Submission extends  AbstractController
         ->apply($user->user_id, [
             'currency_id' => $submission->Job->reward_currency,
             'multiplier' => $submission->Job->reward_amount,
-            'message' => \XF::language()->renderPhrase('Reward for job completion'),
+            'message' => \XF::language()->renderPhrase(\XF::phrase('olakunlevpn_job_system_reward_for_job_completion')),
             'source_user_id' => $visitor->user_id
         ], $user);
 
@@ -136,8 +165,10 @@ class Submission extends  AbstractController
                 $this->buildLink('submissions/delete', $submission),
                 $this->buildLink('submissions/view', $submission),
                 $this->buildLink('submissions'),
-                'Submission ID '.$submission->submission_id.' and job title '.$submission->Job->title,
-            );
+                \XF::phrase('olakunlevpn_job_system_submission_deletion_description', [
+                    'submission_id' => $submission->submission_id,
+                    'job_title' => $submission->Job->title
+                ])            );
     }
 
 
@@ -154,9 +185,7 @@ class Submission extends  AbstractController
     protected function notifyUserJobApproved($submission)
     {
         $extraData = [
-            'amount' => $submission->Job->reward_amount,
-            'amount_currency' => $submission->Job->RewardCurrency->title
-        ];
+         ];
 
         $this->notifyUserJobStatus($submission, 'approved', $extraData);
     }

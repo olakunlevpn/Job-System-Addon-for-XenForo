@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<template_modifications/>
+<template_modifications>
+  <modification type="admin" template="PAGE_CONTAINER" modification_key="olakunle_job_system_add_alpinejs" description="Add alpineJs" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[<xf:macro id="admin:helper_js_global::head" arg-app="admin" />]]></find>
+    <replace><![CDATA[$0
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+]]></replace>
+  </modification>
+</template_modifications>

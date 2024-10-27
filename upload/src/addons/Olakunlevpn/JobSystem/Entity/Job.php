@@ -45,20 +45,25 @@ class Job extends Entity
             'title' => ['type' => self::STR, 'required' => true, 'censor' => true],
             'description' => ['type' => self::STR, 'required' => true , 'censor' => true],
             'details' => ['type' => self::STR, 'required' => true, 'censor' => true],
-            'reward_amount' => ['type' => self::UINT, 'default' => 0],  // Add this
+            'reward_amount' => ['type' => self::FLOAT, 'default' => 0],  // Add this
             'reward_currency' => ['type' => self::STR, 'default' => ''],  // Add this
             'max_completions' => ['type' => self::UINT, 'default' => 0],
             'active' => ['type' => self::BOOL, 'default' => true],
             'type' => ['type' => self::STR, 'allowedValues' => ['text', 'url'], 'default' => 'text'],
             'has_attachment' => ['type' => self::BOOL, 'default' => false],
+            'reward_type' => [
+                'type' => self::STR,
+                'required' => true,
+                'allowedValues' => ['db_credits', 'trophy'],
+                'default' => 'db_credits'
+            ],
+            'trophy_id' => ['type' => self::UINT, 'nullable' => true, 'default' => null],
             'created_date' => ['type' => self::UINT, 'default' => \XF::$time],
             'updated_date' => ['type' => self::UINT, 'default' => \XF::$time],
         ];
 
-        // Default values when creating a new job
         $structure->defaultWith = [];
 
-        // Relations (if necessary)
         $structure->relations = [
             'Submissions' => [
                 'entity' => 'Olakunlevpn\JobSystem:Submission',
@@ -67,10 +72,24 @@ class Job extends Entity
                 'key' => 'job_id',
                 'cascadeDelete' => true,
             ],
+            'Application' => [
+                'entity' => 'Olakunlevpn\JobSystem:Application',
+                'type' => self::TO_ONE,
+                'conditions' => [
+                    ['job_id', '=', '$job_id'],
+                    ['user_id', '=', \XF::visitor()->user_id]
+                ]
+            ],
             'RewardCurrency' => [
                 'entity' => 'DBTech\Credits:Currency',
                 'type' => self::TO_ONE,
                 'conditions' => [['currency_id', '=', '$reward_currency']]
+            ],
+            'Trophy' => [
+                'entity' => 'XF:Trophy',
+                'type' => self::TO_ONE,
+                'conditions' => 'trophy_id',
+                'primary' => true
             ]
         ];
 
