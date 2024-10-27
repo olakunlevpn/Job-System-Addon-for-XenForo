@@ -47,7 +47,7 @@ class Setup extends AbstractSetup
     /**
      * @return void
      */
-    public function upgrade1010040Step1()
+    public function upgrade1020000Step1()
     {
         $this->schemaManager()->alterTable('xf_job_system_jobs', function(Alter $table)
         {
