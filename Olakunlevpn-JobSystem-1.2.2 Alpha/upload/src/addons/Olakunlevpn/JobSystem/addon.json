@@ -2,16 +2,17 @@
     "legacy_addon_id": "Olakunlevpn_JobSystem",
     "title": "Job System",
     "description": "Simple tasks system for forum promotion",
-    "version_id": 1020001,
-    "version_string": "1.2.1",
+    "version_id": 1020002,
+    "version_string": "1.2.2",
     "dev": "Olakunlevpn",
     "dev_url": "https://maylancer.org",
     "faq_url": "",
-    "support_url": "https://maylancer.org/support",
+    "support_url": "https://xenforo.com/community/threads/job-system-by-olakunlevpn.226270/",
     "extra_urls": {
         "Product Information": "https://maylancer.org/products",
         "Twitter": "https://twitter.com/maylancer",
-        "docs": "https://maylancer.org/docs/xenforojobsystem"
+        "docs": "https://maylancer.org/docs/xenforojobsystem",
+        "Contribute": "https://github.com/olakunlevpn/Job-System-Addon-for-XenForo"
     },
     "require": {
         "XF": [

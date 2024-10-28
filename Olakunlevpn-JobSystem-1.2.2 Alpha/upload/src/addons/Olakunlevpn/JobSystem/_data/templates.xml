@@ -380,6 +380,8 @@
 </div>
 
 
+<xf:if is="!empty($submission) &&  $submission->status === 'pending'">
+
     <div class="block">
         <div class="block-container">
             <h2 class="block-header">
@@ -413,6 +415,8 @@
         </div>
     </div>
 </div>
+
+</xf:if>
 
 ]]></template>
   <template type="admin" title="styles.css" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[.text-2xl {
@@ -536,6 +540,8 @@
                             <xf:fa icon="fa-history" /> {{ phrase('olakunlevpn_job_system_pending_jobs') }}
                         </a>
 
+                        <xf:if is="$xf.options.olakunlevpn_job_system_enable_withdrawal">
+
                         <a href="{{ link('jobs/withdraw') }}" class="blockLink {{ $current == link('dbtech-credits/withdraw') ? 'is-selected' : '' }}">
                             <xf:fa icon="fa-wallet" /> {{ phrase('olakunlevpn_job_system_withdraw') }}
                         </a>
@@ -543,6 +549,8 @@
                         <a href="{{ link('jobs/withdraw-list') }}" class="blockLink {{ $current == link('dbtech-credits/withdraw/list') ? 'is-selected' : '' }}">
                             <xf:fa icon="fa-list-alt" /> {{ phrase('olakunlevpn_job_system_withdraw_request_list') }}
                         </a>
+
+                        </xf:if>
                     </xf:if>
                 </div>
             </div>
@@ -705,7 +713,7 @@
                   </div>
 
                     <div class="text-2xl margin-top-10 margin-bottom-10">
-                         {{ phrase('olakunlevpn_job_system_reward_type') }}: <xf:if is="$job.reward_type == 'trophy'">
+                         {{ phrase('olakunlevpn_job_system_reward_type') }} <xf:if is="$job.reward_type == 'trophy'">
                             {{ phrase('olakunlevpn_job_system_trophy') }}
                             <xf:else />
                            {{ phrase('olakunlevpn_job_system_db_credits') }}
@@ -749,7 +757,7 @@
                             </xf:if>
                         </span>
                         <span class="job-status-devider">|</span>
-                        <span class="job-status ">{{ phrase('olakunlevpn_job_system_reward_type') }}: <xf:if is="$job.reward_type == 'trophy'">
+                        <span class="job-status ">{{ phrase('olakunlevpn_job_system_reward_type') }} <xf:if is="$job.reward_type == 'trophy'">
                             {{ phrase('olakunlevpn_job_system_trophy') }}
                             <xf:else />
                            {{ phrase('olakunlevpn_job_system_db_credits') }}
@@ -1158,7 +1166,7 @@
 </div>]]></template>
   <template type="public" title="olakunlevpn_job_system_withdrawal_list" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_withdrawal_request_list') }}</xf:title>
 
-<xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
+<xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{ $currentUrl }}" />
 
 <xf:pageaction>
     <xf:button fa="fas fa-wallet" href="{{ link('jobs/withdraw') }}" data-xf-click="overlay">
@@ -1183,35 +1191,36 @@
                 <xf:cell>{{ phrase('olakunlevpn_job_system_status') }}</xf:cell>
             </xf:datarow>
             <xf:foreach loop="$withdrawRequests" value="$request">
-                <xf:macro name="request_item" arg-request="{$request}" />
+                <xf:datarow rowclass="dataList-row--noHover">
+                    <xf:cell class="dataList-cell--min">#{$request.withdraw_request_id}</xf:cell>
+                    <xf:cell>
+                        {$request.Currency.prefix}{{ $request.amount }}{$request.Currency.suffix}
+                        <span class="dataList-secondRow">{{ $request.Currency.title }}</span>
+                    </xf:cell>
+                    <xf:cell>{{ $request.payment_profile }}</xf:cell>
+                    <xf:cell>{{ $request.payment_profile_data }}</xf:cell>
+                    <xf:cell>{{ date_time($request.creation_date) }}</xf:cell>
+                    <xf:cell>{{ $request.change_date ? date_time($request.change_date) : phrase('olakunlevpn_job_system_none') }}</xf:cell>
+                    <xf:cell data-xf-init="tooltip" title="{{ $request.change_date ? date_time($request.change_date) : phrase('olakunlevpn_job_system_none') }}">
+                        <xf:if is="$request.status == 'created'">
+                            <xf:fa icon="far fa-clock" />
+                            <xf:elseif is="$request.status == 'completed'" />
+                            <xf:fa icon="far fa-check" />
+                            <xf:else />
+                            <xf:fa icon="far fa-undo" />
+                        </xf:if>
+                        {{ $request.status }}
+                    </xf:cell>
+                </xf:datarow>
             </xf:foreach>
         </xf:datalist>
     </div>
-</div>
 
-<xf:macro name="request_item" arg-request="!">
-    <xf:datarow rowclass="dataList-row--noHover">
-        <xf:cell class="dataList-cell--min">#{$request.withdraw_request_id}</xf:cell>
-        <xf:cell>
-            {$request.Currency.prefix}{{ $request.amount }}{$request.Currency.suffix}
-            <span class="dataList-secondRow">{{ $request.Currency.title }}</span>
-        </xf:cell>
-        <xf:cell>{{ $request.payment_profile }}</xf:cell>
-        <xf:cell>{{ $request.payment_profile_data }}</xf:cell>
-        <xf:cell>{{ date_time($request.creation_date) }}</xf:cell>
-        <xf:cell>{{ $request.change_date ? date_time($request.change_date) : phrase('olakunlevpn_job_system_none') }}</xf:cell>
-        <xf:cell data-xf-init="tooltip" title="{{ $request.change_date ? date_time($request.change_date) : phrase('olakunlevpn_job_system_none') }}">
-            <xf:if is="$request.status == 'created'">
-                <xf:fa icon="far fa-clock" />
-                <xf:elseif is="$request.status == 'completed'" />
-                <xf:fa icon="far fa-check" />
-                <xf:else />
-                <xf:fa icon="far fa-undo" />
-            </xf:if>
-            {{ $request.status }}
-        </xf:cell>
-    </xf:datarow>
-</xf:macro>]]></template>
+        <div class="block-footer">
+            <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}" link="jobs/withdraw-list" />
+        </div>
+</div>
+]]></template>
   <template type="public" title="push_job_submission_tasks_approved" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission for {$extra.jobTitle} has been approved. Congratulations!]]></template>
   <template type="public" title="push_job_submission_tasks_pending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission for <strong>{$extra.jobTitle}</strong> is currently pending review. Please wait for updates.]]></template>
   <template type="public" title="push_job_submission_tasks_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission for {$extra.jobTitle} has been rejected. Reason: {$extra.adminComment}.]]></template>

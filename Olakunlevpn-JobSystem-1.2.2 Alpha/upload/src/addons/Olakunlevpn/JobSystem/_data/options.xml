@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <options>
+  <option option_id="olakunlevpn_job_system_enable_withdrawal" edit_format="onoff" data_type="boolean" advanced="0">
+    <default_value>1</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="31"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_enabled" edit_format="onoff" data_type="string" advanced="0">
+    <default_value>1</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="1"/>
+  </option>
   <option option_id="olakunlevpn_job_system_job_list_design" edit_format="select" data_type="string" advanced="0">
     <default_value>simple</default_value>
     <edit_format_params>simple=Simple
 compact=Compact</edit_format_params>
     <relation group_id="olakunlevpn_jobsystem" display_order="30"/>
   </option>
-  <option option_id="olakunlevpn_job_system_minimumWalletlenght" edit_format="textbox" data_type="string" advanced="0">
+  <option option_id="olakunlevpn_job_system_maximum_withdrawal" edit_format="spinbox" data_type="numeric" advanced="0">
+    <default_value>50</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="32"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_minimum_wallet_lenght" edit_format="textbox" data_type="string" advanced="0">
     <default_value>30</default_value>
     <relation group_id="olakunlevpn_jobsystem" display_order="100"/>
   </option>
-  <option option_id="olakunlevpn_job_system_minimumWithdrawal" edit_format="spinbox" data_type="numeric" advanced="0">
+  <option option_id="olakunlevpn_job_system_minimum_withdrawal" edit_format="spinbox" data_type="numeric" advanced="0">
     <default_value>10</default_value>
     <relation group_id="olakunlevpn_jobsystem" display_order="200"/>
   </option>

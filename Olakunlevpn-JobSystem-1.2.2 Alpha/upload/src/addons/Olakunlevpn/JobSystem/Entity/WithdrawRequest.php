@@ -115,7 +115,7 @@ class WithdrawRequest extends Entity
             'currency_id' => ['type' => self::UINT, 'required' => true],
             'payment_profile' => ['type' => self::STR, 'required' => true],
             'payment_profile_data' => ['type' => self::STR, 'required' => true],
-            'amount' => ['type' => self::FLOAT, 'required' => true, 'min' => 1],
+            'amount' => ['type' => self::UINT, 'required' => true, 'min' => 1],
             'status' => [
                 'type' => self::STR, 'required' => true, 'default' => 'created',
                 'allowedValues' => ['created', 'rejected', 'completed']

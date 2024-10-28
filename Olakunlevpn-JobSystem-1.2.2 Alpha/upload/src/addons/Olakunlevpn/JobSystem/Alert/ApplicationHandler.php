@@ -11,18 +11,6 @@ use XF\Mvc\Entity\Entity;
 class ApplicationHandler extends AbstractHandler
 {
 
-    /**
-     * Determines if the user can view the alert content.
-     *
-     * @param Entity $entity
-     * @param null $error
-     * @return bool
-     */
-    public function canViewContent(Entity $entity, &$error = null)
-    {
-        return XF::visitor()->is_super_admin || XF::visitor()->user_id == $this->user_id;
-    }
-
 
     /**
      * @return array

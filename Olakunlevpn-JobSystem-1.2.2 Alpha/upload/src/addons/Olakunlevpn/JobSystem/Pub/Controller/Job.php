@@ -2,11 +2,12 @@
 
 namespace Olakunlevpn\JobSystem\Pub\Controller;
 
+
 use XF;
+use XF\ControllerPlugin\ErrorPlugin;
 use XF\Mvc\ParameterBag;
 use DBTech\Credits\XF\Entity\User;
 use XF\ControllerPlugin\Attachment;
-use DBTech\Credits\Repository\Currency;
 use XF\Mvc\Reply\Exception;
 use XF\Pub\Controller\AbstractController;
 use Olakunlevpn\JobSystem\Entity\WithdrawRequest;
@@ -15,28 +16,16 @@ use Olakunlevpn\JobSystem\Entity\WithdrawRequest;
 
 class Job extends AbstractController
 {
-    /**
-     * @return User
-     * @throws XF\Mvc\Reply\Exception
-     */
-    public function ensureUserIsLoggedInAndHaveTheRightPermission(): User
-    {
-        /** @var User $visitor */
-        $visitor = XF::visitor();
-
-        if ( ! $visitor || ! $visitor->canViewDbtechCredits()) {
-            throw $this->exception($this->noPermission());
-        }
-
-        return $visitor;
-    }
-
 
 
     protected function preDispatchController($action, ParameterBag $params)
     {
-        /** @var User $visitor */
-        $this->ensureUserIsLoggedInAndHaveTheRightPermission();
+        if (!\XF::options()->olakunlevpn_job_system_enabled) {
+            throw $this->exception($this->noPermission());
+        }
+
+        parent::preDispatchController($action, $params);
+
     }
 
 
@@ -136,8 +125,78 @@ class Job extends AbstractController
             ]);
     }
 
+
+    public function actionSubmit(ParameterBag $params)
+    {
+        /** @var User $visitor */
+        $this->ensureUserIsLoggedInAndHaveTheRightPermission();
+
+        $jobId = $params->job_id;
+        $job = $this->assertJobExists($jobId);
+
+        $input = $this->filter([
+            'submission_text' => 'str',
+            'submission_url' => 'str',
+            'attachment_hash' => 'str',
+        ]);
+
+
+        $submission = \XF::app()->em()->create('Olakunlevpn\JobSystem:Submission');
+        $submission->job_id = $jobId;
+        $submission->user_id = \XF::visitor()->user_id;
+
+
+        if ($job->type == 'text') {
+            if (empty($input['submission_text'])) {
+                return $this->error(\XF::phrase('olakunlevpn_job_system_enter_response'));
+            }
+            $submission->submission_data = $input['submission_text'];
+        } else {
+            if (empty($input['submission_url'])) {
+                return $this->error(\XF::phrase('olakunlevpn_job_system_enter_url'));
+            }
+
+            if (!filter_var($input['submission_url'], FILTER_VALIDATE_URL)) {
+                return $this->error(\XF::phrase('olakunlevpn_job_system_enter_valid_url'));
+            }
+
+            $submission->submission_data = $input['submission_url'];
+        }
+
+
+        if($job->has_attachment)
+        {
+            $inserter = $this->service(\XF\Service\Attachment\PreparerService::class);
+            $associated = $inserter->associateAttachmentsWithContent($input['attachment_hash'], 'job_submission_tasks', $submission->submission_id);
+            if (!$associated)
+            {
+                return $this->error(\XF::phrase('olakunlevpn_job_system_upload_error'));
+            }
+        }
+
+
+
+        $submission->submitted_date = \XF::$time;
+        $submission->attachment_hash = $input['attachment_hash'];
+        $submission->save();
+
+
+        $this->notifyUserJobPending($submission);
+
+
+        return $this->redirect($this->buildLink('jobs/view', $job), \XF::phrase('olakunlevpn_job_system_submission_received'));
+    }
+
+
+
+
+    /**
+     * @throws Exception
+     */
     public function actionApplyConfirmation(ParameterBag $params)
     {
+        $this->assertRegistrationRequired();
+
         $jobId = $params->job_id;
         $visitor = \XF::visitor();
         $job = $this->assertJobExists($jobId);
@@ -166,6 +225,8 @@ class Job extends AbstractController
 
     public function actionApply(ParameterBag $params)
     {
+        $this->assertRegistrationRequired();
+
         $jobId = $params->job_id;
         $visitor = \XF::visitor();
         $job = $this->assertJobExists($jobId);
@@ -191,69 +252,6 @@ class Job extends AbstractController
     }
 
 
-
-
-
-
-
-    public function actionSubmit(ParameterBag $params)
-    {
-        /** @var User $visitor */
-        $this->ensureUserIsLoggedInAndHaveTheRightPermission();
-
-        $app = \XF::app();
-
-        $jobId = $params->job_id;
-        $job = $this->assertJobExists($jobId);
-
-        $input = $this->filter([
-            'submission_text' => 'str',
-            'submission_url' => 'str',
-            'attachment_hash' => 'str',
-        ]);
-
-
-        $submission = $app->em()->create('Olakunlevpn\JobSystem:Submission');
-        $submission->job_id = $jobId;
-        $submission->user_id = \XF::visitor()->user_id;
-
-
-        if ($job->type == 'text') {
-            if (empty($input['submission_text'])) {
-                return $this->error(\XF::phrase('olakunlevpn_job_system_enter_response'));
-            }
-            $submission->submission_data = $input['submission_text'];
-        } else {
-            if (empty($input['submission_url'])) {
-                return $this->error(\XF::phrase('olakunlevpn_job_system_enter_url'));
-            }
-
-            if (!filter_var($input['submission_url'], FILTER_VALIDATE_URL)) {
-                return $this->error(\XF::phrase('olakunlevpn_job_system_enter_valid_url'));
-            }
-
-
-            $submission->submission_data = $input['submission_url'];
-        }
-
-
-        $submission->submitted_date = \XF::$time;
-        $submission->attachment_hash = $input['attachment_hash'];
-        $submission->save();
-
-
-        $inserter = $this->service(\XF\Service\Attachment\PreparerService::class);
-        $associated = $inserter->associateAttachmentsWithContent($input['attachment_hash'], 'job_submission_tasks', $submission->submission_id);
-        if (!$associated)
-        {
-            return $this->error(\XF::phrase('olakunlevpn_job_system_upload_error'));
-        }
-
-        $this->notifyUserJobPending($submission);
-
-
-        return $this->redirect($this->buildLink('jobs/view', $job), \XF::phrase('olakunlevpn_job_system_submission_received'));
-    }
 
 
     protected function notifyUserJobPending($submission)
@@ -306,11 +304,11 @@ class Job extends AbstractController
         /** @var User $visitor */
         $this->ensureUserIsLoggedInAndHaveTheRightPermission();
 
-
+        $userId = \XF::visitor()->user_id;
         $page = $this->filterPage();
         $perPage = 10;
 
-        $jobFinder = $this->getJobRepo()->findApprovedJobs();
+        $jobFinder = $this->getJobRepo()->findUserApprovedSubmissions($userId);
         $totalJobs = $jobFinder->total();
 
         $jobs = $jobFinder
@@ -336,10 +334,11 @@ class Job extends AbstractController
         $this->ensureUserIsLoggedInAndHaveTheRightPermission();
 
 
+        $userId = \XF::visitor()->user_id;
         $page = $this->filterPage();
         $perPage = 10;
 
-        $jobFinder = $this->getJobRepo()->findPendingJobs();
+        $jobFinder = $this->getJobRepo()->findUserPendingSubmissions($userId);
         $totalJobs = $jobFinder->total();
 
 
@@ -368,6 +367,8 @@ class Job extends AbstractController
     public function actionWithdraw()
     {
         $this->ensureUserIsLoggedInAndHaveTheRightPermission();
+
+        $this->ensureWithdrawalFeatureIsEnabled();
 
 
         $currenciesList = $this->getCurrencyRepo()->getCurrencyTitlePairs();
@@ -398,13 +399,17 @@ class Job extends AbstractController
     {
         $visitor = $this->ensureUserIsLoggedInAndHaveTheRightPermission();
 
+        $this->ensureWithdrawalFeatureIsEnabled();
+
+
+
         $withdrawProfiles = preg_split('/\s/', $this->options()->olakunlevpn_job_system_paymentProfiles, -1, PREG_SPLIT_NO_EMPTY);
 
         $input = $this->filter([
             'currency_id'          => 'uint',
             'payment_profile'      => 'str',
             'payment_profile_data' => 'str',
-            'amount'               => 'num'
+            'amount'               => 'uint'
         ]);
 
         $currency = $this->em()->find('DBTech\Credits:Currency', $input['currency_id']);
@@ -413,33 +418,37 @@ class Job extends AbstractController
             return $this->noPermission();
         }
 
-
-
         if (empty($input['payment_profile_data']) || !in_array($input['payment_profile'], $withdrawProfiles))
         {
             return $this->noPermission();
         }
 
 
-        if (strlen($input['payment_profile_data']) < $this->options()->olakunlevpn_job_system_minimumWalletlenght ) {
-            return $this->error(\XF::phrase('olakunlevpn_job_system_min_wallet_length', ['length' => $this->options()->olakunlevpn_job_system_minimumWalletlenght]));
+        if (strlen($input['payment_profile_data']) < $this->options()->olakunlevpn_job_system_minimum_wallet_lenght) {
+            return $this->error(\XF::phrase('olakunlevpn_job_system_min_wallet_length', ['length' => $this->options()->olakunlevpn_job_system_minimum_wallet_lenght]));
         }
 
 
-
-
         $userCreditAmount = $visitor->get($currency->column);
+
+        if ($input['amount'] < $this->options()->olakunlevpn_job_system_minimum_withdrawal) {
+            return $this->error(
+                \XF::phrase('olakunlevpn_job_system_min_withdrawal_amount', [
+                    'amount' => $this->options()->olakunlevpn_job_system_minimum_withdrawal
+                ])
+            );
+        }
+
+
         if ($userCreditAmount < $input['amount'])
         {
             return $this->noPermission(\XF::phrase('olakunlevpn_job_system_enter_valid_amount'));
         }
 
-        if ($input['amount'] < $this->options()->olakunlevpn_job_system_minimumWithdrawal)
+        if ($input['amount'] < $this->options()->olakunlevpn_job_system_minimum_withdrawal)
         {
-            return $this->error(\XF::phrase('olakunlevpn_job_system_min_withdrawal_amount', ['amount' => $this->options()->olakunlevpn_job_system_minimumWithdrawal]));
+            return $this->error(\XF::phrase('olakunlevpn_job_system_min_withdrawal_amount', ['amount' => $this->options()->olakunlevpn_job_system_minimum_withdrawal]));
         }
-
-
 
 
         /** @var WithdrawRequest $withdrawRequest */
@@ -464,22 +473,60 @@ class Job extends AbstractController
         /** @var User $visitor */
         $this->ensureUserIsLoggedInAndHaveTheRightPermission();
 
+        $this->ensureWithdrawalFeatureIsEnabled();
 
+        $page = $this->filterPage();
+        $perPage = 10;
 
-        $withdrawRequests = $this->finder('Olakunlevpn\JobSystem:WithdrawRequest')->where('user_id', XF::visitor()->user_id)
-            ->order('withdraw_request_id', 'desc')
+        $withdrawRequestsFinder = $this->finder('Olakunlevpn\JobSystem:WithdrawRequest')
+            ->where('user_id', \XF::visitor()->user_id)
+            ->order('withdraw_request_id', 'desc');
+
+        $totalRequests = $withdrawRequestsFinder->total();
+        $withdrawRequests = $withdrawRequestsFinder
+            ->limitByPage($page, $perPage)
             ->fetch();
 
         $viewParams = [
             'withdrawRequests' => $withdrawRequests,
-            'pageSelected'     => 'withdrawList'
+            'pageSelected' => 'withdrawList',
+            'page' => $page,
+            'perPage' => $perPage,
+            'total' => $totalRequests
         ];
-
 
         return $this->view('Olakunlevpn\JobSystem:Job\Withdraw\List', 'olakunlevpn_job_system_withdrawal_list', $viewParams);
 
-
     }
+
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function ensureWithdrawalFeatureIsEnabled(): void
+    {
+        if ( ! $this->options()->olakunlevpn_job_system_enable_withdrawal) {
+            throw $this->exception($this->noPermission());
+        }
+    }
+
+    /**
+     * @return User
+     * @throws XF\Mvc\Reply\Exception
+     */
+    public function ensureUserIsLoggedInAndHaveTheRightPermission(): User
+    {
+        /** @var User $visitor */
+        $visitor = XF::visitor();
+
+        if ( ! $visitor || ! $visitor->canViewDbtechCredits()) {
+            throw $this->exception($this->noPermission());
+        }
+
+        return $visitor;
+    }
+
 
     protected function getJobRepo()
     {
@@ -500,10 +547,11 @@ class Job extends AbstractController
 
 
 
-    protected function getCurrencyRepo(): Currency
+    protected function getCurrencyRepo()
     {
         return $this->repository('DBTech\Credits:Currency');
     }
+
 
 
 }

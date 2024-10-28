@@ -83,6 +83,14 @@ class Setup extends AbstractSetup
     }
 
 
+    public function upgrade1020002Step1()
+    {
+
+        $this->rebuildDragonByteCreditsCaches();
+
+    }
+
+
     /**
      * @return void
      */
