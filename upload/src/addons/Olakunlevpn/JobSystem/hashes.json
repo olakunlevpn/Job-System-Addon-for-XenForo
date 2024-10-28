@@ -1,5 +1,5 @@
 {
-    "src/addons/Olakunlevpn/JobSystem/addon.json": "6729a10cb03011572158fb0b1f8ba241d6814035c93a0a8166da81e714c6fadb",
+    "src/addons/Olakunlevpn/JobSystem/addon.json": "b82c8698874bc3dbbd4ca468f146fdb8945d96f2c4c129408a135053e54f7cb0",
     "src/addons/Olakunlevpn/JobSystem/Admin/Controller/Job.php": "ceaf54de6a42988f691491f37570cae9069f034d8b1deaefee27bf952931176e",
     "src/addons/Olakunlevpn/JobSystem/Admin/Controller/Submission.php": "d6002a2683317b1f6883e8de72f7b63eb09e0a3ae7dda03b256cd1d8ee66e6df",
     "src/addons/Olakunlevpn/JobSystem/Alert/ApplicationHandler.php": "917876b5fe4d2eb2cdd867a9d0513ca774fca4efa22d232da1b407f1f15e202a",
@@ -18,7 +18,7 @@
     "src/addons/Olakunlevpn/JobSystem/Repository/Application.php": "1c6d8484e645096d2ba781734684257257a49b668bbe47f21b4effb55ece222a",
     "src/addons/Olakunlevpn/JobSystem/Repository/Job.php": "41e3085bc89abf51de8975d18b3bad0418ca267460424b1faad1407dfd2ebf57",
     "src/addons/Olakunlevpn/JobSystem/Repository/Submission.php": "7ccb41ac219deeb295f5f635d3bf961bbfaa58317d2e43ed7053b6bed441419d",
-    "src/addons/Olakunlevpn/JobSystem/Setup.php": "5eada91aaa89eff51edfa1b6eb87ecb97179ed5e5402c6054a7f9d7e959fcf2e",
+    "src/addons/Olakunlevpn/JobSystem/Setup.php": "63bdd06d7b6643aa7a0c16d3f3f486fab7b1c92ec3654906831f160a7f88e072",
     "src/addons/Olakunlevpn/JobSystem/_data/activity_summary_definitions.xml": "99d8c2563a31320d66f958fc8bda78613545f5f7959bb3cf5318805e3a3c39d2",
     "src/addons/Olakunlevpn/JobSystem/_data/admin_navigation.xml": "fed6492a52b4cba70ac88d7d6570647da54e72c16885d8f6f9bb3c2c58aca135",
     "src/addons/Olakunlevpn/JobSystem/_data/admin_permission.xml": "ec6fb97cebf0bceb24f1ed1d5778c1db54eeb7535fbb3e31d824840e7aa9ff87",
