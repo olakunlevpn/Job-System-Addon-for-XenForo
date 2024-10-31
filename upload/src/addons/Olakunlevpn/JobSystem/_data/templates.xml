@@ -985,17 +985,6 @@
                 {{ phrase('olakunlevpn_job_system_reward') }}: {{ ($job.reward_type == 'db_credits' ? $job.reward_amount .' '.$job.RewardCurrency.title  : $job.Trophy.title) }}
             </div>
 
-            <div class="inputGroup inputGroup--auto margin-top-5">
-                <ul class="flex listInline">
-                    <xf:foreach loop="$job->Submissions.Attachments" value="$attachment">
-                        <li>
-                            <a href="{{ $attachment.direct_url }}" target="_blank">
-                                <img src="{{ $attachment.direct_url }}" alt="{{ $attachment.filename }}" width="100" />
-                            </a>
-                        </li>
-                    </xf:foreach>
-                </ul>
-            </div>
             <hr>
 
 

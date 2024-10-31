@@ -51,11 +51,6 @@ class Submission extends AbstractHandler
         return isset($context['submission_id']) ? intval($context['submission_id']) : null;
     }
 
-    public function getContainerLink(Entity $container, array $extraParams = [])
-    {
-        return \XF::app()->router('public')->buildLink('jobs/view', $container, $extraParams);
-    }
-
     protected function getSubmissionFromContext(array $context)
     {
         $em = \XF::em();
