@@ -40,7 +40,7 @@
   <phrase title="olakunlevpn_job_system_db_credits" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Credits]]></phrase>
   <phrase title="olakunlevpn_job_system_enter_response" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please enter your response for the job.]]></phrase>
   <phrase title="olakunlevpn_job_system_enter_url" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please enter the URL for your submission.]]></phrase>
-  <phrase title="olakunlevpn_job_system_enter_valid_amount" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please enter a valid amount.]]></phrase>
+  <phrase title="olakunlevpn_job_system_enter_valid_amount" version_id="1020002" version_string="1.2.2"><![CDATA[Your balance is insufficient. Your current balance is {balance} {currency}.]]></phrase>
   <phrase title="olakunlevpn_job_system_enter_valid_url" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please enter a valid URL.]]></phrase>
   <phrase title="olakunlevpn_job_system_faq_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Frequently Asked Questions]]></phrase>
   <phrase title="olakunlevpn_job_system_inactive" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Inactive]]></phrase>
@@ -108,10 +108,10 @@
   <phrase title="olakunlevpn_job_system_withdraw_completed" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your withdraw request of ${amount} to your wallet (<strong>{payment_profile_data}</strong>) was completed.
 ]]></phrase>
   <phrase title="olakunlevpn_job_system_withdraw_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your withdraw request of ${amount} was rejected.]]></phrase>
-  <phrase title="olakunlevpn_job_system_withdraw_request_list" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw History]]></phrase>
+  <phrase title="olakunlevpn_job_system_withdraw_request_list" version_id="1020002" version_string="1.2.2"><![CDATA[Withdrawal History]]></phrase>
   <phrase title="olakunlevpn_job_system_withdrawal_history" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdrawal history]]></phrase>
   <phrase title="olakunlevpn_job_system_withdrawal_request_list" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdrawal request list]]></phrase>
-  <phrase title="option.olakunlevpn_job_system_enable_withdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Enable Withdrawal Feature]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_enable_withdrawal" version_id="1020002" version_string="1.2.2"><![CDATA[Enable Withdrawal]]></phrase>
   <phrase title="option.olakunlevpn_job_system_enabled" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Enable or Disable the Entire Job System]]></phrase>
   <phrase title="option.olakunlevpn_job_system_job_list_design" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job List Design]]></phrase>
   <phrase title="option.olakunlevpn_job_system_maximum_withdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Maximum Withdrawal]]></phrase>
@@ -139,4 +139,8 @@
   <phrase title="option_explain.olakunlevpn_job_system_welcome_page_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Welcome page header title]]></phrase>
   <phrase title="option_group.olakunlevpn_jobsystem" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job System Settings]]></phrase>
   <phrase title="option_group_description.olakunlevpn_jobsystem" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Manage various settings for the Job System.]]></phrase>
+  <phrase title="permission.job_viewAny" version_id="1020002" version_string="1.2.2"><![CDATA[View Jobs]]></phrase>
+  <phrase title="permission.jobs_apply" version_id="1020002" version_string="1.2.2"><![CDATA[Apply for Jobs]]></phrase>
+  <phrase title="permission.jobs_withdraw" version_id="1020002" version_string="1.2.2"><![CDATA[Withdraw Funds]]></phrase>
+  <phrase title="permission_interface.olakuunlevpnJobSystemPermission" version_id="1020002" version_string="1.2.2"><![CDATA[Olakunlevpn Job System permissions]]></phrase>
 </phrases>

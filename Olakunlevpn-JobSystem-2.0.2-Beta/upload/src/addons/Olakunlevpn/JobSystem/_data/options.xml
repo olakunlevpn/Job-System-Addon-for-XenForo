@@ -16,7 +16,7 @@ compact=Compact</edit_format_params>
   </option>
   <option option_id="olakunlevpn_job_system_maximum_withdrawal" edit_format="spinbox" data_type="numeric" advanced="0">
     <default_value>50</default_value>
-    <relation group_id="olakunlevpn_jobsystem" display_order="32"/>
+    <relation group_id="olakunlevpn_jobsystem" display_order="33"/>
   </option>
   <option option_id="olakunlevpn_job_system_minimum_wallet_lenght" edit_format="textbox" data_type="string" advanced="0">
     <default_value>30</default_value>
@@ -24,7 +24,7 @@ compact=Compact</edit_format_params>
   </option>
   <option option_id="olakunlevpn_job_system_minimum_withdrawal" edit_format="spinbox" data_type="numeric" advanced="0">
     <default_value>10</default_value>
-    <relation group_id="olakunlevpn_jobsystem" display_order="200"/>
+    <relation group_id="olakunlevpn_jobsystem" display_order="32"/>
   </option>
   <option option_id="olakunlevpn_job_system_paymentProfiles" edit_format="textbox" data_type="string" advanced="0">
     <default_value>Bitcoin

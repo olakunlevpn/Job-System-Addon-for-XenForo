@@ -29,12 +29,6 @@ class Setup extends AbstractSetup
        $this->applyTables();
 
         $this->applyGlobalPermission('attachment', 'upload', 'job_system_submissions');
-        $this->db()->insert('xf_content_type_field', [
-            'content_type' => 'job_system_submissions',
-            'field_name' => 'attachment_handler_class',
-            'field_value' => 'Olakunlevpn\JobSystem\Attachment\Submission'
-        ]);
-
 
         $this->rebuildDragonByteCreditsCaches();
 
@@ -58,10 +52,9 @@ class Setup extends AbstractSetup
             $table->addColumn('trophy_id', 'int')->nullable();
         });
 
-
         $sm = $this->schemaManager();
 
-        $sm->createTable('xf_job_system_applications', function (\XF\Db\Schema\Create $table) {
+        $sm->createTable('xf_job_system_apply_applications', function (\XF\Db\Schema\Create $table) {
             $table->addColumn('application_id', 'int')->autoIncrement();
             $table->addColumn('job_id', 'int');
             $table->addColumn('user_id', 'int');
@@ -83,12 +76,33 @@ class Setup extends AbstractSetup
     }
 
 
-    public function upgrade1020002Step1()
+    public function upgrade2000001Step1()
     {
+
+        $sm = $this->schemaManager();
+
+        if ($sm->tableExists('xf_job_system_applications')) {
+            $sm->renameTable('xf_job_system_applications', 'xf_job_system_apply_applications');
+        }
 
         $this->rebuildDragonByteCreditsCaches();
 
     }
+
+    public function upgrade2000002Step1()
+    {
+
+        $this->schemaManager()->alterTable('xf_job_system_submissions', function(Alter $table)
+        {
+            $table->addColumn('attach_count', 'int')->setDefault(0);
+        });
+        $this->rebuildDragonByteCreditsCaches();
+
+    }
+
+
+
+
 
 
     /**
@@ -101,7 +115,7 @@ class Setup extends AbstractSetup
         // Drop your custom tables
         $sm->dropTable('xf_job_system_jobs');
         $sm->dropTable('xf_job_system_submissions');
-        $sm->dropTable('xf_job_system_applications');
+        $sm->dropTable('xf_job_system_apply_applications');
         $sm->dropTable('xf_job_system_withdraw_request');
     }
 
@@ -111,61 +125,29 @@ class Setup extends AbstractSetup
      */
     public function uninstallStep2()
     {
-        $contentTypes = ['job_system_submissions'];
-
-        $this->uninstallContentTypeData($contentTypes);
-    }
-
-    /**
-     * @return void
-     */
-    public function uninstallStep3()
-    {
-        $contentType = 'job_system_submissions';
-
-        $this->db()->delete('xf_content_type_field', 'content_type = ?', $contentType);
-
-    }
-
-
-    /**
-     * @return void
-     */
-    public function uninstallStep4(): void
-    {
         $sm = $this->schemaManager();
-
         foreach (array_keys($this->getTables()) as $tableName) {
             $sm->dropTable($tableName);
         }
+        $this->uninstallContentTypeDataForAddon();
+        $this->rebuildDragonByteCreditsCaches();
+    }
 
-        $contentTypeFields = [
-            ['job_application', 'alert_handler_class'],
-            ['job_application', 'approval_queue_handler_class'],
-            ['job_application', 'entity'],
 
-            ['job_submission_tasks', 'alert_handler_class'],
-            ['job_submission_tasks', 'attachment_handler_class'],
-            ['job_submission_tasks', 'entity'],
 
-            ['job_submission_withdraw', 'alert_handler_class'],
-            ['job_submission_withdraw', 'approval_queue_handler_class'],
-            ['job_submission_withdraw', 'entity'],
+    /**
+     * @return void
+     */
+    public function uninstallStep3(): void
+    {
 
-            ['job_system_submissions', 'attachment_handler_class']
-        ];
-
-        foreach ($contentTypeFields as $field) {
-            [$contentType, $fieldName] = $field;
-            $this->db()->delete('xf_content_type_field', 'content_type = ? AND field_name = ?', [$contentType, $fieldName]);
-        }
-
-        $this->db()->delete('xf_content_type_field', 'content_type = ?', 'job_submission_tasks');
+        $db = $this->db();
+        $db->beginTransaction();
 
         $this->db()->delete('xf_permission_entry', 'permission_group_id = ?', 'job_system_submissions');
         $this->db()->delete('xf_permission_entry_content', 'permission_group_id = ?', 'job_system_submissions');
 
-        \XF::repository('XF:ContentType')->rebuildContentTypeCache();
+        $db->commit();
     }
 
 
@@ -220,6 +202,7 @@ class Setup extends AbstractSetup
             $this->addOrChangeColumn($table, 'admin_comment', 'text')->nullable();
             $this->addOrChangeColumn($table, 'submitted_date', 'int')->setDefault(0);
             $this->addOrChangeColumn($table, 'reviewed_date', 'int')->setDefault(0);
+            $this->addOrChangeColumn($table,'attach_count', 'int')->setDefault(0);
             $this->addOrChangeColumn($table, 'attachment_hash', 'varchar', '255')->nullable();
             $table->addPrimaryKey('submission_id');
         };
@@ -239,7 +222,7 @@ class Setup extends AbstractSetup
             $table->addPrimaryKey('withdraw_request_id');
         };
 
-        $tables['xf_job_system_applications'] = function ($table) {
+        $tables['xf_job_system_apply_applications'] = function ($table) {
             /** @var Create|Alter $table */
             $this->addOrChangeColumn($table,'application_id', 'int')->autoIncrement();
             $this->addOrChangeColumn($table,'job_id', 'int');
@@ -258,6 +241,33 @@ class Setup extends AbstractSetup
 
         return $tables;
     }
+
+
+    /**
+     * Retrieves the content types used by the Job System addon.
+     *
+     * @return string[]
+     */
+    protected function getContentTypes(): array
+    {
+        return [
+            'job_application',
+            'job_submission_tasks',
+            'job_submission_withdraw',
+            'job_system_submissions'
+        ];
+    }
+
+
+    protected function uninstallContentTypeDataForAddon(): void
+    {
+        $contentTypes = $this->getContentTypes();
+        if ($contentTypes) {
+            $this->uninstallContentTypeData($contentTypes);
+        }
+    }
+
+
 
     /**
      * @param AbstractDdl $table

@@ -10,13 +10,14 @@ class Submission extends AbstractHandler
 {
     public function canView(Attachment $attachment, Entity $container, &$error = null)
     {
-        return true; //TODO: make sure only user can vie his/her file
+        return $container->canViewAttachments();
     }
 
     public function getContainerWith()
     {
         return [];
     }
+
 
 
     public function canManageAttachments(array $context, &$error = null)

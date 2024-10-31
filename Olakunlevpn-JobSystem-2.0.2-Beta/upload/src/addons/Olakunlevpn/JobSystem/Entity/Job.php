@@ -32,6 +32,7 @@ class Job extends Entity
     }
 
 
+
     public static function getStructure(Structure $structure)
     {
         $structure->table = 'xf_job_system_jobs';  // The table name

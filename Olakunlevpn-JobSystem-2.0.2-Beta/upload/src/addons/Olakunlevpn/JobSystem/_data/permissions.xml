@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+  <permission permission_group_id="job" permission_id="viewAny" permission_type="flag" interface_group_id="olakuunlevpnJobSystemPermission" display_order="1"/>
+  <permission permission_group_id="jobs" permission_id="apply" permission_type="flag" interface_group_id="olakuunlevpnJobSystemPermission" display_order="20"/>
+  <permission permission_group_id="jobs" permission_id="withdraw" permission_type="flag" interface_group_id="olakuunlevpnJobSystemPermission" display_order="30"/>
+</permissions>

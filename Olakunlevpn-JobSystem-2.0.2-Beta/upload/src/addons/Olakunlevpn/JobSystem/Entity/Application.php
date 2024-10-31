@@ -60,7 +60,7 @@ class Application extends Entity
 
     public static function getStructure(Structure $structure)
     {
-        $structure->table = 'xf_job_system_applications';
+        $structure->table = 'xf_job_system_apply_applications';
         $structure->shortName = 'Olakunlevpn\JobSystem:Application';
         $structure->primaryKey = 'application_id';
 

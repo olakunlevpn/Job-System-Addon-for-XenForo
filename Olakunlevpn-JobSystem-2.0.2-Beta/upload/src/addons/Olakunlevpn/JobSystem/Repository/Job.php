@@ -14,8 +14,7 @@ class Job extends Repository
     public function findActiveJobs()
     {
         return $this->finder('Olakunlevpn\JobSystem:Job')
-            ->where('active', true)
-            ->order('created_date', 'DESC');
+            ->where('active', true);
     }
 
 
@@ -104,4 +103,36 @@ class Job extends Repository
             ->where('user_id', $userId)
             ->order('Job.created_date', 'DESC');
     }
+
+
+    /**
+     * @param  mixed  $rewardType
+     * @param $jobFinder
+     * @return void
+     */
+    public function applyRewardsFilter(mixed $rewardType, $jobFinder): void
+    {
+        if ($rewardType && $rewardType !== 'any') {
+            if ($rewardType === 'trophy') {
+                $jobFinder->where('reward_type', 'trophy');
+            } else {
+                $jobFinder->where('reward_type', 'db_credits')->where('reward_currency', $rewardType);
+            }
+        }
+    }
+
+    /**
+     * @param $jobFinder
+     * @param  mixed  $direction
+     * @return void
+     */
+    public function applyOrderByFilter($jobFinder, mixed $direction): void
+    {
+        $jobFinder->order('created_date', $direction === 'desc' ? 'DESC' : 'ASC');
+    }
+
+
+
+
+
 }

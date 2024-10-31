@@ -3,19 +3,25 @@
 namespace Olakunlevpn\JobSystem\Pub\Controller;
 
 
+
 use XF;
-use XF\ControllerPlugin\ErrorPlugin;
 use XF\Mvc\ParameterBag;
 use DBTech\Credits\XF\Entity\User;
 use XF\ControllerPlugin\Attachment;
 use XF\Mvc\Reply\Exception;
 use XF\Pub\Controller\AbstractController;
+use Olakunlevpn\JobSystem\Entity\Submission;
 use Olakunlevpn\JobSystem\Entity\WithdrawRequest;
-
-
+use Olakunlevpn\JobSystem\Helper\JobSystemHelper;
+use Olakunlevpn\JobSystem\Traits\JobSystemPermissionsTrait;
+use Olakunlevpn\JobSystem\Traits\JobSystemRepositoriesTrait;
+use Olakunlevpn\JobSystem\Service\JobSystemNotificationService;
 
 class Job extends AbstractController
 {
+
+    use JobSystemRepositoriesTrait;
+    use JobSystemPermissionsTrait;
 
 
     protected function preDispatchController($action, ParameterBag $params)
@@ -32,69 +38,19 @@ class Job extends AbstractController
     public function actionIndex()
     {
 
-        $jobs = $this->getJobRepo()->findActiveJobs()->fetch();
-        $pageContent = str_replace('{$xf.options.boardTitle}', \XF::options()->boardTitle, $this->options()->olakunlevpn_job_system_welcome_page_content);
+        $pageContent = JobSystemHelper::processPageContent($this->options()->olakunlevpn_job_system_welcome_page_content);
 
 
         return $this->view(
             'Olakunlevpn\JobSystem:Job\Index',
             'olakunlevpn_job_system_welcome',
-            ['jobs' => $jobs,
+            [
                 'page_title' => $this->options()->olakunlevpn_job_system_welcome_page_title,
                 'page_content' => $pageContent,
                 'page_content_faqs' => $this->options()->olakunlevpn_job_system_welcome_page_faq,
                 'page_cta_title' => $this->options()->olakunlevpn_job_system_welcome_page_cta_title,
                 'page_cta_button_text' => $this->options()->olakunlevpn_job_system_welcome_page_cta_button
             ]
-        );
-    }
-
-    public function actionView(ParameterBag $params)
-    {
-
-        $jobId = $params->job_id;
-        if ($jobId) {
-            $job = $this->assertJobExists($jobId);
-        } else {
-            return $this->message(\XF::phrase('olakunlevpn_job_system_job_not_found'));
-        }
-
-        $visitor = \XF::visitor();
-
-
-        $submission = $this->em()->create('Olakunlevpn\JobSystem:Submission');
-        $submission->job_id = $jobId;
-        $submission->user_id = $visitor->user_id;
-
-        $submissionProcess = $this->em()->findOne('Olakunlevpn\JobSystem:Submission', [
-            'job_id' => $jobId,
-            'user_id' => $visitor->user_id
-        ]);
-
-        $existingApplication = $this->em()->findOne('Olakunlevpn\JobSystem:Application', [
-            'job_id' => $jobId,
-            'user_id' => $visitor->user_id
-        ]);
-
-
-        $attachmentRepo = $this->repository('XF:Attachment');
-        $attachmentData = $attachmentRepo->getEditorData('job_submission_tasks', $submission);
-
-        $job->details = \XF::app()->bbCode()->render($job->details, 'html', 'job', $job);
-
-        $viewParams = [
-            'job' => $job,
-            'existingApplication' => $existingApplication,
-            'existingSubmission' => $submissionProcess,
-            'attachmentData' => $attachmentData,
-            'submission' => $submission,
-            'submissionProcess' => $submissionProcess
-        ];
-
-        return $this->view(
-            'Olakunlevpn\JobSystem:Job\Index',
-            'olakunlevpn_job_system_view',
-            $viewParams
         );
     }
 
@@ -105,9 +61,20 @@ class Job extends AbstractController
         $page = $this->filterPage();
         $perPage = 10;
 
-        $jobFinder = $this->getJobRepo()->findActiveJobs();
-        $totalJobs = $jobFinder->total();
+        $rewardType = $this->filter('reward_type', 'str');
+        $direction = $this->filter('direction', 'str');
 
+
+
+        $jobFinder = $this->getJobRepo()->findActiveJobs();
+
+        $this->getJobRepo()->applyRewardsFilter($rewardType, $jobFinder);
+
+        $this->getJobRepo()->applyOrderByFilter($jobFinder, $direction);
+
+
+        $totalJobs = $jobFinder->total();
+        $currenciesList = $this->getCurrencyRepo()->getCurrencyTitlePairs();
 
 
         $jobs = $jobFinder
@@ -122,7 +89,62 @@ class Job extends AbstractController
                 'page' => $page,
                 'perPage' => $perPage,
                 'total' => $totalJobs,
+                'currenciesList' => $currenciesList,
+                'filters' => [
+                    'reward_type' => $rewardType ?? 'any',
+                    'direction' => $direction ?? 'desc'
+                ]
+
             ]);
+    }
+
+
+    public function actionView(ParameterBag $params)
+    {
+
+        $visitor = \XF::visitor();
+        $job = $this->assertJobExists($params->job_id);
+
+
+
+        if (\XF::options()->olakunlevpn_job_system_pre_approve_required && !$job->Application)
+        {
+            throw $this->exception($this->noPermission());
+        }
+
+        $submission = $this->em()->create('Olakunlevpn\JobSystem:Submission');
+        $submission->job_id = $job->job_id;
+        $submission->user_id = $visitor->user_id;
+
+
+        $submissionProcess = $this->em()->findOne(Submission::class, [
+            'job_id' => $job->job_id,
+            'user_id' => $visitor->user_id
+        ]);
+
+
+        /** @var \XF\Repository\Attachment $attachmentRepo */
+        $attachmentRepo = $this->repository('XF:Attachment');
+        $attachmentData = $attachmentRepo->getEditorData(
+            'job_submission_tasks',
+            $submission
+        );
+
+        $job->details = JobSystemHelper::prepareJobDetails($job);
+
+        $viewParams = [
+            'job' => $job,
+            'existingApplication' => $job->Application,
+            'attachmentData' => $attachmentData,
+            'submission' => $submission,
+            'submissionProcess' => $submissionProcess
+        ];
+
+        return $this->view(
+            'Olakunlevpn\JobSystem:Job\Index',
+            'olakunlevpn_job_system_view',
+            $viewParams
+        );
     }
 
 
@@ -137,7 +159,6 @@ class Job extends AbstractController
         $input = $this->filter([
             'submission_text' => 'str',
             'submission_url' => 'str',
-            'attachment_hash' => 'str',
         ]);
 
 
@@ -163,64 +184,29 @@ class Job extends AbstractController
             $submission->submission_data = $input['submission_url'];
         }
 
-
-        if($job->has_attachment)
-        {
-            $inserter = $this->service(\XF\Service\Attachment\PreparerService::class);
-            $associated = $inserter->associateAttachmentsWithContent($input['attachment_hash'], 'job_submission_tasks', $submission->submission_id);
-            if (!$associated)
-            {
-                return $this->error(\XF::phrase('olakunlevpn_job_system_upload_error'));
-            }
-        }
-
-
-
+        $hash = $this->filter('attachment_hash', 'str');
         $submission->submitted_date = \XF::$time;
-        $submission->attachment_hash = $input['attachment_hash'];
+        $submission->attachment_hash =  $hash;
+
+
         $submission->save();
 
 
-        $this->notifyUserJobPending($submission);
+        if ($job->has_attachment && $submission->canUploadAndManageAttachments()) {
+            $inserter = $this->service(\XF\Service\Attachment\PreparerService::class);
+            $associated = $inserter->associateAttachmentsWithContent($hash, 'job_submission_tasks', $submission->submission_id);
 
+            if (!$associated) {
+                $submission->fastUpdate('attach_count', $submission->attach_count + $associated);
+            }
+
+        }
+
+        JobSystemNotificationService::notifyUserJobPending($submission);
 
         return $this->redirect($this->buildLink('jobs/view', $job), \XF::phrase('olakunlevpn_job_system_submission_received'));
     }
 
-
-
-
-    /**
-     * @throws Exception
-     */
-    public function actionApplyConfirmation(ParameterBag $params)
-    {
-        $this->assertRegistrationRequired();
-
-        $jobId = $params->job_id;
-        $visitor = \XF::visitor();
-        $job = $this->assertJobExists($jobId);
-
-        $application = $this->em()->findOne('Olakunlevpn\JobSystem:Application', [
-            'job_id' => $jobId,
-            'user_id' => $visitor->user_id
-        ]);
-
-        if (!$application) {
-            return $this->view(
-                'Olakunlevpn\JobSystem:Job\ApplyConfirmation',
-                'olakunlevpn_job_system_apply_confirmation',
-                ['job' => $job]
-            );
-        }
-
-        if ($application->status === 'pending') {
-            return $this->message('Your application has been submitted and is pending review.');
-        }
-
-
-        return $this->redirect($this->buildLink('jobs/view', $job));
-    }
 
 
     public function actionApply(ParameterBag $params)
@@ -231,12 +217,7 @@ class Job extends AbstractController
         $visitor = \XF::visitor();
         $job = $this->assertJobExists($jobId);
 
-        $existingApplication = $this->em()->findOne('Olakunlevpn\JobSystem:Application', [
-            'job_id' => $job->job_id,
-            'user_id' => $visitor->user_id
-        ]);
-
-        if ($existingApplication) {
+        if ($job->Application) {
             return $this->message('You have already applied for this job.');
         }
 
@@ -252,48 +233,65 @@ class Job extends AbstractController
     }
 
 
-
-
-    protected function notifyUserJobPending($submission)
+    /**
+     * @throws Exception
+     */
+    public function actionApplyConfirmation(ParameterBag $params)
     {
-        $extraData = [
-            'message' => "Your job submission is currently pending review. Please wait for further updates."
-        ];
+        $this->assertRegistrationRequired();
 
-        $this->notifyUserJobStatus($submission, 'pending', $extraData);
-    }
+        $jobId = $params->job_id;
+        $job = $this->assertJobExists($jobId);
 
 
-
-    protected function notifyUserJobStatus($submission, $action, array $extraData = [])
-    {
-        /** @var \XF\Repository\UserAlert $userAlertRepo */
-        $userAlertRepo = \XF::app()->repository('XF:UserAlert');
-
-        $user = \XF::app()->find('XF:User', $submission->user_id);
-
-        if (!$user) {
-            return;
+        if (!$job->Application) {
+            return $this->view(
+                'Olakunlevpn\JobSystem:Job\ApplyConfirmation',
+                'olakunlevpn_job_system_apply_confirmation',
+                ['job' => $job]
+            );
         }
 
-        $defaultExtraData = [
-            'depends_on_addon_id' => 'Olakunlevpn/JobSystem',
-            'jobTitle' => $submission->Job->title,
-        ];
+        if ($job->Application && $job->Application->status === 'pending') {
+            return $this->message('Your application has been submitted and is pending review.');
+        }
 
-        $extraData = array_merge($defaultExtraData, $extraData);
 
-        $userAlertRepo->alert(
-            $user,
-            0,
-            '',
-            'job_submission_tasks',
-            $submission->submission_id,
-            $action,
-            $extraData
-        );
+        return $this->redirect($this->buildLink('jobs/view', $job));
     }
 
+
+
+    public function actionPending()
+    {
+        /** @var User $visitor */
+        $this->ensureUserIsLoggedInAndHaveTheRightPermission();
+
+
+        $userId = \XF::visitor()->user_id;
+        $page = $this->filterPage();
+        $perPage = 10;
+
+        $jobFinder = $this->getJobRepo()->findUserPendingSubmissions($userId);
+        $totalJobs = $jobFinder->total();
+
+
+
+        $jobs = $jobFinder
+            ->limitByPage($page, $perPage)
+            ->fetch();
+
+        return $this->view(
+            'Olakunlevpn\JobSystem:Job\Pending',
+            'olakunlevpn_job_system_pending',
+            [
+                'jobs' => $jobs,
+                'page' => $page,
+                'perPage' => $perPage,
+                'total' => $totalJobs,
+            ]
+        );
+    }
 
     /**
      * @throws Exception
@@ -327,37 +325,6 @@ class Job extends AbstractController
         );
     }
 
-
-    public function actionPending()
-    {
-        /** @var User $visitor */
-        $this->ensureUserIsLoggedInAndHaveTheRightPermission();
-
-
-        $userId = \XF::visitor()->user_id;
-        $page = $this->filterPage();
-        $perPage = 10;
-
-        $jobFinder = $this->getJobRepo()->findUserPendingSubmissions($userId);
-        $totalJobs = $jobFinder->total();
-
-
-
-        $jobs = $jobFinder
-            ->limitByPage($page, $perPage)
-            ->fetch();
-
-        return $this->view(
-            'Olakunlevpn\JobSystem:Job\Pending',
-            'olakunlevpn_job_system_pending',
-            [
-                'jobs' => $jobs,
-                'page' => $page,
-                'perPage' => $perPage,
-                'total' => $totalJobs,
-            ]
-        );
-    }
 
 
 
@@ -428,8 +395,24 @@ class Job extends AbstractController
             return $this->error(\XF::phrase('olakunlevpn_job_system_min_wallet_length', ['length' => $this->options()->olakunlevpn_job_system_minimum_wallet_lenght]));
         }
 
+        $currency  = $this->getCurrencyRepo()
+            ->finder('DBTech\Credits:Currency')
+            ->where('currency_id', $input['currency_id'])
+            ->fetchOne();
 
-        $userCreditAmount = $visitor->get($currency->column);
+
+
+        $userCreditAmount = $visitor->{$currency->column};
+
+
+        if ($userCreditAmount < $input['amount'])
+        {
+
+            return $this->noPermission(\XF::phrase('olakunlevpn_job_system_enter_valid_amount', [
+                'balance' => number_format($userCreditAmount, 2),
+                'currency' =>  $currency ? $currency->title : null
+            ]));
+        }
 
         if ($input['amount'] < $this->options()->olakunlevpn_job_system_minimum_withdrawal) {
             return $this->error(
@@ -440,10 +423,6 @@ class Job extends AbstractController
         }
 
 
-        if ($userCreditAmount < $input['amount'])
-        {
-            return $this->noPermission(\XF::phrase('olakunlevpn_job_system_enter_valid_amount'));
-        }
 
         if ($input['amount'] < $this->options()->olakunlevpn_job_system_minimum_withdrawal)
         {
@@ -528,29 +507,12 @@ class Job extends AbstractController
     }
 
 
-    protected function getJobRepo()
-    {
-        return $this->repository('Olakunlevpn\JobSystem:Job');
-    }
-
 
     protected function assertJobExists($jobId)
     {
         return $this->assertRecordExists('Olakunlevpn\JobSystem:Job', $jobId);
     }
 
-
-    protected function getAttachmentRepo()
-    {
-        return $this->repository('XF:Attachment');
-    }
-
-
-
-    protected function getCurrencyRepo()
-    {
-        return $this->repository('DBTech\Credits:Currency');
-    }
 
 
 

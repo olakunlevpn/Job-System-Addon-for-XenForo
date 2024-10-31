@@ -13,7 +13,7 @@ class Submission extends Entity
         $structure->shortName = 'Olakunlevpn\JobSystem:Submission';
         $structure->primaryKey = 'submission_id';
 
-        // Fields (columns) definitions
+
         $structure->columns = [
             'submission_id' => ['type' => self::UINT, 'autoIncrement' => true],
             'job_id' => ['type' => self::UINT, 'required' => true],
@@ -22,6 +22,7 @@ class Submission extends Entity
             'admin_comment' => ['type' => self::STR, 'nullable' => true],
             'status' => ['type' => self::STR, 'allowedValues' => ['pending', 'approved', 'rejected'], 'default' => 'pending'],
             'submitted_date' => ['type' => self::UINT, 'default' => \XF::$time],
+            'attach_count' => ['type' => self::UINT, 'max' => 65535, 'forced' => true, 'default' => 0],
             'attachment_hash' => ['type' => self::STR,  'maxLength' => 255, 'nullable' => true],
         ];
 
@@ -57,10 +58,21 @@ class Submission extends Entity
         return $structure;
     }
 
-    public function canUploadAndManageAttachments(): bool
+
+    public function canViewAttachments(&$error = null)
     {
-       return true;
+        $visitor = \XF::visitor();
+
+        return true;
     }
+
+    public function canUploadAndManageAttachments(&$error = null)
+    {
+        $visitor = \XF::visitor();
+
+        return true;
+    }
+
 
 
 }

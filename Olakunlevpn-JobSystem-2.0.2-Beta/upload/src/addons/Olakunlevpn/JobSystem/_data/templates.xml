@@ -644,10 +644,15 @@
     <xf:else />
     <div class="blockMessage">{{ phrase('olakunlevpn_job_system_no_completed_jobs') }}</div>
 </xf:if>]]></template>
-  <template type="public" title="olakunlevpn_job_system_index" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_index" version_id="1020002" version_string="1.2.2"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
 <xf:css src="styles.css" />
 <xf:set var="$currentUrl" value="{$xf.uri}" />
 <xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
+
+<xf:macro template="olakunlevpn_job_system_jobs_filter_macros" name="jobFilters"
+          arg-filters="{$filters}"
+          arg-currenciesList="{$currenciesList}" />
+
 
 <xf:if is="$total > 0">
     <xf:foreach loop="$jobs" key="$job_id" value="$job">
@@ -660,7 +665,8 @@
     <xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}" link="jobs" wrapperclass="block-outer block-outer--after" />
     <xf:else />
     <div class="blockMessage">{{ phrase('olakunlevpn_job_system_no_jobs_available') }}</div>
-</xf:if>]]></template>
+</xf:if>
+]]></template>
   <template type="public" title="olakunlevpn_job_system_job_apply_job_macro" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:macro name="job_apply_job" arg-job="$job">
     <xf:if is="$xf.options.olakunlevpn_job_system_pre_approve_required">
             <xf:if is="!$job.Application">
@@ -774,6 +780,55 @@
         </div>
     </div>
 </xf:macro>]]></template>
+  <template type="public" title="olakunlevpn_job_system_jobs_filter_macros" version_id="1020002" version_string="1.2.2"><![CDATA[<xf:macro name="jobFilters" arg-filters="[]" arg-currenciesList="[]">
+    <div class="block-container">
+        <div class="block-filterBar">
+            <div class="filterBar">
+                <a class="filterBar-menuTrigger" data-xf-click="menu" role="button" tabindex="0" aria-expanded="false" aria-haspopup="true">
+                    {{ phrase('filters') }}
+                </a>
+                <div class="menu" data-menu="menu" aria-hidden="true">
+                    <div class="menu-content">
+                        <h4 class="menu-header">{{ phrase('show_only:') }}</h4>
+
+                        <xf:form action="{{ link('jobs/list') }}" method="post">
+                            <div class="menu-row menu-row--separated">
+                                <label for="ctrl_reward_type">{{ phrase('olakunlevpn_job_system_reward_type') }}</label>
+                                <div class="u-inputSpacer">
+                                    <xf:select name="reward_type" value="{$filters.reward_type}" id="ctrl_reward_type">
+                                        <xf:option value="any">{{ phrase('(any)') }}</xf:option>
+                                        <xf:option value="trophy">{{ phrase('Trophy') }}</xf:option>
+                                        <xf:foreach loop="$currenciesList" key="$currencyId" value="$currencyName">
+                                            <xf:option value="{$currencyId}">{$currencyName}</xf:option>
+                                        </xf:foreach>
+                                    </xf:select>
+                                </div>
+                            </div>
+
+                            <div class="menu-row menu-row--separated">
+                                {{ phrase('sort_direction:') }}
+                                <div class="inputGroup u-inputSpacer">
+                                    <xf:select name="direction" value="{{ $filters.direction ?: 'asc' }}" aria-labelledby="ctrl_sort_direction">
+                                        <xf:option value="asc">{{ phrase('ascending') }}</xf:option>
+                                        <xf:option value="desc">{{ phrase('descending') }}</xf:option>
+                                    </xf:select>
+                                </div>
+                            </div>
+                            <xf:hiddenval name="order">{{ $filters.order ?: 'content_date' }}</xf:hiddenval>
+
+                            <div class="menu-footer">
+                                <span class="menu-footer-controls">
+                                    <xf:button type="submit" class="button--primary">{{ phrase('filter') }}</xf:button>
+                                </span>
+                            </div>
+                            <xf:hiddenval name="apply">1</xf:hiddenval>
+                        </xf:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</xf:macro>]]></template>
   <template type="public" title="olakunlevpn_job_system_pending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
 <xf:css src="styles.css"  />
 <xf:set var="$currentUrl" value="{$xf.uri}" />
@@ -862,7 +917,7 @@
 </xf:if>
 
 ]]></template>
-  <template type="public" title="olakunlevpn_job_system_test" version_id="100010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>The second test page</xf:title>
+  <template type="public" title="olakunlevpn_job_system_test" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>The second test page</xf:title>
 
 <div class="block">
     <div class="block-container">
@@ -887,7 +942,7 @@
         </div>
     </div>
 </div>]]></template>
-  <template type="public" title="olakunlevpn_job_system_view" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_view" version_id="1020002" version_string="1.2.2"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
 <xf:css src="styles.css" />
 <xf:js src="xf/attachment_manager-compiled.js" />
 <xf:set var="$currentUrl" value="{$xf.uri}" />
@@ -930,8 +985,20 @@
                 {{ phrase('olakunlevpn_job_system_reward') }}: {{ ($job.reward_type == 'db_credits' ? $job.reward_amount .' '.$job.RewardCurrency.title  : $job.Trophy.title) }}
             </div>
 
-
+            <div class="inputGroup inputGroup--auto margin-top-5">
+                <ul class="flex listInline">
+                    <xf:foreach loop="$job->Submissions.Attachments" value="$attachment">
+                        <li>
+                            <a href="{{ $attachment.direct_url }}" target="_blank">
+                                <img src="{{ $attachment.direct_url }}" alt="{{ $attachment.filename }}" width="100" />
+                            </a>
+                        </li>
+                    </xf:foreach>
+                </ul>
+            </div>
             <hr>
+
+
 
             <div class="block-row">
                 <xf:if is="$xf.options.olakunlevpn_job_system_pre_approve_required && $existingApplication && $existingApplication.status == 'pending'">
