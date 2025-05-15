@@ -1,0 +1,33 @@
+{
+    "legacy_addon_id": "Olakunlevpn_JobSystem",
+    "title": "Job System",
+    "description": "Simple tasks system for forum promotion",
+    "version_id": 3000000,
+    "version_string": "3.0.0",
+    "dev": "Olakunlevpn",
+    "dev_url": "https://maylancer.org",
+    "faq_url": "",
+    "support_url": "https://xenforo.com/community/threads/job-system-by-olakunlevpn.226270/",
+    "extra_urls": {
+        "Product Information": "https://maylancer.org/products",
+        "Twitter": "https://twitter.com/maylancer",
+        "docs": "https://maylancer.org/docs/xenforojobsystem",
+        "Contribute": "https://github.com/olakunlevpn/Job-System-Addon-for-XenForo"
+    },
+    "require": {
+        "XF": [
+            2030070,
+            "XenForo 2.3.0+"
+        ],
+        "DBTech/Credits": [
+            906000070,
+            "DragonByte Credits v6.0.0+",
+            false
+        ],
+        "php": [
+            "8.0.0",
+            "PHP 8.0.0+"
+        ]
+    },
+    "icon": "icon.png"
+}

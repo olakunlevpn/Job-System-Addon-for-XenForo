@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="admin_navigation.OlakunlevpnJobSystemOptions" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Settings]]></phrase>
+  <phrase title="admin_navigation.SubmissionList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[All Job Submissions]]></phrase>
+  <phrase title="admin_navigation.jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Jobs]]></phrase>
+  <phrase title="admin_navigation.jobsAdd" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Add New Job]]></phrase>
+  <phrase title="admin_navigation.jobsList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[All Jobs]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystem" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Jobs]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemCompleted" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Completed Job]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Available Jobs]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemPending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Pending Jobs]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemTest" version_id="100010" version_string="1.0.0 Alpha"><![CDATA[Jobs test]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemWithdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw]]></phrase>
+  <phrase title="nav.OlakunlevpnJobSystemWithdrawalList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw History]]></phrase>
+  <phrase title="olakunlevpn_job_system_admin_comments" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Administrator Comment]]></phrase>
+  <phrase title="olakunlevpn_job_system_amount" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Amount]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_admin_comments" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Administrator Comment]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_apply" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Apply]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_apply_confirmation" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Are you sure you want to apply for this job?]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_apply_for_job" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Apply for Job]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_approved" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{job_list_link}">job</a> application for <strong>{jobTitle}</strong> has been approved. You can now proceed with the job!]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_approved_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job application for <strong>{$extra.jobTitle}</strong> has been approved!]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_id" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Application ID]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_pending_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job application has been submitted and is pending review.]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{job_list_link}">job</a> application for <strong>{jobTitle}</strong> was rejected. Please contact support for further details.]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_rejected_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job application was rejected.]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_review" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Application Review]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_status" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Application Status]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_update_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[There has been an update on your job application.]]></phrase>
+  <phrase title="olakunlevpn_job_system_application_user" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[User]]></phrase>
+  <phrase title="olakunlevpn_job_system_approved_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{job_list_link}">job</a> submission for <strong>{job_title}</strong> has been <a href="{job_completed_link}">approved</a>!
+]]></phrase>
+  <phrase title="olakunlevpn_job_system_available_jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Available Jobs]]></phrase>
+  <phrase title="olakunlevpn_job_system_balance_withdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Balance Withdrawal]]></phrase>
+  <phrase title="olakunlevpn_job_system_change_date" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Change date]]></phrase>
+  <phrase title="olakunlevpn_job_system_comments" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Comments]]></phrase>
+  <phrase title="olakunlevpn_job_system_completed" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Completed]]></phrase>
+  <phrase title="olakunlevpn_job_system_completed_jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Completed Jobs]]></phrase>
+  <phrase title="olakunlevpn_job_system_created_date" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Created Date]]></phrase>
+  <phrase title="olakunlevpn_job_system_creation_date" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Creation date]]></phrase>
+  <phrase title="olakunlevpn_job_system_db_credits" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Credits]]></phrase>
+  <phrase title="olakunlevpn_job_system_enter_response" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please enter your response for the job.]]></phrase>
+  <phrase title="olakunlevpn_job_system_enter_url" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please enter the URL for your submission.]]></phrase>
+  <phrase title="olakunlevpn_job_system_enter_valid_amount" version_id="1020002" version_string="1.2.2"><![CDATA[Your balance is insufficient. Your current balance is {balance} {currency}.]]></phrase>
+  <phrase title="olakunlevpn_job_system_enter_valid_url" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please enter a valid URL.]]></phrase>
+  <phrase title="olakunlevpn_job_system_faq_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Frequently Asked Questions]]></phrase>
+  <phrase title="olakunlevpn_job_system_inactive" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Inactive]]></phrase>
+  <phrase title="olakunlevpn_job_system_invalid_action_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Invalid action.]]></phrase>
+  <phrase title="olakunlevpn_job_system_job_active" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Active]]></phrase>
+  <phrase title="olakunlevpn_job_system_job_continue_button" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Continue]]></phrase>
+  <phrase title="olakunlevpn_job_system_job_not_found" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The requested job could not be found.]]></phrase>
+  <phrase title="olakunlevpn_job_system_job_pending_approval" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Pending approval.]]></phrase>
+  <phrase title="olakunlevpn_job_system_job_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Title]]></phrase>
+  <phrase title="olakunlevpn_job_system_log_in" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Log in]]></phrase>
+  <phrase title="olakunlevpn_job_system_login_or_register" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please login or register to participate.]]></phrase>
+  <phrase title="olakunlevpn_job_system_menu" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Menu]]></phrase>
+  <phrase title="olakunlevpn_job_system_min_wallet_length" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The wallet address must be at least {length} characters long.]]></phrase>
+  <phrase title="olakunlevpn_job_system_min_withdrawal_amount" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The minimum withdrawal amount is ${amount}]]></phrase>
+  <phrase title="olakunlevpn_job_system_no_completed_jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[You have no completed jobs available at the moment.]]></phrase>
+  <phrase title="olakunlevpn_job_system_no_jobs_available" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[No jobs available at the moment.]]></phrase>
+  <phrase title="olakunlevpn_job_system_no_pending_jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[You have no pending jobs available at the moment.]]></phrase>
+  <phrase title="olakunlevpn_job_system_no_permission" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[You do not have permission]]></phrase>
+  <phrase title="olakunlevpn_job_system_none" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[None]]></phrase>
+  <phrase title="olakunlevpn_job_system_page_selected_withdraw" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[withdraw]]></phrase>
+  <phrase title="olakunlevpn_job_system_payment_profile" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Payment profile]]></phrase>
+  <phrase title="olakunlevpn_job_system_payment_profile_data" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Payment profile data]]></phrase>
+  <phrase title="olakunlevpn_job_system_payment_profile_data_explain" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Enter all the data/wallet address required for the payment profile you have chosen.]]></phrase>
+  <phrase title="olakunlevpn_job_system_pending_jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[ Pending Jobs]]></phrase>
+  <phrase title="olakunlevpn_job_system_pending_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{job_list_link}">job</a> submission for <strong>{job_title}</strong> is currently pending review. Please wait for updates.
+]]></phrase>
+  <phrase title="olakunlevpn_job_system_pending_message_moderator" version_id="2000003" version_string="2.0.3"><![CDATA[A new <a href="{url}" target="_blank">job: {job_title}</a> has been submitted by <b>{username}</b> and is currently pending your review.
+]]></phrase>
+  <phrase title="olakunlevpn_job_system_register" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Register]]></phrase>
+  <phrase title="olakunlevpn_job_system_rejected_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{job_list_link}">job</a> submission for <strong>{job_title}</strong> has been rejected. Reason: <strong>{admin_comment}</strong>.
+]]></phrase>
+  <phrase title="olakunlevpn_job_system_requested_submission_not_found" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The requested submission could not be found.]]></phrase>
+  <phrase title="olakunlevpn_job_system_reward" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Reward]]></phrase>
+  <phrase title="olakunlevpn_job_system_reward_for_job_completion" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[ Reward for job completion]]></phrase>
+  <phrase title="olakunlevpn_job_system_reward_type" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Reward Type:]]></phrase>
+  <phrase title="olakunlevpn_job_system_status" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Status:]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_approved_and_credited_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Submission has been approved and the user has been credited.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_approved_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your submission has been approved! Thank you for completing the job successfully.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_completed" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Completed]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_created_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[ Submission has been approved and the user has been credited.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_deletion_description" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Submission ID {submission_id} and job title {job_title}]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_has_been_approved_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission has been approved.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_has_been_rejected_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission has been rejected.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_is_pending_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission is pending and currently under review.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_no_pending_job" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[You have no pending jobs available at the moment.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_pending_approval" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Pending Approval]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_pending_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[ You have already submitted this job. Your submission is currently under review and pending approval. Please check back later for updates.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_pending_review" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your job submission is currently pending review. Please wait for further updates.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_pending_review_moderator" version_id="2000003" version_string="2.0.3"><![CDATA[A new job has been submitted and is currently pending your review.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_received" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your submission has been received!]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Rejected]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_rejected_error" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Submission has been rejected.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_rejected_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your submission was rejected. Please review your response and resubmit the job.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_status" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Submission Status]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_tasks_approved" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[ <a href="{job_list_link}">job</a> submission for <strong>{job_title}</strong> has been <a href="{job_completed_link}">approved</a>!]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_tasks_moderator" version_id="2000003" version_string="2.0.3"><![CDATA[Your <a href="{job_list_link}">job</a> submission for <strong>{job_title}</strong> is currently pending review. Please wait for updates. moderator]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_tasks_pending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{job_list_link}">job</a> submission for <strong>{job_title}</strong> is currently pending review. Please wait for updates.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_tasks_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{job_list_link}">job</a> submission for <strong>{job_title}</strong> has been rejected. Reason: <strong>{admin_comment}</strong>.]]></phrase>
+  <phrase title="olakunlevpn_job_system_submission_update_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[There has been an update on your job submission.]]></phrase>
+  <phrase title="olakunlevpn_job_system_take_this_job" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Take This Job]]></phrase>
+  <phrase title="olakunlevpn_job_system_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Title]]></phrase>
+  <phrase title="olakunlevpn_job_system_trophy" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Trophy]]></phrase>
+  <phrase title="olakunlevpn_job_system_updated_date" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Updated Date]]></phrase>
+  <phrase title="olakunlevpn_job_system_upload_error" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[We are unable to upload your images, please try again later.]]></phrase>
+  <phrase title="olakunlevpn_job_system_user_not_found_exception" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[User not found.]]></phrase>
+  <phrase title="olakunlevpn_job_system_wallet_currency" version_id="2000003" version_string="2.0.3"><![CDATA[USD]]></phrase>
+  <phrase title="olakunlevpn_job_system_welcome_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Welcome to the Job System]]></phrase>
+  <phrase title="olakunlevpn_job_system_withdraw" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw]]></phrase>
+  <phrase title="olakunlevpn_job_system_withdraw_amount" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw amount]]></phrase>
+  <phrase title="olakunlevpn_job_system_withdraw_completed" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your withdraw request of ${amount} to your wallet (<strong>{payment_profile_data}</strong>) was completed.
+]]></phrase>
+  <phrase title="olakunlevpn_job_system_withdraw_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your withdraw request of ${amount} was rejected.]]></phrase>
+  <phrase title="olakunlevpn_job_system_withdraw_request_list" version_id="1020002" version_string="1.2.2"><![CDATA[Withdrawal History]]></phrase>
+  <phrase title="olakunlevpn_job_system_withdrawal_history" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdrawal history]]></phrase>
+  <phrase title="olakunlevpn_job_system_withdrawal_request_list" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdrawal request list]]></phrase>
+  <phrase title="olakunlevpn_job_system_xfcoder_wallet_credit" version_id="2000003" version_string="2.0.3"><![CDATA[Wallet Credit]]></phrase>
+  <phrase title="olakunlevpn_jobsystem_withdrawal_currency_text" version_id="2000003" version_string="2.0.3"><![CDATA[Wallet to debit]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_enable_withdrawal" version_id="1020002" version_string="1.2.2"><![CDATA[Enable Withdrawal]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_enabled" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Enable or Disable the Entire Job System]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_job_list_design" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job List Design]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_job_sn_receiver" version_id="2000003" version_string="2.0.3"><![CDATA[Job Submission notification Receiver]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_maximum_withdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Maximum Withdrawal]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_minimum_wallet_lenght" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Wallet Address lenght]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_minimum_withdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Minimum Withdrawal]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_paymentProfiles" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Payment Profiles List]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_pre_approve_required" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Require Pre-Approval Before Job Start]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_content" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Welcome page content]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_cta_button" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[CTA button]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_cta_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Page CTA Title]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_faq" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Welcome page Faqs]]></phrase>
+  <phrase title="option.olakunlevpn_job_system_welcome_page_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Welcome page title]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_enable_withdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Allow users to request withdrawals if enabled.]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_enabled" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Enable or disable the entire Job System for all users.]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_job_list_design" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Select the design style for job listings.]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_job_sn_receiver" version_id="2000003" version_string="2.0.3"><![CDATA[This addon will send a notification to this user when an job is submitted. Please input the username of the user that should receive the notification.]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_maximum_withdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Maximum user can withdraw from their balance]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_minimum_wallet_lenght" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The wallet address must be at least above characters long.]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_minimum_withdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Minimum user can withdraw from their balance]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_paymentProfiles" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please list withdrawal gateways separated with tab]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_pre_approve_required" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[If enabled, users must wait for admin approval before starting any job.]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_content" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Welcome page content you can use HTML to design this page, you can only use {$xf.options.boardTitle}  tag to set the website name dynamically (other tags wont work)]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_cta_button" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The action button text]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_cta_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The text call to action (CTA) title above the action button]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_faq" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The page content faqs list]]></phrase>
+  <phrase title="option_explain.olakunlevpn_job_system_welcome_page_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Welcome page header title]]></phrase>
+  <phrase title="option_group.olakunlevpn_jobsystem" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job System Settings]]></phrase>
+  <phrase title="option_group_description.olakunlevpn_jobsystem" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Manage various settings for the Job System.]]></phrase>
+  <phrase title="permission.olakunlevpn_jobsystem_apply" version_id="2000003" version_string="2.0.3"><![CDATA[Apply for Jobs]]></phrase>
+  <phrase title="permission.olakunlevpn_jobsystem_mod_moderate" version_id="2000003" version_string="2.0.3"><![CDATA[Moderate Jobs]]></phrase>
+  <phrase title="permission.olakunlevpn_jobsystem_view" version_id="2000003" version_string="2.0.3"><![CDATA[View jobs]]></phrase>
+  <phrase title="permission.olakunlevpn_jobsystem_withdraw" version_id="2000003" version_string="2.0.3"><![CDATA[Withdraw Funds]]></phrase>
+  <phrase title="permission_interface.olakuunlevpnJobSystemModeratorPermission" version_id="2000003" version_string="2.0.3"><![CDATA[Olakunlevpn Job System moderator permissions]]></phrase>
+  <phrase title="permission_interface.olakuunlevpnJobSystemPermission" version_id="1020002" version_string="1.2.2"><![CDATA[Olakunlevpn Job System permissions]]></phrase>
+  <phrase title="xfcoder_wallet_transaction_type_x.job_reward" version_id="2000003" version_string="2.0.3"><![CDATA[Job Completion Reward]]></phrase>
+</phrases>

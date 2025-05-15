@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template_modifications>
+  <modification type="admin" template="PAGE_CONTAINER" modification_key="olakunle_job_system_add_alpinejs" description="Add alpineJs" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[<xf:macro id="admin:helper_js_global::head" arg-app="admin" />]]></find>
+    <replace><![CDATA[$0
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+]]></replace>
+  </modification>
+  <modification type="public" template="extra.less" modification_key="olakunlevpn_jobsystem_custom_css" execution_order="10" enabled="1" action="preg_replace">
+    <find><![CDATA[/$/]]></find>
+    <replace><![CDATA[$0
+
+.jobsystem-filter{
+    margin-bottom: 5px;
+}
+.text-2xl {
+     font-size: 14px !important;
+}
+
+@keyframes spin {
+     0% { transform: rotate(0deg); }
+     100% { transform: rotate(360deg); }
+}
+
+.may-spinner {
+     display: inline-block;
+     animation: spin 1s linear infinite;
+}
+
+.noDeleteOrInsert .js-attachmentInsert,
+.noDeleteOrInsert .file-delete {
+     display: none;
+}
+
+.margin-top-20{
+     margin-top: 20px !important;
+}
+
+.margin-top-10{
+     margin-top: 10px !important;
+}
+
+.margin-bottom-10{
+     margin-bottom: 10px !important;
+}
+
+
+.job-info-container {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     width: 100%;
+}
+
+.job-details {
+     display: block;
+     align-items: center;
+     flex-wrap: wrap;
+}
+
+.status-reward {
+     display: inline-flex;
+     align-items: center;
+     margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+     .status-reward {
+          flex-direction: column;
+          align-items: flex-start;
+     }
+
+     .status-reward span {
+          display: block;
+     }
+
+     .job-status-devider {
+          display: none;
+     }
+     .job-status {
+          display: block;
+     }
+}
+
+.job-button {
+     margin-left: auto;
+}
+
+.no-margin {
+     margin: 0px !important;
+}
+
+.no-padding {
+     padding: 0px !important;
+}]]></replace>
+  </modification>
+</template_modifications>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+  <permission permission_group_id="olakunlevpn_jobsystem" permission_id="apply" permission_type="flag" interface_group_id="olakuunlevpnJobSystemPermission" display_order="20"/>
+  <permission permission_group_id="olakunlevpn_jobsystem" permission_id="view" permission_type="flag" interface_group_id="olakuunlevpnJobSystemPermission" display_order="2"/>
+  <permission permission_group_id="olakunlevpn_jobsystem" permission_id="withdraw" permission_type="flag" interface_group_id="olakuunlevpnJobSystemPermission" display_order="30"/>
+  <permission permission_group_id="olakunlevpn_jobsystem_mod" permission_id="moderate" permission_type="flag" interface_group_id="olakuunlevpnJobSystemModeratorPermission" display_order="1"/>
+</permissions>

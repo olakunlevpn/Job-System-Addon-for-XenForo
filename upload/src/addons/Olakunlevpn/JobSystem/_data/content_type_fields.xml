@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content_type_fields>
+  <field content_type="job_application" field_name="alert_handler_class">Olakunlevpn\JobSystem\Alert\ApplicationHandler</field>
+  <field content_type="job_application" field_name="approval_queue_handler_class">Olakunlevpn\JobSystem\ApprovalQueue\Application</field>
+  <field content_type="job_application" field_name="entity">Olakunlevpn\JobSystem:Application</field>
+  <field content_type="job_submission_tasks" field_name="alert_handler_class">Olakunlevpn\JobSystem\Alert\JobHandler</field>
+  <field content_type="job_submission_tasks" field_name="attachment_handler_class">Olakunlevpn\JobSystem\Attachment\Submission</field>
+  <field content_type="job_submission_tasks" field_name="entity">Olakunlevpn\JobSystem:Submission</field>
+  <field content_type="job_submission_withdraw" field_name="alert_handler_class">Olakunlevpn\JobSystem\Alert\WithdrawRequest</field>
+  <field content_type="job_submission_withdraw" field_name="approval_queue_handler_class">Olakunlevpn\JobSystem\ApprovalQueue\WithdrawRequest</field>
+  <field content_type="job_submission_withdraw" field_name="entity">Olakunlevpn\JobSystem:WithdrawRequest</field>
+  <field content_type="job_system_submissions" field_name="attachment_handler_class">Olakunlevpn\JobSystem\Attachment\Submission</field>
+</content_type_fields>

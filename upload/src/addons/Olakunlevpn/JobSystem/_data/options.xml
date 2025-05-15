@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<options>
+  <option option_id="olakunlevpn_job_system_enable_withdrawal" edit_format="onoff" data_type="boolean" advanced="0">
+    <default_value>1</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="31"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_enabled" edit_format="onoff" data_type="string" advanced="0">
+    <default_value>1</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="1"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_job_list_design" edit_format="select" data_type="string" advanced="0">
+    <default_value>simple</default_value>
+    <edit_format_params>simple=Simple
+compact=Compact</edit_format_params>
+    <relation group_id="olakunlevpn_jobsystem" display_order="30"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_job_sn_receiver" edit_format="username" data_type="string" advanced="0">
+    <default_value></default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="20"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_maximum_withdrawal" edit_format="spinbox" data_type="numeric" advanced="0">
+    <default_value>50</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="33"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_minimum_wallet_lenght" edit_format="textbox" data_type="string" advanced="0">
+    <default_value>30</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="100"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_minimum_withdrawal" edit_format="spinbox" data_type="numeric" advanced="0">
+    <default_value>10</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="32"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_paymentProfiles" edit_format="textbox" data_type="string" advanced="0">
+    <default_value>Bitcoin
+USDT-TRC-20</default_value>
+    <edit_format_params>rows=3</edit_format_params>
+    <relation group_id="olakunlevpn_jobsystem" display_order="300"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_pre_approve_required" edit_format="onoff" data_type="boolean" advanced="0">
+    <default_value>0</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="10"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_welcome_page_content" edit_format="textbox" data_type="string" advanced="0">
+    <default_value>&lt;p&gt;Welcome to the {$xf.options.boardTitle} Job System! Here, you can earn rewards by completing simple and interesting tasks. Whether you’re looking to boost your income or sharpen your skills, this is your opportunity to make it happen.&lt;/p&gt;
+
+                &lt;h3&gt;How It Works&lt;/h3&gt;
+                &lt;p&gt;Getting started is easy and rewarding. Just follow these steps:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;&lt;strong&gt;Browse Available Jobs:&lt;/strong&gt; Explore various tasks available for you.&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Pick a Job:&lt;/strong&gt; Choose the one that suits your skills or interests.&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Complete the Task:&lt;/strong&gt; Follow the instructions, complete it, and submit.&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Get Paid:&lt;/strong&gt; Once approved, your reward is credited instantly.&lt;/li&gt;
+                &lt;/ol&gt;
+
+                &lt;h3&gt;What You Can Earn&lt;/h3&gt;
+                &lt;p&gt;Each job offers rewards in the form of credits, which can be converted into real money or exciting prizes. The value of rewards varies depending on the job, and some jobs even offer bonuses for quick and high-quality submissions!&lt;/p&gt;
+
+                &lt;h3&gt;Job Categories&lt;/h3&gt;
+                &lt;p&gt;We have a diverse range of job categories for you to explore:&lt;/p&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;Surveys&lt;/li&gt;
+                    &lt;li&gt;Social Media Tasks&lt;/li&gt;
+                    &lt;li&gt;Data Entry&lt;/li&gt;
+                    &lt;li&gt;Content Creation&lt;/li&gt;
+                    &lt;li&gt;And much more!&lt;/li&gt;
+                &lt;/ul&gt;
+
+                &lt;h3&gt;Why Join Us?&lt;/h3&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;strong&gt;Work on Your Own Time:&lt;/strong&gt; Complete jobs at your convenience.&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Instant Rewards:&lt;/strong&gt; Get paid as soon as your submission is approved.&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Diverse Tasks:&lt;/strong&gt; There's always something new to work on!&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Community Support:&lt;/strong&gt; Connect with others and share tips.&lt;/li&gt;
+                &lt;/ul&gt;</default_value>
+    <edit_format_params>rows=10</edit_format_params>
+    <relation group_id="olakunlevpn_jobsystem" display_order="500"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_welcome_page_cta_button" edit_format="textbox" data_type="string" advanced="0">
+    <default_value>Browse available jobs now!</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="700"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_welcome_page_cta_title" edit_format="textbox" data_type="string" advanced="0">
+    <default_value>Ready to kickstart your earning journey?</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="600"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_welcome_page_faq" edit_format="textbox" data_type="string" advanced="0">
+    <default_value>&lt;h4&gt;How do I start?&lt;/h4&gt;
+                &lt;p&gt;It’s simple! Just &lt;a href="{{ link('register') }}"&gt;create an account&lt;/a&gt;, browse available jobs, and start working on the ones that interest you.&lt;/p&gt;
+
+                &lt;h4&gt;Do I need any qualifications?&lt;/h4&gt;
+                &lt;p&gt;Nope! Anyone can join and complete tasks. Some jobs may have specific requirements, but these will be mentioned in the job description.&lt;/p&gt;
+
+                &lt;h4&gt;How do I receive my rewards?&lt;/h4&gt;
+                &lt;p&gt;You earn credits for every completed and approved job. These credits can be exchanged for cash or other prizes.&lt;/p&gt;
+
+                &lt;h4&gt;What types of jobs are there?&lt;/h4&gt;
+                &lt;p&gt;We offer a wide range of jobs, from online surveys and social media tasks to data entry and creative assignments. There’s always something to do!&lt;/p&gt;
+
+                &lt;h4&gt;Is there a limit to how many jobs I can complete?&lt;/h4&gt;
+                &lt;p&gt;No, you can complete as many jobs as are available. Some jobs may have a limit on completions, so act fast when you find one you like!&lt;/p&gt;</default_value>
+    <edit_format_params>rows=7</edit_format_params>
+    <relation group_id="olakunlevpn_jobsystem" display_order="800"/>
+  </option>
+  <option option_id="olakunlevpn_job_system_welcome_page_title" edit_format="textbox" data_type="string" advanced="0">
+    <default_value>Earn Rewards by Completing Jobs</default_value>
+    <relation group_id="olakunlevpn_jobsystem" display_order="400"/>
+  </option>
+</options>
