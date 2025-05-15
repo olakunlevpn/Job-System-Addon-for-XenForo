@@ -38,6 +38,33 @@ class JobSystemHelper
 
     }
 
+    public static function getXfcoderWalletCurrecies()
+    {
+        $xfcoderWallet = [
+            'xfcoder_wallet_credit' => [
+                'value' => 'xfcoder_wallet_credit',
+                'label' => \XF::phrase('olakunlevpn_jobsystem_xfcoder_wallet_credit')
+            ]
+        ];
+        return $xfcoderWallet;
+    }
+
+
+    public static function getDisplayAmount($amount, $plusPrefix = false)
+    {
+        $currencyCode = \XF::options()->XFCoderWallet_currencyCode;
+        $currencyData = \XF::app()->data('XF:Currency');
+        $currencySymbol = $currencyData->getCurrencySymbol($currencyCode);
+
+        $symbol = !preg_match('/[a-z]+/i', $currencySymbol) ? $currencySymbol : null;
+        $prefix = $amount < 0 ? '-' : ( $plusPrefix && $amount ? '+' : '' );
+        $precision = $amount != (int) $amount ? 2 : 0;
+
+        return
+            ( $symbol ? $prefix.$symbol : $currencyCode.' '.$prefix )
+            .\XF::language()->numberFormat(abs($amount), $precision);
+    }
+
 
 
 }

@@ -67,18 +67,24 @@ class Job extends AbstractController
 
     protected function jobAddEdit(\Olakunlevpn\JobSystem\Entity\Job $job)
     {
-        $currencies = $this->getDragonByteCurrencies();
+        $currenciesList = [];
+
+        if(JobSystemHelper::ensureDbCreditAddonInstalled()){
+            $currenciesList = $this->getDragonByteCurrencies();
+        }
+
+        if(JobSystemHelper::ensureXFCoderWalletAddonInstalled()) {
+            $currenciesList = JobSystemHelper::getXfcoderWalletCurrecies() + $currenciesList;
+        }
 
         $trophyRepo = \XF::repository('XF:Trophy');
         $trophies = $trophyRepo->findTrophiesForList()
             ->fetch();
 
 
-        $container = \XF::app()->container();
-
         $viewParams = [
             'job' => $job,
-             'currencies' => $currencies,
+             'currencies' => $currenciesList,
             'trophies' => $trophies,
             'addonExistsDragonByteCredits' => JobSystemHelper::ensureDbCreditAddonInstalled(),
             'addonExistsXFCoderWallet' => JobSystemHelper::ensureXFCoderWalletAddonInstalled(),
@@ -190,8 +196,6 @@ class Job extends AbstractController
         $currencyRepo = \XF::repository('DBTech\Credits:Currency');
         return $currencyRepo->getCurrencyOptionsData(false);
     }
-
-
 
 
 

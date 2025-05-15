@@ -19,6 +19,7 @@ use Olakunlevpn\JobSystem\Traits\JobSystemPermissionsTrait;
 use Olakunlevpn\JobSystem\Traits\JobSystemRepositoriesTrait;
 use Olakunlevpn\JobSystem\Service\JobSystemNotificationService;
 
+
 class Job extends AbstractController
 {
 
@@ -82,7 +83,7 @@ class Job extends AbstractController
         }
 
         if(JobSystemHelper::ensureXFCoderWalletAddonInstalled()) {
-            $currenciesList = ['xfcoder_wallet_credit' => XF::phrase('xfcoder_wallet_credit')] + $currenciesList;
+            $currenciesList = JobSystemHelper::getXfcoderWalletCurrecies() + $currenciesList;
         }
 
 
@@ -130,10 +131,12 @@ class Job extends AbstractController
         $submission->user_id = $visitor->user_id;
 
 
-        $submissionProcess = $this->em()->findOne(Submission::class, [
-            'job_id' => $job->job_id,
-            'user_id' => $visitor->user_id
-        ]);
+
+        $submissionProcess = $this->app->finder(Submission::class)
+            ->where('job_id', $job->job_id)
+            ->where('user_id', $visitor->user_id)
+            ->order('submission_id', 'DESC')
+            ->fetchOne();
 
 
         /** @var \XF\Repository\Attachment $attachmentRepo */
@@ -364,7 +367,7 @@ class Job extends AbstractController
         }
 
         if(JobSystemHelper::ensureXFCoderWalletAddonInstalled()) {
-            $currenciesList = ['wallet_credits' => XF::phrase('xfcoder_wallet_credit')] + $currenciesList;
+            $currenciesList = ['xfcoder_wallet_credit' => XF::phrase('xfcoder_wallet_credit')] + $currenciesList;
         }
 
 
@@ -373,7 +376,7 @@ class Job extends AbstractController
 
         if (empty($currenciesList))
         {
-            return $this->noPermission();
+            return $this->error(\XF::phrase('olakunlevpn_job_system_no_currencies'));
         }
 
         $viewParams = [
@@ -394,7 +397,7 @@ class Job extends AbstractController
     public function actionWithdrawCreate()
     {
         $visitor = $this->ensureUserIsLoggedAndCanWithdraw();
-
+        $db = \XF::db();
         $this->ensureWithdrawalFeatureIsEnabled();
 
 
@@ -402,21 +405,16 @@ class Job extends AbstractController
         $withdrawProfiles = preg_split('/\s/', $this->options()->olakunlevpn_job_system_paymentProfiles, -1, PREG_SPLIT_NO_EMPTY);
 
         $input = $this->filter([
-            'currency_id'          => 'uint',
+            'currency_id'          => 'str',
             'payment_profile'      => 'str',
             'payment_profile_data' => 'str',
             'amount'               => 'uint'
         ]);
 
-        $currency = $this->em()->find('DBTech\Credits:Currency', $input['currency_id']);
-        if ($currency && !$currency->canView())
-        {
-            return $this->noPermission();
-        }
-
+        $amount = $input['amount'];
         if (empty($input['payment_profile_data']) || !in_array($input['payment_profile'], $withdrawProfiles))
         {
-            return $this->noPermission();
+            return $this->error(\XF::phrase('olakunlevpn_job_system_select_payment_profile'));
         }
 
 
@@ -424,26 +422,7 @@ class Job extends AbstractController
             return $this->error(\XF::phrase('olakunlevpn_job_system_min_wallet_length', ['length' => $this->options()->olakunlevpn_job_system_minimum_wallet_lenght]));
         }
 
-        $currency  = $this->getCurrencyRepo()
-            ->finder('DBTech\Credits:Currency')
-            ->where('currency_id', $input['currency_id'])
-            ->fetchOne();
-
-
-
-        $userCreditAmount = $visitor->{$currency->column};
-
-
-        if ($userCreditAmount < $input['amount'])
-        {
-
-            return $this->noPermission(\XF::phrase('olakunlevpn_job_system_enter_valid_amount', [
-                'balance' => number_format($userCreditAmount, 2),
-                'currency' =>  $currency ? $currency->title : null
-            ]));
-        }
-
-        if ($input['amount'] < $this->options()->olakunlevpn_job_system_minimum_withdrawal) {
+        if ($amount < $this->options()->olakunlevpn_job_system_minimum_withdrawal) {
             return $this->error(
                 \XF::phrase('olakunlevpn_job_system_min_withdrawal_amount', [
                     'amount' => $this->options()->olakunlevpn_job_system_minimum_withdrawal
@@ -452,10 +431,61 @@ class Job extends AbstractController
         }
 
 
-
-        if ($input['amount'] < $this->options()->olakunlevpn_job_system_minimum_withdrawal)
+        if ($amount < $this->options()->olakunlevpn_job_system_minimum_withdrawal)
         {
             return $this->error(\XF::phrase('olakunlevpn_job_system_min_withdrawal_amount', ['amount' => $this->options()->olakunlevpn_job_system_minimum_withdrawal]));
+        }
+
+        if(JobSystemHelper::ensureDbCreditAddonInstalled() && $input['currency_id'] != 'xfcoder_wallet_credit') {
+            $currency = $this->getCurrencyRepo()
+                ->finder('DBTech\Credits:Currency')
+                ->where('currency_id', $input['currency_id'])
+                ->fetchOne();
+
+            $userCreditAmount = $visitor->{$currency->column};
+
+            if ($userCreditAmount < $amount)
+            {
+                return $this->noPermission(\XF::phrase('olakunlevpn_job_system_enter_valid_amount', [
+                    'balance' => number_format($userCreditAmount, 2),
+                    'currency' =>  $currency ? $currency->title : null
+                ]));
+            }
+
+
+
+        }else if(JobSystemHelper::ensureXFCoderWalletAddonInstalled()) {
+            if ( $amount > $visitor->xfcoder_wallet_credit )
+            {
+                $requiredAmount = $amount - $visitor->xfcoder_wallet_credit;
+
+                return $this->error(\XF::phrase('olakunlevpn_job_system_xfcoder_wallet_insufficient_funds_please_topup_x', [
+                    'walletLink' => $this->buildLink('account/wallet', [], ['amount' => $requiredAmount]),
+                    'minTopupAmount' => JobSystemHelper::getDisplayAmount($requiredAmount)
+
+                ]));
+            }
+
+            $db->beginTransaction();
+
+            $fromTx = $this->em()->create('XFCoder\Wallet:Transaction');
+            $note = 'You initiated a withdrawal of ' . JobSystemHelper::getDisplayAmount($amount).' from your wallet';
+
+            $fromTx->bulkSet([
+                'user_id' => $visitor->user_id,
+                'type' => 'transfer',
+                'amount' => - $amount,
+                'other_user_id' => '',
+                'note' => $note
+            ]);
+
+            $fromTx->save();
+
+            $db->commit();
+
+
+        }else{
+            return $this->error(\XF::phrase('olakunlevpn_job_system_error_processing_payment'));
         }
 
 

@@ -9,7 +9,6 @@
   <phrase title="nav.OlakunlevpnJobSystemCompleted" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Completed Job]]></phrase>
   <phrase title="nav.OlakunlevpnJobSystemList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Available Jobs]]></phrase>
   <phrase title="nav.OlakunlevpnJobSystemPending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Pending Jobs]]></phrase>
-  <phrase title="nav.OlakunlevpnJobSystemTest" version_id="100010" version_string="1.0.0 Alpha"><![CDATA[Jobs test]]></phrase>
   <phrase title="nav.OlakunlevpnJobSystemWithdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw]]></phrase>
   <phrase title="nav.OlakunlevpnJobSystemWithdrawalList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw History]]></phrase>
   <phrase title="olakunlevpn_job_system_admin_comments" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Administrator Comment]]></phrase>
@@ -43,6 +42,7 @@
   <phrase title="olakunlevpn_job_system_enter_url" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please enter the URL for your submission.]]></phrase>
   <phrase title="olakunlevpn_job_system_enter_valid_amount" version_id="1020002" version_string="1.2.2"><![CDATA[Your balance is insufficient. Your current balance is {balance} {currency}.]]></phrase>
   <phrase title="olakunlevpn_job_system_enter_valid_url" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please enter a valid URL.]]></phrase>
+  <phrase title="olakunlevpn_job_system_error_processing_payment" version_id="3000000" version_string="3.0.0"><![CDATA[Oops! we could not process your payment, please try again later]]></phrase>
   <phrase title="olakunlevpn_job_system_faq_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Frequently Asked Questions]]></phrase>
   <phrase title="olakunlevpn_job_system_inactive" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Inactive]]></phrase>
   <phrase title="olakunlevpn_job_system_invalid_action_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Invalid action.]]></phrase>
@@ -57,6 +57,7 @@
   <phrase title="olakunlevpn_job_system_min_wallet_length" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The wallet address must be at least {length} characters long.]]></phrase>
   <phrase title="olakunlevpn_job_system_min_withdrawal_amount" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The minimum withdrawal amount is ${amount}]]></phrase>
   <phrase title="olakunlevpn_job_system_no_completed_jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[You have no completed jobs available at the moment.]]></phrase>
+  <phrase title="olakunlevpn_job_system_no_currencies" version_id="3000001" version_string="3.0.1"><![CDATA[There are currently no withdrawal channels available. Please check back later.]]></phrase>
   <phrase title="olakunlevpn_job_system_no_jobs_available" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[No jobs available at the moment.]]></phrase>
   <phrase title="olakunlevpn_job_system_no_pending_jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[You have no pending jobs available at the moment.]]></phrase>
   <phrase title="olakunlevpn_job_system_no_permission" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[You do not have permission]]></phrase>
@@ -71,12 +72,13 @@
   <phrase title="olakunlevpn_job_system_pending_message_moderator" version_id="2000003" version_string="2.0.3"><![CDATA[A new <a href="{url}" target="_blank">job: {job_title}</a> has been submitted by <b>{username}</b> and is currently pending your review.
 ]]></phrase>
   <phrase title="olakunlevpn_job_system_register" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Register]]></phrase>
-  <phrase title="olakunlevpn_job_system_rejected_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your <a href="{job_list_link}">job</a> submission for <strong>{job_title}</strong> has been rejected. Reason: <strong>{admin_comment}</strong>.
+  <phrase title="olakunlevpn_job_system_rejected_message" version_id="3000001" version_string="3.0.1"><![CDATA[Your <a href="{job_list_link}">job</a> submission for <strong><a href="{job_list_link}">{job_title}</a></strong> has been rejected. Reason: <strong>{admin_comment}</strong>.
 ]]></phrase>
   <phrase title="olakunlevpn_job_system_requested_submission_not_found" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The requested submission could not be found.]]></phrase>
   <phrase title="olakunlevpn_job_system_reward" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Reward]]></phrase>
   <phrase title="olakunlevpn_job_system_reward_for_job_completion" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[ Reward for job completion]]></phrase>
   <phrase title="olakunlevpn_job_system_reward_type" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Reward Type:]]></phrase>
+  <phrase title="olakunlevpn_job_system_select_payment_profile" version_id="3000000" version_string="3.0.0"><![CDATA[Please select a valid payment profile]]></phrase>
   <phrase title="olakunlevpn_job_system_status" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Status:]]></phrase>
   <phrase title="olakunlevpn_job_system_submission_approved_and_credited_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Submission has been approved and the user has been credited.]]></phrase>
   <phrase title="olakunlevpn_job_system_submission_approved_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your submission has been approved! Thank you for completing the job successfully.]]></phrase>
@@ -118,7 +120,9 @@
   <phrase title="olakunlevpn_job_system_withdrawal_history" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdrawal history]]></phrase>
   <phrase title="olakunlevpn_job_system_withdrawal_request_list" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdrawal request list]]></phrase>
   <phrase title="olakunlevpn_job_system_xfcoder_wallet_credit" version_id="2000003" version_string="2.0.3"><![CDATA[Wallet Credit]]></phrase>
+  <phrase title="olakunlevpn_job_system_xfcoder_wallet_insufficient_funds_please_topup_x" version_id="3000000" version_string="3.0.0"><![CDATA[You have insufficient funds in your wallet, please <a target="_blank" href="{walletLink}">top up at least {minTopupAmount}</a>.]]></phrase>
   <phrase title="olakunlevpn_jobsystem_withdrawal_currency_text" version_id="2000003" version_string="2.0.3"><![CDATA[Wallet to debit]]></phrase>
+  <phrase title="olakunlevpn_jobsystem_xfcoder_wallet_credit" version_id="3000000" version_string="3.0.0"><![CDATA[Wallet credit]]></phrase>
   <phrase title="option.olakunlevpn_job_system_enable_withdrawal" version_id="1020002" version_string="1.2.2"><![CDATA[Enable Withdrawal]]></phrase>
   <phrase title="option.olakunlevpn_job_system_enabled" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Enable or Disable the Entire Job System]]></phrase>
   <phrase title="option.olakunlevpn_job_system_job_list_design" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job List Design]]></phrase>

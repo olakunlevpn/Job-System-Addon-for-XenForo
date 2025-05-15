@@ -232,6 +232,7 @@ class Submission extends  AbstractController
         $defaultExtraData = [
             'depends_on_addon_id' => 'Olakunlevpn/JobSystem',
             'jobTitle' => $submission->Job->title,
+            'url' => \XF::app()->router('public')->buildLink('jobs/'.$submission->Job->job_id.'/view'),
         ];
 
         $extraData = array_merge($defaultExtraData, $extraData);

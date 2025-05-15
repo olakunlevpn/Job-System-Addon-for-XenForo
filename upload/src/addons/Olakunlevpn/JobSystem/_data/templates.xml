@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-  <template type="admin" title="olakunlevpn_admin_job_system_add" version_id="2000002" version_string="2.0.2"><![CDATA[<xf:title>Create or Edit Job</xf:title>
+  <template type="admin" title="olakunlevpn_admin_job_system_add" version_id="3000000" version_string="3.0.0"><![CDATA[<xf:title>Create or Edit Job</xf:title>
 
 <xf:form action="{{ link('jobs/save', $job) }}" class="block" ajax="true">
     <div class="block-container">
@@ -223,7 +223,7 @@
     <xf:else />
     <div class="blockMessage">No submissions have been submitted yet.</div>
 </xf:if>]]></template>
-  <template type="admin" title="olakunlevpn_job_system_delete" version_id="2000002" version_string="2.0.2"><![CDATA[ <xf:title>Delete Job: {{ $job.title }}</xf:title>
+  <template type="admin" title="olakunlevpn_job_system_delete" version_id="3000000" version_string="3.0.0"><![CDATA[ <xf:title>Delete Job: {{ $job.title }}</xf:title>
     <xf:form action="{{ link('jobs/delete', $job) }}" class="block" ajax="true" method="post">
         <div class="block-container">
             <div class="block-body">
@@ -259,7 +259,7 @@
 
     <input type="hidden" name="_xfToken" value="{{ $xf.csrf_token }}" />
 </form>]]></template>
-  <template type="admin" title="olakunlevpn_job_system_submission_view" version_id="2000002" version_string="2.0.2"><![CDATA[<xf:title>Submission Details</xf:title>
+  <template type="admin" title="olakunlevpn_job_system_submission_view" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>Submission Details</xf:title>
 <xf:css src="styles.css"  />
 <div class="block">
     <xf:if is="!empty($submission) &&  $submission->status === 'rejected'">
@@ -472,7 +472,7 @@
 </xf:if>
 
 ]]></template>
-  <template type="admin" title="styles.css" version_id="2000002" version_string="2.0.2"><![CDATA[.text-2xl {
+  <template type="admin" title="styles.css" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[.text-2xl {
      font-size: 17px;
 }
 
@@ -485,7 +485,7 @@
      margin-top: 5px !important;
 }
 ]]></template>
-  <template type="public" title="alert_job_submission_tasks_approved" version_id="2000002" version_string="2.0.2"><![CDATA[{{phrase('olakunlevpn_job_system_approved_message',
+  <template type="public" title="alert_job_submission_tasks_approved" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[{{phrase('olakunlevpn_job_system_approved_message',
     {
         'job_list_link' :link('jobs/list'),
         'job_title' : $jobTitle,
@@ -500,26 +500,26 @@
         'username': $extra.username
     })
 }}]]></template>
-  <template type="public" title="alert_job_submission_tasks_pending" version_id="2000002" version_string="2.0.2"><![CDATA[{{phrase('olakunlevpn_job_system_pending_message',
+  <template type="public" title="alert_job_submission_tasks_pending" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[{{phrase('olakunlevpn_job_system_pending_message',
     {
         'job_list_link': link('jobs/list'),
         'job_title': $extra.jobTitle
     })
 }}]]></template>
-  <template type="public" title="alert_job_submission_tasks_rejected" version_id="2000002" version_string="2.0.2"><![CDATA[{{phrase('olakunlevpn_job_system_rejected_message',
+  <template type="public" title="alert_job_submission_tasks_rejected" version_id="3000001" version_string="3.0.1"><![CDATA[{{phrase('olakunlevpn_job_system_rejected_message',
     {
-        'job_list_link': link('jobs/list'),
+        'job_list_link': $extra.url,
         'job_title': $extra.jobTitle,
         'admin_comment': $extra.adminComment
     })
 }}]]></template>
-  <template type="public" title="alert_job_submission_withdraw_completed" version_id="2000002" version_string="2.0.2"><![CDATA[{{phrase('olakunlevpn_job_system_withdraw_completed',
+  <template type="public" title="alert_job_submission_withdraw_completed" version_id="3000000" version_string="3.0.0"><![CDATA[{{phrase('olakunlevpn_job_system_withdraw_completed',
     {
         'amount': $content.amount,
         'payment_profile_data': $content.payment_profile_data
     })
 }}]]></template>
-  <template type="public" title="alert_job_submission_withdraw_rejected" version_id="2000002" version_string="2.0.2"><![CDATA[{{phrase('olakunlevpn_job_system_withdraw_rejected',
+  <template type="public" title="alert_job_submission_withdraw_rejected" version_id="3000000" version_string="3.0.0"><![CDATA[{{phrase('olakunlevpn_job_system_withdraw_rejected',
     {
       'amount': $content.amount
     })
@@ -626,11 +626,11 @@
         </div>
     </xf:sidenav>
 </xf:macro>]]></template>
-  <template type="public" title="olakunlevpn_job_system_alert_application_approved" version_id="2000002" version_string="2.0.2"><![CDATA[{{ phrase('olakunlevpn_job_system_application_approved', {
+  <template type="public" title="olakunlevpn_job_system_alert_application_approved" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[{{ phrase('olakunlevpn_job_system_application_approved', {
   'job_list_link': link('jobs/list'),
   'jobTitle': $jobTitle
 }) }}]]></template>
-  <template type="public" title="olakunlevpn_job_system_alert_application_rejected" version_id="2000002" version_string="2.0.2"><![CDATA[{{ phrase('olakunlevpn_job_system_application_rejected', {
+  <template type="public" title="olakunlevpn_job_system_alert_application_rejected" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[{{ phrase('olakunlevpn_job_system_application_rejected', {
     'job_list_link': link('jobs/list'),
     'jobTitle': $jobTitle
 }) }}]]></template>
@@ -649,7 +649,7 @@
 
 </div>
 </div>]]></template>
-  <template type="public" title="olakunlevpn_job_system_completed" version_id="2000003" version_string="2.0.3"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_completed" version_id="3000000" version_string="3.0.0"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
 <xf:css src="styles.css" />
 <xf:set var="$currentUrl" value="{$xf.uri}" />
 <xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
@@ -743,7 +743,7 @@
     <xf:else />
     <div class="blockMessage">{{ phrase('olakunlevpn_job_system_no_jobs_available') }}</div>
 </xf:if>]]></template>
-  <template type="public" title="olakunlevpn_job_system_job_apply_job_macro" version_id="2000002" version_string="2.0.2"><![CDATA[<xf:macro name="job_apply_job" arg-job="$job">
+  <template type="public" title="olakunlevpn_job_system_job_apply_job_macro" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:macro name="job_apply_job" arg-job="$job">
     <xf:if is="$xf.options.olakunlevpn_job_system_pre_approve_required">
             <xf:if is="!$job.Application">
                 <a href="{{ link('jobs/apply-confirmation', $job) }}" data-xf-click="overlay" class="button text-2xl">
@@ -928,7 +928,7 @@
         </div>
     </div>
 </xf:macro>]]></template>
-  <template type="public" title="olakunlevpn_job_system_pending" version_id="2000003" version_string="2.0.3"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_pending" version_id="3000000" version_string="3.0.0"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
 <xf:css src="styles.css"  />
 <xf:set var="$currentUrl" value="{$xf.uri}" />
 <xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
@@ -1023,7 +1023,7 @@
 </xf:if>
 
 ]]></template>
-  <template type="public" title="olakunlevpn_job_system_view" version_id="2000003" version_string="2.0.3"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_view" version_id="3000000" version_string="3.0.0"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
 <xf:css src="styles.css" />
 <xf:js src="xf/attachment_manager-compiled.js" />
 <xf:set var="$currentUrl" value="{$xf.uri}" />
@@ -1056,14 +1056,19 @@
             <div class="text-2xl block-row ">
                 {{ phrase('olakunlevpn_job_system_reward_type') }}
                 <xf:if is="$job.reward_type == 'trophy'">
-                   {{ phrase('olakunlevpn_job_system_trophy') }}
-                <xf:else />
-                  {{ phrase('olakunlevpn_job_system_db_credits') }}
-               </xf:if>
+                        {{ phrase('olakunlevpn_job_system_trophy') }}
+                        <xf:elseif is="$job.reward_type == 'xfcoder_wallet_credit'" />
+                        {{ phrase('olakunlevpn_job_system_xfcoder_wallet_credit') }}
+                        <xf:else />
+                        {{ phrase('olakunlevpn_job_system_db_credits') }}
+                    </xf:if>
             </div>
 
             <div class="text-2xl block-row">
-                {{ phrase('olakunlevpn_job_system_reward') }}: {{ ($job.reward_type == 'db_credits' ? $job.reward_amount .' '.$job.RewardCurrency.title  : $job.Trophy.title) }}
+                {{ phrase('olakunlevpn_job_system_reward') }}: 
+				{{ ($job.reward_type == 'db_credits' ? 
+				 $job.reward_amount .' '.$job.RewardCurrency.title  : 
+				( $job.reward_type == 'xfcoder_wallet_credit' ? $submission.Job.reward_amount :$job.Trophy.title)) }}
             </div>
 
             <hr>
@@ -1200,7 +1205,7 @@
         </div>
     </div>
 </div>]]></template>
-  <template type="public" title="olakunlevpn_job_system_welcome" version_id="2000002" version_string="2.0.2"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_welcome_title') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_welcome" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_welcome_title') }}</xf:title>
 <xf:set var="$currentUrl" value="{$xf.uri}" />
 <xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
 
@@ -1258,7 +1263,7 @@
         </div>
     </div>
 </div>]]></template>
-  <template type="public" title="olakunlevpn_job_system_withdrawal_index" version_id="2000003" version_string="2.0.3"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_withdraw') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_withdrawal_index" version_id="3000001" version_string="3.0.1"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_withdraw') }}</xf:title>
 
 <xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
 
@@ -1302,7 +1307,7 @@
         </xf:if>
     </div>
 </div>]]></template>
-  <template type="public" title="olakunlevpn_job_system_withdrawal_list" version_id="2000002" version_string="2.0.2"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_withdrawal_request_list') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_withdrawal_list" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_withdrawal_request_list') }}</xf:title>
 
 <xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{ $currentUrl }}" />
 
@@ -1359,7 +1364,7 @@
         </div>
 </div>
 ]]></template>
-  <template type="public" title="push_job_submission_tasks_approved" version_id="2000002" version_string="2.0.2"><![CDATA[{{phrase('olakunlevpn_job_system_submission_tasks_approved',
+  <template type="public" title="push_job_submission_tasks_approved" version_id="3000000" version_string="3.0.0"><![CDATA[{{phrase('olakunlevpn_job_system_submission_tasks_approved',
 {
 'job_list_link': link('jobs/list'),
 'job_title': $extra.jobTitle,
@@ -1372,17 +1377,18 @@
 'job_title': $extra.jobTitle
 })
 }}]]></template>
-  <template type="public" title="push_job_submission_tasks_pending" version_id="2000002" version_string="2.0.2"><![CDATA[{{phrase('olakunlevpn_job_system_submission_tasks_pending',
+  <template type="public" title="push_job_submission_tasks_pending" version_id="3000000" version_string="3.0.0"><![CDATA[{{phrase('olakunlevpn_job_system_submission_tasks_pending',
 {
     'job_list_link': link('jobs/list'),
     'job_title': $extra.jobTitle
 })
 }}]]></template>
-  <template type="public" title="push_job_submission_tasks_rejected" version_id="2000002" version_string="2.0.2"><![CDATA[{{phrase('olakunlevpn_job_system_submission_tasks_rejected',
+  <template type="public" title="push_job_submission_tasks_rejected" version_id="3000000" version_string="3.0.0"><![CDATA[{{phrase('olakunlevpn_job_system_submission_tasks_rejected',
     {
         'job_list_link': link('jobs/list'),
         'job_title': $extra.jobTitle,
         'admin_comment': $extra.adminComment
     })
 }}]]></template>
+  <template type="public" title="style.css" version_id="3000000" version_string="3.0.0"><![CDATA[]]></template>
 </templates>

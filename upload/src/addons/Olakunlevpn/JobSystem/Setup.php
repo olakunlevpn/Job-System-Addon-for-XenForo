@@ -2,7 +2,6 @@
 
 namespace Olakunlevpn\JobSystem;
 
-use DBTech\Credits\Repository\CurrencyRepository;
 use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUninstallTrait;
@@ -29,10 +28,6 @@ class Setup extends AbstractSetup
        $this->applyTables();
 
         $this->applyGlobalPermission('attachment', 'upload', 'job_system_submissions');
-
-        $this->rebuildDragonByteCreditsCaches();
-
-
 
 
     }
@@ -69,9 +64,6 @@ class Setup extends AbstractSetup
         });
 
 
-        $this->rebuildDragonByteCreditsCaches();
-
-
 
     }
 
@@ -85,7 +77,6 @@ class Setup extends AbstractSetup
             $sm->renameTable('xf_job_system_applications', 'xf_job_system_apply_applications');
         }
 
-        $this->rebuildDragonByteCreditsCaches();
 
     }
 
@@ -96,7 +87,7 @@ class Setup extends AbstractSetup
         {
             $table->addColumn('attach_count', 'int')->setDefault(0);
         });
-        $this->rebuildDragonByteCreditsCaches();
+
 
     }
 
@@ -111,6 +102,14 @@ class Setup extends AbstractSetup
             $table->changeColumn('reward_type', 'enum', ['db_credits', 'trophy', 'xfcoder_wallet_credit'])
                 ->nullable(false)
                 ->setDefault('trophy');
+        });
+    }
+
+    public function upgrade3000001Step1()
+    {
+        $this->schemaManager()->alterTable('xf_job_system_withdraw_request', function(Alter $table)
+        {
+            $table->changeColumn('currency_id', 'varchar', 50)->nullable(false);
         });
     }
 
@@ -141,7 +140,6 @@ class Setup extends AbstractSetup
             $sm->dropTable($tableName);
         }
         $this->uninstallContentTypeDataForAddon();
-        $this->rebuildDragonByteCreditsCaches();
     }
 
 
@@ -316,19 +314,6 @@ class Setup extends AbstractSetup
         }
     }
 
-
-    /**
-     * @return void
-     */
-    protected function rebuildDragonByteCreditsCaches()
-    {
-        $sm = $this->schemaManager();
-        if ($sm->tableExists('xf_dbtech_credits_event')) {
-            /** @var CurrencyRepository::class $eventRepo */
-            $currencyRepo = \XF::repository(CurrencyRepository::class);
-            $currencyRepo->rebuildCache();
-        }
-    }
 
 
 

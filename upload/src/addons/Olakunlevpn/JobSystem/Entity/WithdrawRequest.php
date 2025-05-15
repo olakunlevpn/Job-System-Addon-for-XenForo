@@ -2,7 +2,7 @@
 
 namespace Olakunlevpn\JobSystem\Entity;
 
-use DBTech\Credits\Entity\Currency;
+use Olakunlevpn\JobSystem\Helper\JobSystemHelper;
 use XF;
 use XF\Entity\ApprovalQueue;
 use XF\Entity\User;
@@ -13,7 +13,7 @@ use XF\Mvc\Entity\Structure;
  * COLUMNS
  * @property int           withdraw_request_id
  * @property int           user_id
- * @property int           currency_id
+ * @property string        currency_id
  * @property string        payment_profile
  * @property string        payment_profile_data
  * @property float         amount
@@ -23,7 +23,6 @@ use XF\Mvc\Entity\Structure;
  *
  * RELATIONS
  * @property User          User
- * @property Currency      Currency
  * @property ApprovalQueue ApprovalQueue
  */
 class WithdrawRequest extends Entity
@@ -59,6 +58,27 @@ class WithdrawRequest extends Entity
         }
     }
 
+    public function getCurrency()
+    {
+        if (JobSystemHelper::ensureDbCreditAddonInstalled() && is_numeric($this->currency_id)) {
+            return \XF::em()->find('DBTech\Credits:Currency', $this->currency_id);
+        }
+
+        if ($this->currency_id == 'xfcoder_wallet_credit') {
+            return [
+                'title' => \XF::phrase('olakunlevpn_jobsystem_xfcoder_wallet_credit'),
+                'column' => 'xfcoder_wallet_credit'
+            ];
+        }
+
+        return [
+            'title' => 'Unknown',
+            'column' => null
+        ];
+    }
+
+
+
     /**
      *
      */
@@ -68,10 +88,11 @@ class WithdrawRequest extends Entity
         $deletionChange = $this->isStateChanged('status', 'rejected');
 
         if ($approvalChange === 'enter' && $this->isInsert()) {
-            $currencyColumn = $this->Currency->column;
+            $currencyColumn = $this->Currency;
+            \XF::logError($currencyColumn['column']);
 
             $user = $this->User;
-            $user->set($currencyColumn, $user->get($currencyColumn) - $this->amount);
+            $user->set($currencyColumn['column'], $user->get($currencyColumn['column']) - $this->amount);
             $user->save(false);
 
             if ($user->hasErrors()) {
@@ -90,10 +111,10 @@ class WithdrawRequest extends Entity
             }
 
             if ($deletionChange === 'enter') {
-                $currencyColumn = $this->Currency->column;
+                $currencyColumn = $this->Currency;
 
                 $user = $this->User;
-                $user->set($currencyColumn, $user->get($currencyColumn) + $this->amount);
+                $user->set($currencyColumn['column'], $user->get($currencyColumn['column']) + $this->amount);
                 $user->save(false);
             }
         }
@@ -112,7 +133,7 @@ class WithdrawRequest extends Entity
         $structure->columns = [
             'withdraw_request_id' => ['type' => self::UINT, 'autoIncrement' => true],
             'user_id' => ['type' => self::UINT, 'required' => true],
-            'currency_id' => ['type' => self::UINT, 'required' => true],
+            'currency_id' => ['type' => self::STR, 'required' => true],
             'payment_profile' => ['type' => self::STR, 'required' => true],
             'payment_profile_data' => ['type' => self::STR, 'required' => true],
             'amount' => ['type' => self::UINT, 'required' => true, 'min' => 1],
@@ -130,12 +151,7 @@ class WithdrawRequest extends Entity
                 'conditions' => 'user_id',
                 'primary' => true
             ],
-            'Currency' => [
-                'entity' => 'DBTech\Credits:Currency',
-                'type' => self::TO_ONE,
-                'conditions' => 'currency_id',
-                'primary' => true
-            ],
+
             'ApprovalQueue' => [
                 'entity' => 'XF:ApprovalQueue',
                 'type' => self::TO_ONE,
@@ -146,8 +162,19 @@ class WithdrawRequest extends Entity
                 'primary' => true
             ]
         ];
+
+        if (JobSystemHelper::ensureDbCreditAddonInstalled()) {
+            $structure->relations['Currency'] = [
+                'entity' => 'DBTech\Credits:Currency',
+                'type' => self::TO_ONE,
+                'conditions' => 'currency_id',
+                'primary' => true
+            ];
+        }
+
         $structure->getters = [
-            'status_phrase' => false
+            'status_phrase' => false,
+            'Currency' => true
         ];
 
         return $structure;

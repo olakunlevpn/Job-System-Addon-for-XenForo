@@ -82,11 +82,7 @@ class Job extends Entity
                     ['user_id', '=', \XF::visitor()->user_id]
                 ]
             ],
-            'RewardCurrency' => [
-                'entity' => 'DBTech\Credits:Currency',
-                'type' => self::TO_ONE,
-                'conditions' => [['currency_id', '=', '$reward_currency']]
-            ],
+
             'Trophy' => [
                 'entity' => 'XF:Trophy',
                 'type' => self::TO_ONE,

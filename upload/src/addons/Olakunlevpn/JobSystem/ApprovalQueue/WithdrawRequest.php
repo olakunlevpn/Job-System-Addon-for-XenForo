@@ -26,7 +26,7 @@ class WithdrawRequest extends AbstractHandler
      */
     public function getEntityWith()
     {
-        return ['User', 'Currency'];
+        return ['User'];
     }
 
     /**
