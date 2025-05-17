@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-  <template type="admin" title="olakunlevpn_admin_job_system_add" version_id="3000000" version_string="3.0.0"><![CDATA[<xf:title>Create or Edit Job</xf:title>
+  <template type="admin" title="olakunlevpn_admin_job_system_add" version_id="3000300" version_string="3.0.3"><![CDATA[<xf:title>Create or Edit Job</xf:title>
 
 <xf:form action="{{ link('jobs/save', $job) }}" class="block" ajax="true">
     <div class="block-container">
@@ -34,18 +34,25 @@
                 </div>
 
                 <div x-show="rewardType == 'db_credits'">
-                    <xf:selectrow name="reward_currency" value="{$job.reward_currency}" label="Reward Currency">
-                        <xf:foreach loop="$currencies" value="$currency">
-                            <xf:option value="{{ $currency.value }}">{{ $currency.label }}</xf:option>
-                        </xf:foreach>
-                    </xf:selectrow>
+                    <xf:formrow rowtype="input" label="Reward Amount">
+                        <div class="inputGroup">
+                            <xf:numberbox name="db_credits_reward_amount" value="{$job.reward_amount}" label="Reward Amount"  min="0" step="any" />
+                            <span class="inputGroup-splitter"></span>
+                            <xf:select name="reward_currency" value="{$job.reward_currency}" label="Reward Currency">
+                                <xf:foreach loop="$currencies" value="$currency">
+                                    <xf:option value="{{ $currency.value }}">{{ $currency.label }}</xf:option>
+                                </xf:foreach>
+                            </xf:select>
+                        </div>
+                    </xf:formrow>
 
-                    <xf:textboxrow name="reward_amount" value="{$job.reward_amount}" label="Reward Amount" />
+
+
                 </div>
 
 
                 <div x-show="rewardType == 'xfcoder_wallet_credit'">
-                    <xf:textboxrow name="reward_amount" value="{$job.reward_amount}" label="Reward Amount" />
+                    <xf:textboxrow name="xfcoder_reward_amount" value="{$job.reward_amount}" label="Reward Amount" />
                 </div>
 
 
@@ -73,7 +80,7 @@
     </div>
 </xf:form>
 ]]></template>
-  <template type="admin" title="olakunlevpn_admin_job_system_list" version_id="2010000" version_string="2.1.0"><![CDATA[<xf:title>Manage Jobs</xf:title>
+  <template type="admin" title="olakunlevpn_admin_job_system_list" version_id="3000300" version_string="3.0.3"><![CDATA[<xf:title>Manage Jobs</xf:title>
 
 
 <xf:pageaction>
@@ -121,11 +128,21 @@
                                 </xf:if>
                             </xf:cell>
                             <xf:cell>
+                                <div class="block">
                                 <xf:if is="$job.active">
                                     <span class="label label--green">Active</span>
                                     <xf:else />
                                     <span class="label label--error">Inactive</span>
                                 </xf:if>
+                                    <div style="display: block;">
+                                        <xf:if is="$job.max_completions > 0">
+                                            {{ phrase('olakunlevpn_job_system_admin_spots_remaining', {'remaining': $job.getRemainingSpots(), 'total': $job.max_completions}) }}
+                                            <xf:else />
+                                            {{ phrase('olakunlevpn_job_system_spots_unlimited') }}
+                                        </xf:if>
+                                    </div>
+
+                             </div>
                             </xf:cell>
                             <xf:cell>
                                     <xf:date time="{$job.created_date}" />
@@ -524,7 +541,7 @@
       'amount': $content.amount
     })
 }}]]></template>
-  <template type="public" title="approval_item_job_application" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[<xf:css src="styles.css" />
+  <template type="public" title="approval_item_job_application" version_id="3000200" version_string="3.0.2"><![CDATA[<xf:css src="styles.css" />
 <xf:set var="$messageHtml">
     <h5 class="no-margin">
         <strong>{{ phrase('olakunlevpn_job_system_application_id') }}:</strong>
@@ -538,18 +555,22 @@
         <strong>{{ phrase('olakunlevpn_job_system_reward_type') }}</strong>
         <strong>
             <xf:if is="$content.Job.reward_type == 'trophy'">
-               {{ phrase('olakunlevpn_job_system_trophy') }}
-            <xf:else />
+                {{ phrase('olakunlevpn_job_system_trophy') }}
+                <xf:elseif is="$content.Job.reward_type == 'xfcoder_wallet_credit'" />
+                {{ phrase('olakunlevpn_job_system_xfcoder_wallet_credit') }}
+                <xf:else />
                 {{ phrase('olakunlevpn_job_system_db_credits') }}
-        </xf:if>
+            </xf:if>
           </strong>
     </h5>
 
     <h5 class="no-margin">
         <strong>{{ phrase('olakunlevpn_job_system_reward') }}:</strong>
         <strong>
-             {{ ($content.Job.reward_type == 'db_credits' ? $content.Job.reward_amount .' '.$content.Job.RewardCurrency.title  : $content.Job.Trophy.title) }}
-        </strong>
+			{{ ($content.Job.reward_type == 'db_credits' ? 
+				 $content.Job.reward_amount .' '.$content.Job.RewardCurrency.title  : 
+				( $content.Job.reward_type == 'xfcoder_wallet_credit' ? $content.Job.reward_amount :$content.Job.Trophy.title)) }}
+                    </strong>
     </h5>
 </xf:set>
 
@@ -649,7 +670,7 @@
 
 </div>
 </div>]]></template>
-  <template type="public" title="olakunlevpn_job_system_completed" version_id="3000000" version_string="3.0.0"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_completed" version_id="3000200" version_string="3.0.2"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
 <xf:css src="styles.css" />
 <xf:set var="$currentUrl" value="{$xf.uri}" />
 <xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
@@ -668,7 +689,7 @@
                 </div>
                 <div class="block-footer">
                     <div class="text-2xl">
-                        {{ phrase('olakunlevpn_job_system_status') }}:
+                        {{ phrase('olakunlevpn_job_system_status') }}
                         <xf:if is="$job.Job.active">
                             <span class="label label--lightGreen">{{ phrase('olakunlevpn_job_system_job_active') }}</span>
                             <xf:else />
@@ -773,7 +794,7 @@
     </xf:if>
 </xf:macro>
 ]]></template>
-  <template type="public" title="olakunlevpn_job_system_job_list_macro" version_id="2000003" version_string="2.0.3"><![CDATA[<xf:macro
+  <template type="public" title="olakunlevpn_job_system_job_list_macro" version_id="3000200" version_string="3.0.2"><![CDATA[<xf:macro
         name="job_list_simple" arg-job="$job" arg-application="$application">
     <div class="block">
         <div class="block-container">
@@ -786,8 +807,22 @@
                 </div>
             </div>
             <div class="block-footer">
+
+                    <div class="job-spots-info text-2xl margin-top-10">
+                        <xf:if is="$job.max_completions > 0">
+                            <div class="job-spots-remaining">
+                                {{ phrase('olakunlevpn_job_system_spots_remaining', {'remaining': $job.getRemainingSpots(), 'total': $job.max_completions}) }}
+                            </div>
+                            <xf:else />
+                            <div class="job-spots-unlimited">
+                                {{ phrase('olakunlevpn_job_system_spots_unlimited') }}
+                            </div>
+                        </xf:if>
+                    </div>
+
+
                 <div class="text-2xl margin-top-10">
-                    {{ phrase('olakunlevpn_job_system_status') }}:
+                    {{ phrase('olakunlevpn_job_system_status') }}
                     <xf:if is="$job.active">
                         <span class="label label--lightGreen">{{ phrase('olakunlevpn_job_system_job_active') }}</span>
                         <xf:else />
@@ -796,7 +831,7 @@
                 </div>
 
                 <div class="text-2xl margin-top-10 margin-bottom-10">
-                    {{ phrase('olakunlevpn_job_system_reward_type') }}:
+                    {{ phrase('olakunlevpn_job_system_reward_type') }}
                     <xf:if is="$job.reward_type == 'trophy'">
                         {{ phrase('olakunlevpn_job_system_trophy') }}
                         <xf:elseif is="$job.reward_type == 'xfcoder_wallet_credit'" />
@@ -838,7 +873,20 @@
                 </div>
             </div>
             <div class="block-footer">
-                <div class="job-info-container">
+                <div class="job-spots-info text-2xl margin-top-10">
+                    <div class="job-info-container">
+                        <xf:if is="$job.max_completions > 0">
+                            <div class="job-spots-remaining">
+                                {{ phrase('olakunlevpn_job_system_spots_remaining', {'remaining': $job.getRemainingSpots(), 'total': $job.max_completions}) }}
+                            </div>
+                            <xf:else />
+                            <div class="job-spots-unlimited">
+                                {{ phrase('olakunlevpn_job_system_spots_unlimited') }}
+                            </div>
+                        </xf:if>
+                    </div>
+
+                    <div class="job-info-container">
                     <div class="job-details text-2xl">
                         <span class="job-status">
                             {{ phrase('olakunlevpn_job_system_status') }}
@@ -850,7 +898,7 @@
                         </span>
                         <span class="job-status-devider">|</span>
                         <span class="job-status">
-                            {{ phrase('olakunlevpn_job_system_reward_type') }}:
+                            {{ phrase('olakunlevpn_job_system_reward_type') }}
                             <xf:if is="$job.reward_type == 'trophy'">
                                 {{ phrase('olakunlevpn_job_system_trophy') }}
                             <xf:elseif is="$job.reward_type == 'xfcoder_wallet_credit'" />
@@ -872,7 +920,9 @@
                         </span>
                     </div>
 
+
                     <xf:macro template="olakunlevpn_job_system_job_apply_job_macro" name="job_apply_job" arg-job="{{$job}}" arg-application="{{$job->Application}}" />
+                </div>
                 </div>
             </div>
         </div>
@@ -928,7 +978,7 @@
         </div>
     </div>
 </xf:macro>]]></template>
-  <template type="public" title="olakunlevpn_job_system_pending" version_id="3000000" version_string="3.0.0"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_pending" version_id="3000200" version_string="3.0.2"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
 <xf:css src="styles.css"  />
 <xf:set var="$currentUrl" value="{$xf.uri}" />
 <xf:macro template="job_system_sidebar_macros" name="JobSystemNav" arg-current="{{$currentUrl }}" />
@@ -947,7 +997,7 @@
                 </div>
                 <div class="block-footer">
                     <div class="text-2xl">
-                        {{ phrase('olakunlevpn_job_system_status') }}:
+                        {{ phrase('olakunlevpn_job_system_status') }}
                         <xf:if is="$job.Job.active">
                             <span class="label label--lightGreen">{{ phrase('olakunlevpn_job_system_job_active') }}</span>
                             <xf:else />
@@ -1023,7 +1073,7 @@
 </xf:if>
 
 ]]></template>
-  <template type="public" title="olakunlevpn_job_system_view" version_id="3000000" version_string="3.0.0"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
+  <template type="public" title="olakunlevpn_job_system_view" version_id="3000200" version_string="3.0.2"><![CDATA[<xf:title>{{ phrase('olakunlevpn_job_system_available_jobs') }}</xf:title>
 <xf:css src="styles.css" />
 <xf:js src="xf/attachment_manager-compiled.js" />
 <xf:set var="$currentUrl" value="{$xf.uri}" />
@@ -1126,6 +1176,17 @@
                             </div>
                         </div>
                     </xf:if>
+
+
+                        <xf:if is="$job.max_completions > 0 && $job.getRemainingSpots() <= 0">
+                            <div class="text-2xl block-row">
+                            <div class="job-spots-none blockMessage blockMessage--error">
+                                {{ phrase('olakunlevpn_job_system_no_spots_available') }}
+                            </div>
+                            </div>
+                        </xf:if>
+
+
 
                     <xf:form action="{{ link('jobs/submit', $job) }}" enctype="multipart/form-data" class="block"
                              data-xf-init="attachment-manager" data-xf-click="overlay" ajax="true">

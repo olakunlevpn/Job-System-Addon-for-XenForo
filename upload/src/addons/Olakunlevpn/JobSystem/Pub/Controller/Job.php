@@ -83,7 +83,7 @@ class Job extends AbstractController
         }
 
         if(JobSystemHelper::ensureXFCoderWalletAddonInstalled()) {
-            $currenciesList = JobSystemHelper::getXfcoderWalletCurrecies() + $currenciesList;
+            $currenciesList = JobSystemHelper::getXfcoderWalletCurrecies(true) + $currenciesList;
         }
 
 
@@ -174,6 +174,25 @@ class Job extends AbstractController
         $jobId = $params->job_id;
         $job = $this->assertJobExists($jobId);
 
+        if ($job->max_completions > 0) {
+            $approvedSubmissionsCount = $this->finder('Olakunlevpn\JobSystem:Submission')
+                ->where('job_id', $job->job_id)
+                ->where('status', 'approved')
+                ->total();
+
+            if ($approvedSubmissionsCount >= $job->max_completions) {
+                return $this->error(\XF::phrase('olakunlevpn_job_system_max_completions_reached'));
+            }
+
+            \XF::logError($approvedSubmissionsCount);
+
+        }
+
+
+
+
+
+
         $input = $this->filter([
             'submission_text' => 'str',
             'submission_url' => 'str',
@@ -243,6 +262,22 @@ class Job extends AbstractController
         if ($job->Application) {
             return $this->message('You have already applied for this job.');
         }
+
+        if ($job->max_completions > 0) {
+            $approvedSubmissionsCount = \XF::finder('Olakunlevpn\JobSystem:Submission')
+                ->where('job_id', $job->job_id)
+                ->whereOr([
+                    ['status', '=', 'approved'],
+                    ['status', '=', 'pending']
+                ])
+                ->total();
+
+            if ($approvedSubmissionsCount >= $job->max_completions) {
+                throw new \XF\PrintableException(\XF::phrase('olakunlevpn_job_system_max_completions_reached'));
+            }
+        }
+
+
 
 
         $application = $this->em()->create('Olakunlevpn\JobSystem:Application');

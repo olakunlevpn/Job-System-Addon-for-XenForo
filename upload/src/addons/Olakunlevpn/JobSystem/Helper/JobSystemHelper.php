@@ -38,8 +38,11 @@ class JobSystemHelper
 
     }
 
-    public static function getXfcoderWalletCurrecies()
+    public static function getXfcoderWalletCurrecies($key= false)
     {
+        if($key){
+           return ['xfcoder_wallet_credit' => \XF::phrase('olakunlevpn_jobsystem_xfcoder_wallet_credit')];
+        }
         $xfcoderWallet = [
             'xfcoder_wallet_credit' => [
                 'value' => 'xfcoder_wallet_credit',

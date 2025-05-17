@@ -120,27 +120,32 @@ class Job extends AbstractController
             'max_completions' => 'uint',
             'type' => 'str',
             'has_attachment' => 'bool',
-            'active' => 'bool'
+            'active' => 'bool',
         ]);
 
-        \XF::logError($input['reward_type']);
+
 
         if ($input['reward_type'] === 'db_credits') {
 
             $creditSpecificInput = $this->filter([
-                'reward_amount' => 'float',
+                'db_credits_reward_amount' => 'float',
                 'reward_currency' => 'str'
             ]);
 
-            $input = array_merge($input, $creditSpecificInput);
 
-        }else if ($input['reward_type'] === 'xfcoder_wallet_credit') {
+            $input['reward_amount'] = $creditSpecificInput['db_credits_reward_amount'];
+            $input = array_merge($input, $creditSpecificInput);
+            unset($input['db_credits_reward_amount']);
+
+        } else if ($input['reward_type'] === 'xfcoder_wallet_credit') {
 
             $creditSpecificInput = $this->filter([
-                'reward_amount' => 'float',
+                'xfcoder_reward_amount' => 'float',
             ]);
 
-          $input = array_merge($input, $creditSpecificInput);
+            $input['reward_amount'] = $creditSpecificInput['xfcoder_reward_amount'];
+            $input = array_merge($input, $creditSpecificInput);
+            unset($input['xfcoder_reward_amount']);
 
         } else if ($input['reward_type'] === 'trophy') {
 

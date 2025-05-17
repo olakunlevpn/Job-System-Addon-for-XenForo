@@ -12,6 +12,7 @@
   <phrase title="nav.OlakunlevpnJobSystemWithdrawal" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw]]></phrase>
   <phrase title="nav.OlakunlevpnJobSystemWithdrawalList" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Withdraw History]]></phrase>
   <phrase title="olakunlevpn_job_system_admin_comments" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Administrator Comment]]></phrase>
+  <phrase title="olakunlevpn_job_system_admin_spots_remaining" version_id="3000300" version_string="3.0.3"><![CDATA[{remaining} of {total} spots available]]></phrase>
   <phrase title="olakunlevpn_job_system_amount" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Amount]]></phrase>
   <phrase title="olakunlevpn_job_system_application_admin_comments" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Administrator Comment]]></phrase>
   <phrase title="olakunlevpn_job_system_application_apply" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Apply]]></phrase>
@@ -53,6 +54,7 @@
   <phrase title="olakunlevpn_job_system_job_title" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Job Title]]></phrase>
   <phrase title="olakunlevpn_job_system_log_in" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Log in]]></phrase>
   <phrase title="olakunlevpn_job_system_login_or_register" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Please login or register to participate.]]></phrase>
+  <phrase title="olakunlevpn_job_system_max_completions_reached" version_id="3000200" version_string="3.0.2"><![CDATA[This job has reached its maximum number of participants. No more applications can be accepted at this time. Please check other available jobs.]]></phrase>
   <phrase title="olakunlevpn_job_system_menu" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Menu]]></phrase>
   <phrase title="olakunlevpn_job_system_min_wallet_length" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The wallet address must be at least {length} characters long.]]></phrase>
   <phrase title="olakunlevpn_job_system_min_withdrawal_amount" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[The minimum withdrawal amount is ${amount}]]></phrase>
@@ -61,6 +63,7 @@
   <phrase title="olakunlevpn_job_system_no_jobs_available" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[No jobs available at the moment.]]></phrase>
   <phrase title="olakunlevpn_job_system_no_pending_jobs" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[You have no pending jobs available at the moment.]]></phrase>
   <phrase title="olakunlevpn_job_system_no_permission" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[You do not have permission]]></phrase>
+  <phrase title="olakunlevpn_job_system_no_spots_available" version_id="3000200" version_string="3.0.2"><![CDATA[Maximum participants reached. This job is no longer accepting new submissions.]]></phrase>
   <phrase title="olakunlevpn_job_system_none" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[None]]></phrase>
   <phrase title="olakunlevpn_job_system_page_selected_withdraw" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[withdraw]]></phrase>
   <phrase title="olakunlevpn_job_system_payment_profile" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Payment profile]]></phrase>
@@ -79,6 +82,9 @@
   <phrase title="olakunlevpn_job_system_reward_for_job_completion" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[ Reward for job completion]]></phrase>
   <phrase title="olakunlevpn_job_system_reward_type" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Reward Type:]]></phrase>
   <phrase title="olakunlevpn_job_system_select_payment_profile" version_id="3000000" version_string="3.0.0"><![CDATA[Please select a valid payment profile]]></phrase>
+  <phrase title="olakunlevpn_job_system_spots_remaining" version_id="3000200" version_string="3.0.2"><![CDATA[Participants: {remaining} of {total} spots available
+]]></phrase>
+  <phrase title="olakunlevpn_job_system_spots_unlimited" version_id="3000200" version_string="3.0.2"><![CDATA[Participants: Unlimited spots available]]></phrase>
   <phrase title="olakunlevpn_job_system_status" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Status:]]></phrase>
   <phrase title="olakunlevpn_job_system_submission_approved_and_credited_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Submission has been approved and the user has been credited.]]></phrase>
   <phrase title="olakunlevpn_job_system_submission_approved_message" version_id="1000010" version_string="1.0.0 Alpha"><![CDATA[Your submission has been approved! Thank you for completing the job successfully.]]></phrase>

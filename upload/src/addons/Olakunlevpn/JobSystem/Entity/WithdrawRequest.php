@@ -89,7 +89,6 @@ class WithdrawRequest extends Entity
 
         if ($approvalChange === 'enter' && $this->isInsert()) {
             $currencyColumn = $this->Currency;
-            \XF::logError($currencyColumn['column']);
 
             $user = $this->User;
             $user->set($currencyColumn['column'], $user->get($currencyColumn['column']) - $this->amount);

@@ -2,6 +2,8 @@
 
 namespace Olakunlevpn\JobSystem\Entity;
 
+
+use Olakunlevpn\JobSystem\Helper\JobSystemHelper;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 
@@ -32,6 +34,50 @@ class Job extends Entity
     }
 
 
+    public function getRewardCurrency()
+    {
+        if (JobSystemHelper::ensureDbCreditAddonInstalled() && is_numeric($this->currency_id)) {
+            return \XF::em()->find('DBTech\Credits:Currency', $this->currency_id);
+        }
+
+        if ($this->currency_id == 'xfcoder_wallet_credit') {
+            return [
+                'title' => \XF::phrase('olakunlevpn_jobsystem_xfcoder_wallet_credit'),
+                'column' => 'xfcoder_wallet_credit'
+            ];
+        }
+
+        return [
+            'title' => 'Unknown',
+            'column' => null
+        ];
+    }
+
+
+
+    /**
+     * Get the number of spots remaining for this job
+     *
+     * @return int|string Returns the number of spots left or "Unlimited" if no limit is set
+     */
+    public function getRemainingSpots()
+    {
+        if ($this->max_completions <= 0) {
+            return "Unlimited";
+        }
+
+        $approvedSubmissionsCount = \XF::finder('Olakunlevpn\JobSystem:Submission')
+            ->where('job_id', $this->job_id)
+            ->whereOr([
+                ['status', '=', 'approved'],
+                ['status', '=', 'pending']
+            ])
+            ->total();
+
+        return max(0, $this->max_completions - $approvedSubmissionsCount);
+    }
+
+
 
     public static function getStructure(Structure $structure)
     {
@@ -47,8 +93,8 @@ class Job extends Entity
             'title' => ['type' => self::STR, 'required' => true, 'censor' => true],
             'description' => ['type' => self::STR, 'required' => true , 'censor' => true],
             'details' => ['type' => self::STR, 'required' => true, 'censor' => true],
-            'reward_amount' => ['type' => self::FLOAT, 'default' => 0],  // Add this
-            'reward_currency' => ['type' => self::STR, 'default' => ''],  // Add this
+            'reward_amount' => ['type' => self::FLOAT, 'default' => 0],
+            'reward_currency' => ['type' => self::STR, 'default' => ''],
             'max_completions' => ['type' => self::UINT, 'default' => 0],
             'active' => ['type' => self::BOOL, 'default' => true],
             'type' => ['type' => self::STR, 'allowedValues' => ['text', 'url'], 'default' => 'text'],
@@ -90,6 +136,14 @@ class Job extends Entity
                 'primary' => true
             ]
         ];
+
+        if (JobSystemHelper::ensureDbCreditAddonInstalled()) {
+            $structure->relations['RewardCurrency'] = [
+                    'entity' => 'DBTech\Credits:Currency',
+                    'type' => self::TO_ONE,
+                    'conditions' => [['currency_id', '=', '$reward_currency']]
+         ];
+      }
 
         return $structure;
     }

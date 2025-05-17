@@ -58,6 +58,22 @@ class Application extends Repository
      */
     public function approveApplication($application)
     {
+        $job = $application->Job;
+
+        if ($job->max_completions > 0) {
+            $approvedSubmissionsCount = \XF::finder('Olakunlevpn\JobSystem:Submission')
+                ->where('job_id', $job->job_id)
+                ->whereOr([
+                    ['status', '=', 'approved'],
+                    ['status', '=', 'pending']
+                ])
+                ->total();
+
+            if ($approvedSubmissionsCount >= $job->max_completions) {
+                throw new \XF\PrintableException(\XF::phrase('olakunlevpn_job_system_max_completions_reached'));
+            }
+        }
+
         $application->status = 'approved';
         return $application->save();
     }

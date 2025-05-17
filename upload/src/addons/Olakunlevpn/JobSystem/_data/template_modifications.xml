@@ -92,6 +92,16 @@
 
 .no-padding {
      padding: 0px !important;
-}]]></replace>
+}
+
+.job-spots-remaining {
+    color: #3f7e38;
+}
+
+.job-spots-unlimited {
+    color: #7e7e7e;
+}
+
+]]></replace>
   </modification>
 </template_modifications>
